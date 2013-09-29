@@ -57,9 +57,19 @@ public class Deck {
 		return this.drawCard(0);
 	}
 	
+	public List<Card> drawCards(int count)
+	{
+		List<Card> cards = new ArrayList<Card>(count);
+		for(int i = 0;i<count;i++)
+		{
+			cards.add(drawCard());
+		}
+		return cards;
+	}
+	
 	public Card drawCard(int index)
 	{
-		return deck.get(index);
+		return deck.remove(index);
 	}
 	
 }
