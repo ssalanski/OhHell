@@ -31,6 +31,10 @@ public class Card {
 		this.denom = denom;
 	}
 	
+	public String toString()
+	{
+		return "" + denom + suit.suitAbbr;
+	}
 	
 	
 }
