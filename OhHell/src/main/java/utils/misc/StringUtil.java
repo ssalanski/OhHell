@@ -4,13 +4,13 @@ import java.util.List;
 
 public class StringUtil {
 
-	public static String join(String delim, List<String> substrings)
+	public static String join(String delim, List<? extends Object> items)
 	{
 		StringBuilder sb = new StringBuilder();
-		for( String substring : substrings)
+		for( Object item : items)
 		{
 			sb.append(delim);
-			sb.append(substring);
+			sb.append(item);
 		}
 		sb.delete(0, delim.length());
 		

@@ -5,6 +5,7 @@ import java.util.List;
 
 public class ListUtil {
 	
+	@SafeVarargs
 	public static <T> List<T> asList(T... elements)
 	{
 		List<T> list = new ArrayList<T>(elements.length);
