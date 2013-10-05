@@ -3,16 +3,14 @@ package game.play;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Deck {
+public class Deck extends ArrayList<Card>{
 
-	private List<Card> deck;
-	
 	public Deck()
 	{
-		this.deck = buildCleanDeck();
+		super(buildCleanDeck());
 	}
 
-	private List<Card> buildCleanDeck() {
+	private static List<Card> buildCleanDeck() {
 		List<Card> deck = new ArrayList<Card>(52);
 		for(Suit suit : Suit.allSuits())
 		{
@@ -28,18 +26,13 @@ public class Deck {
 	{
 		Card temp;
 		int j;
-		for(int i=0;i<deck.size();i++)
+		for(int i=0;i<this.size();i++)
 		{
 			j = (int)(Math.random()*i);
-			temp = deck.get(i);
-			deck.set(i, deck.get(j));
-			deck.set(j, temp);
+			temp = this.get(i);
+			this.set(i, this.get(j));
+			this.set(j, temp);
 		}
-	}
-	
-	public List<Card> getDeck()
-	{
-		return deck;
 	}
 	
 	public Card peekCard()
@@ -49,7 +42,7 @@ public class Deck {
 	
 	public Card peekCard(int index)
 	{
-		return deck.get(index);
+		return this.get(index);
 	}
 	
 	public Card drawCard()
@@ -69,7 +62,7 @@ public class Deck {
 	
 	public Card drawCard(int index)
 	{
-		return deck.remove(index);
+		return this.remove(index);
 	}
 	
 }
