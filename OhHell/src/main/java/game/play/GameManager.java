@@ -45,13 +45,15 @@ public class GameManager {
 	 */
 	private Player playTrick() {
 		int leadOffset = players.indexOf(inLead);
-		board.add(inLead.playCard(null));
+		Player theirTurn = inLead;
+		board.put(theirTurn,theirTurn.playCard(null));
 		for(int turnIndex = 1; turnIndex<players.size(); turnIndex++)
 		{
-			board.add(players.get(turnIndex+leadOffset).playCard(board.get(0).getSuit()));
+			theirTurn = players.get(turnIndex+leadOffset);
+			board.put(theirTurn,theirTurn.playCard(board.getLead().getSuit()));
 		}
 		
-		return determineWinner(board);
+		return board.determineWinner(thisHand.getTrump());
 		
 	}
 
@@ -67,7 +69,7 @@ public class GameManager {
 		thisHand = new HandRecord(players);
 		for (Player player : players)
 		{
-			player.setHand(new Hand(deck.drawCards(cardsThisHand())));
+			player.setHand((Hand)deck.drawCards(cardsThisHand()));
 		}
 		Card trump = deck.drawCard();
 		thisHand.setTrump(trump.getSuit());
