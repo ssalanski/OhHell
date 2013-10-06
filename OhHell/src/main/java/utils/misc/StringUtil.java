@@ -1,10 +1,10 @@
 package utils.misc;
 
-import java.util.List;
+import java.util.Collection;
 
 public class StringUtil {
 
-	public static String join(String delim, List<? extends Object> items)
+	public static String join(String delim, Collection<? extends Object> items)
 	{
 		StringBuilder sb = new StringBuilder();
 		for( Object item : items)
