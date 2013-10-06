@@ -9,12 +9,19 @@ public class ScoreCard {
 	
 	public ScoreCard(int numPlayers)
 	{
-		scoreTable = new ArrayList<HandRecord>(13);
+		scoreTable = new ArrayList<HandRecord>();
+	}
+	
+	public void recordHand(HandRecord hand)
+	{
+		scoreTable.add(hand);
 	}
 	
 	public HandRecord getHandRecord(int hand)
 	{
 		return scoreTable.get(hand);
 	}
+	
+	
 	
 }

@@ -1,5 +1,7 @@
 package game.play;
 
+import java.util.List;
+
 import game.score.Status;
 
 public class Player {
@@ -27,8 +29,24 @@ public class Player {
 	public void setStatus(Status status) {
 		this.status = status;
 	}
+
+	public void setHand(Hand hand) {
+		status.setHand(hand);
+	}
 	
-	
+	public Hand getHand() {
+		return status.getHand();
+	}
+
+	public int bid(int tricksRemaining, boolean restricted) {
+		return 0; // FIXME: actually bid!
+		//TODO: maybe extend this class to AI player and human player, one calls a thinking method, the other looks for stdin
+	}
+
+	public Card playCard(Suit lead) {
+		return status.getHand().legalPlays(lead).get(0); // FIXME: actually play!
+		//TODO: extend this class to AI player and human player, one calls a thinking method, the other looks for std in
+	}
 	
 	
 }
