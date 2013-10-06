@@ -1,6 +1,7 @@
 package game.play;
 
 import java.util.HashMap;
+import java.util.Iterator;
 
 import utils.misc.StringUtil;
 
@@ -30,8 +31,25 @@ public class Board extends HashMap<Card,Player>{
 		this.lead = lead;
 	}
 
+	/*
+	 * out of the cards played on this board, determine the winning player by finding the winning card
+	 * and looking up who played it.
+	 */
 	public Player determineWinner(Suit trump) {
-		return null;
+		
+		Iterator<Card> cards = this.keySet().iterator();
+		Card winner = null;
+		Card contender = null;
+		while(cards.hasNext())
+		{
+			if(contender.beats(winner,trump,lead.getSuit()))
+			{
+				winner = contender;
+			}
+		}
+		
+		return this.get(winner);
+		
 	}
 
 }
