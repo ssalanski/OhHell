@@ -46,11 +46,11 @@ public class GameManager {
 	private Player playTrick() {
 		int leadOffset = players.indexOf(inLead);
 		Player theirTurn = inLead;
-		board.put(theirTurn,theirTurn.playCard(null));
+		board.put(theirTurn.playCard(null),theirTurn);
 		for(int turnIndex = 1; turnIndex<players.size(); turnIndex++)
 		{
 			theirTurn = players.get(turnIndex+leadOffset);
-			board.put(theirTurn,theirTurn.playCard(board.getLead().getSuit()));
+			board.put(theirTurn.playCard(board.getLead().getSuit()),theirTurn);
 		}
 		
 		return board.determineWinner(thisHand.getTrump());

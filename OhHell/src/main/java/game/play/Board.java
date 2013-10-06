@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import utils.misc.StringUtil;
 
-public class Board extends HashMap<Player,Card>{
+public class Board extends HashMap<Card,Player>{
 
 	private Card lead;
 	
@@ -13,13 +13,13 @@ public class Board extends HashMap<Player,Card>{
 		return "Board: " + StringUtil.join(", ", this.values());
 	}
 	
-	public Card put(Player player, Card card)
+	public Player put(Card card, Player player)
 	{
 		if (this.size()==0) // then this is the first card played, aka the lead. keep track of that
 		{
 			setLead(card);
 		}
-		return super.put(player, card);
+		return super.put(card, player);
 	}
 
 	public Card getLead() {
