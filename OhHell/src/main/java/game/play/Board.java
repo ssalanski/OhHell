@@ -38,11 +38,12 @@ public class Board extends HashMap<Card,Player>{
 	public Player determineWinner(Suit trump) {
 		
 		Iterator<Card> cards = this.keySet().iterator();
-		Card winner = null;
+		Card winner = cards.next();
 		Card contender = null;
 		while(cards.hasNext())
 		{
-			if(contender.beats(winner,trump,lead.getSuit()))
+			contender = cards.next();
+			if(!winner.beats(contender,trump,lead.getSuit()))
 			{
 				winner = contender;
 			}

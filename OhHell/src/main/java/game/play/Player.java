@@ -1,7 +1,5 @@
 package game.play;
 
-import java.util.List;
-
 import game.score.Status;
 
 public class Player {
@@ -12,6 +10,7 @@ public class Player {
 	public Player(String name)
 	{
 		this.name = name;
+		this.status = new Status();
 	}
 
 	public String getName() {
@@ -48,5 +47,9 @@ public class Player {
 		//TODO: extend this class to AI player and human player, one calls a thinking method, the other looks for std in
 	}
 	
+	public String toString()
+	{
+		return "Player: " + name;
+	}
 	
 }

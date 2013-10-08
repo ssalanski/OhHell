@@ -5,6 +5,8 @@ import game.score.ScoreCard;
 
 import java.util.List;
 
+import utils.misc.StringUtil;
+
 public class GameManager {
 
 	private ScoreCard scoreCard;
@@ -15,17 +17,25 @@ public class GameManager {
 	private Player inLead;
 	private Board board;
 	
-	public GameManager(int numPlayers)
+	public GameManager()
 	{
-		scoreCard = new ScoreCard(numPlayers);
-	
+		
+		
+	}
+
+	public void play(List<Player> players)
+	{
+		this.players = players;
+		scoreCard = new ScoreCard(players.size());
+		
 		for (handNumber = 1; handNumber<=13; handNumber++)
 		{
+			inLead = players.get(0);
+			deck = new Deck();
+			board = new Board();
+			
 			playHand();
 		}
-		
-		inLead = players.get(0);
-		
 	}
 	
 	private void playHand() {
@@ -49,7 +59,7 @@ public class GameManager {
 		board.put(theirTurn.playCard(null),theirTurn);
 		for(int turnIndex = 1; turnIndex<players.size(); turnIndex++)
 		{
-			theirTurn = players.get(turnIndex+leadOffset);
+			theirTurn = players.get((turnIndex+leadOffset)%players.size());
 			board.put(theirTurn.playCard(board.getLead().getSuit()),theirTurn);
 		}
 		
@@ -67,9 +77,10 @@ public class GameManager {
 
 	private void dealCards() {
 		thisHand = new HandRecord(players);
+		System.out.println("Dealing "+cardsThisHand()+" cards to everyone");
 		for (Player player : players)
 		{
-			player.setHand((Hand)deck.drawCards(cardsThisHand()));
+			player.setHand(new Hand(deck.drawCards(cardsThisHand())));
 		}
 		Card trump = deck.drawCard();
 		thisHand.setTrump(trump.getSuit());
