@@ -33,7 +33,42 @@ public class Card {
 	
 	public String toString()
 	{
-		return "" + denom + suit.suitAbbr;
+		return "" + getDenomName() + " of " + suit.suitAbbr;
+	}
+
+	private String getDenomName() {
+		switch(denom)
+		{
+		case(13):
+			return "Ace";
+		case(1):
+			return "Two";
+		case(2):
+			return "Three";
+		case(3):
+			return "Four";
+		case(4):
+			return "Five";
+		case(5):
+			return "Six";
+		case(6):
+			return "Seven";
+		case(7):
+			return "Eight";
+		case(8):
+			return "Nine";
+		case(9):
+			return "Ten";
+		case(10):
+			return "Jack";
+		case(11):
+			return "Queen";
+		case(12):
+			return "King";
+		default:
+			System.err.println("Card with no denomination!");
+			return "NOTHING!";
+		}
 	}
 
 	/*
