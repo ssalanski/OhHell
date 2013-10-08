@@ -62,6 +62,11 @@ public class Deck extends ArrayList<Card>{
 	
 	public Card drawCard(int index)
 	{
+		if (this.size()==0)
+		{
+			System.err.println("Your deck is empty, yet you tried to draw a card! WHATS WRONG WITH YOU!?!?!????");
+			System.exit(1);
+		}
 		return this.remove(index);
 	}
 	
