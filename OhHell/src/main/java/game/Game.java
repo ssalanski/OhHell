@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import utils.misc.ListUtil;
 import utils.misc.StringUtil;
 
 public class Game {
@@ -70,17 +71,47 @@ public class Game {
 	}
 
 	private static Player newAI() throws IOException{
-		// TODO: make Player an abstract class and extend it with human and AI classes
-		System.out.println("no ai coded yet, just pick human, sorry");
-		return null;
+		System.out.println("What is this AI's name?");
+		String name = br.readLine();
+
+		System.out.println("Which kind of AI will "+name+" be?");
+		System.out.println(StringUtil.join("\n", ListUtil.asList("\t1) Agressive","\t2) Passive","\t3) Intelligent","\t4) WILDCARD!!")));
+		Player newGuy = null;
+
+		do
+		{
+			String input = br.readLine();
+			if( input.contains("1") )
+			{
+				newGuy = new AggressivePlayer(name);
+			}
+			else if ( input.contains("2") )
+			{
+				newGuy = new PassivePlayer(name);
+			}
+			else if ( input.contains("3") )
+			{
+				//newGuy = new IntelligentPlayer(name);
+				System.out.println("No algorithm for this yet, feel free to contribute!\n(also, pick again)");
+			}
+			else if ( input.contains("4") )
+			{
+				newGuy = new WildcardPlayer(name);
+			}
+			else
+			{
+				System.out.println("Please type a number from the listed options.");
+			}
+		} while ( newGuy == null );
+
+		return newGuy;
 	}
 
 	private static Player newHuman() throws IOException {
-		// TODO: make this return a 'human' extension of human
 		System.out.println("What is this humans name?");
 		
 		String input = br.readLine();
-		Player newGuy = new Player(input);
+		Player newGuy = new HumanPlayer(input);
 		
 		return newGuy;
 	}

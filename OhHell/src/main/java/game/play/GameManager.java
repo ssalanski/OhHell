@@ -5,8 +5,6 @@ import game.score.ScoreCard;
 
 import java.util.List;
 
-import utils.misc.StringUtil;
-
 public class GameManager {
 
 	private ScoreCard scoreCard;
@@ -32,6 +30,7 @@ public class GameManager {
 		{
 			inLead = players.get(0);
 			deck = new Deck();
+			deck.shuffle();
 			board = new Board();
 			
 			playHand();
@@ -41,7 +40,15 @@ public class GameManager {
 	private void playHand() {
 		board.clear();
 		dealCards();
+		
+		for(Player player: players)
+		{
+			System.out.println(player.getName()+"'s hand: " + player.getHand());
+		}
+		
 		bidRound();
+		
+		
 		for(int i=0;i<cardsThisHand();i++)
 		{
 			inLead = playTrick();
@@ -56,22 +63,24 @@ public class GameManager {
 	private Player playTrick() {
 		int leadOffset = players.indexOf(inLead);
 		Player theirTurn = inLead;
-		board.put(theirTurn.playCard(null),theirTurn);
-		for(int turnIndex = 1; turnIndex<players.size(); turnIndex++)
+		for(int turnIndex = 0; turnIndex<players.size(); turnIndex++)
 		{
 			theirTurn = players.get((turnIndex+leadOffset)%players.size());
-			board.put(theirTurn.playCard(board.getLead().getSuit()),theirTurn);
+			board.put(theirTurn.playCard(board),theirTurn);
 		}
 		
-		return board.determineWinner(thisHand.getTrump());
+		return board.determineWinner();
 		
 	}
 
 	private void bidRound() {
 		int tricksRemaining = cardsThisHand();
-		for (Player player : players)
+		int leadOffset = players.indexOf(inLead);
+		Player theirTurn = inLead;
+		for(int turnIndex = 0; turnIndex<players.size(); turnIndex++)
 		{
-			tricksRemaining -= player.bid(tricksRemaining,false);
+			theirTurn = players.get((turnIndex+leadOffset)%players.size());
+			tricksRemaining -= theirTurn.bid(cardsThisHand(),tricksRemaining,turnIndex==players.size());
 		}
 	}
 
@@ -83,12 +92,12 @@ public class GameManager {
 			player.setHand(new Hand(deck.drawCards(cardsThisHand())));
 		}
 		Card trump = deck.drawCard();
-		thisHand.setTrump(trump.getSuit());
+		thisHand.getBoard().setTrump(trump.getSuit());
 	}
 
 	/*
 	 * reads the handNumberField and returns the number of cards in the given hand.
-	 * perhaps allow this to be overriden for different variations on the rules. (along with scoring)
+	 * perhaps allow this to be overridden for different variations on the rules. (along with scoring)
 	 */
 	private int cardsThisHand()
 	{

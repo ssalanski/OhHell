@@ -1,22 +1,21 @@
 package game.play;
 
 import java.util.HashMap;
-import java.util.Iterator;
 
 import utils.misc.StringUtil;
+import utils.strategy.CardsUtil;
 
-public class Board extends HashMap<Card,Player>{
+public class Board extends HashMap<Card, Player> {
 
 	private Card lead;
-	
-	public String toString()
-	{
+	private Suit trump;
+
+	public String toString() {
 		return "Board: " + StringUtil.join(", ", this.values());
 	}
-	
-	public Player put(Card card, Player player)
-	{
-		if (this.size()==0) // then this is the first card played, aka the lead. keep track of that
+
+	public Player put(Card card, Player player) {
+		if (this.size() == 0) // then this is the first card played, aka the lead. keep track of that
 		{
 			setLead(card);
 		}
@@ -32,25 +31,20 @@ public class Board extends HashMap<Card,Player>{
 	}
 
 	/*
-	 * out of the cards played on this board, determine the winning player by finding the winning card
-	 * and looking up who played it.
+	 * out of the cards played on this board, determine the winning player by
+	 * finding the winning card and looking up who played it.
 	 */
-	public Player determineWinner(Suit trump) {
-		
-		Iterator<Card> cards = this.keySet().iterator();
-		Card winner = cards.next();
-		Card contender = null;
-		while(cards.hasNext())
-		{
-			contender = cards.next();
-			if(!winner.beats(contender,trump,lead.getSuit()))
-			{
-				winner = contender;
-			}
-		}
-		
+	public Player determineWinner() {
+		Card winner = CardsUtil.whoWins(this.keySet(), trump, lead.getSuit());
 		return this.get(winner);
-		
+	}
+
+	public void setTrump(Suit trump) {
+		this.trump = trump;
+	}
+
+	public Suit getTrump() {
+		return trump;
 	}
 
 }
