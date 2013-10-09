@@ -12,7 +12,7 @@ public class WildcardPlayer extends Player {
 	}
 
 	@Override
-	public int bid(int tricksRemaining, boolean restricted) {
+	public int bid(int tricksThisHand, int tricksRemaining, boolean restricted) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
