@@ -2,7 +2,7 @@ package game.play;
 
 import game.score.Status;
 
-public class Player {
+public abstract class Player {
 
 	private String name;
 	private Status status;
@@ -37,15 +37,15 @@ public class Player {
 		return status.getHand();
 	}
 
-	public int bid(int tricksRemaining, boolean restricted) {
-		return 0; // FIXME: actually bid!
-		//TODO: maybe extend this class to AI player and human player, one calls a thinking method, the other looks for stdin
-	}
+	// should decide how much the player wants to bid for this hand,
+	// given the current bid situation. Must adhere to OH rules
+	// regarding bid restrictions when you are the dealer (restricted=true)
+	public abstract int bid(int tricksThisHand, int tricksRemaining, boolean restricted);
 
-	public Card playCard(Suit lead) {
-		return status.getHand().legalPlays(lead).get(0); // FIXME: actually play!
-		//TODO: extend this class to AI player and human player, one calls a thinking method, the other looks for std in
-	}
+	// should choose the card to play from the players hand
+	// must ensure the play is legal considering the current board
+	// must remove the card from the players hand as it returns it
+	public abstract Card playCard(Board board);
 	
 	public String toString()
 	{
