@@ -11,8 +11,8 @@ import java.util.List;
 
 public class CardsUtil {
 
-	public static Card whoWins(Collection<Card> keySet, Suit lead, Suit trump) {
-		Iterator<Card> cards = keySet.iterator();
+	public static Card whoWins(Collection<Card> playedCards, Suit lead, Suit trump) {
+		Iterator<Card> cards = playedCards.iterator();
 		Card winner = cards.next();
 		Card contender = null;
 		while(cards.hasNext())

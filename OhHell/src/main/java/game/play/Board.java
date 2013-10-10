@@ -1,6 +1,7 @@
 package game.play;
 
 import java.util.HashMap;
+import java.util.Set;
 
 import utils.misc.StringUtil;
 import utils.strategy.CardsUtil;
@@ -28,6 +29,11 @@ public class Board extends HashMap<Card, Player> {
 
 	public void setLead(Card lead) {
 		this.lead = lead;
+	}
+	
+	public Set<Card> getCards()
+	{
+		return this.keySet();
 	}
 
 	/*

@@ -35,7 +35,7 @@ public class AggressivePlayer extends Player {
 		Suit lead = board.getLead().getSuit();
 		List<Card> legalPlays = CardsUtil.legalPlays(this.getHand(), lead);
 		List<Card> winningPlays = new ArrayList<Card>();
-		Card currentlyWinning = CardsUtil.whoWins(board.keySet(), lead, trump);
+		Card currentlyWinning = CardsUtil.whoWins(board.getCards(), lead, trump);
 		for ( Card card : legalPlays )
 		{
 			if ( card.beats(currentlyWinning, lead, trump) )

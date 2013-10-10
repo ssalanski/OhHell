@@ -32,7 +32,6 @@ public class GameManager {
 			deck = new Deck();
 			deck.shuffle();
 			board = new Board();
-			
 			playHand();
 		}
 	}
@@ -86,6 +85,7 @@ public class GameManager {
 
 	private void dealCards() {
 		thisHand = new HandRecord(players);
+		thisHand.setBoard(board);
 		System.out.println("Dealing "+cardsThisHand()+" cards to everyone");
 		for (Player player : players)
 		{
