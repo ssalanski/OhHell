@@ -13,7 +13,7 @@ public class HumanPlayer extends Player {
 
 	@Override
 	public int bid(int tricksThisHand, int tricksRemaining, boolean restricted) {
-		System.out.println("There are " + tricksThisHand + " tricks to take this hand, " + tricksRemaining + " have already been bid on.");
+		System.out.println("Hello, "+this.getName()+". There are " + tricksThisHand + " tricks to take this hand, " + (tricksThisHand - tricksRemaining) + " have already been bid on.");
 		if(restricted)
 		{
 			System.out.println("You are the dealer, and therefore cannot bid " + tricksRemaining);
@@ -22,11 +22,11 @@ public class HumanPlayer extends Player {
 		do
 		{
 			bidRequest = Integer.parseInt(UserUtil.ask("How many would you like to bid?"));
-		} while ( notAcceptable(bidRequest, tricksThisHand, tricksRemaining, restricted));
+		} while ( !acceptable(bidRequest, tricksThisHand, tricksRemaining, restricted));
 		return bidRequest;
 	}
 
-	private boolean notAcceptable(Integer bidRequest, int tricksThisHand, int tricksRemaining, boolean restricted) {
+	private boolean acceptable(Integer bidRequest, int tricksThisHand, int tricksRemaining, boolean restricted) {
 		if (bidRequest == null)
 		{
 			return false;

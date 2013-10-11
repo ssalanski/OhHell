@@ -79,7 +79,7 @@ public class GameManager {
 		for(int turnIndex = 0; turnIndex<players.size(); turnIndex++)
 		{
 			theirTurn = players.get((turnIndex+leadOffset)%players.size());
-			tricksRemaining -= theirTurn.bid(cardsThisHand(),tricksRemaining,turnIndex==players.size());
+			tricksRemaining -= theirTurn.bid(cardsThisHand(),tricksRemaining,turnIndex==players.size()-1);
 		}
 	}
 
