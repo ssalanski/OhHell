@@ -23,5 +23,19 @@ public enum Suit {
 		return Arrays.asList(Suit.SPADES,Suit.HEARTS,Suit.DIAMONDS,Suit.CLUBS);
 	}
 	
+	public String toString()
+	{
+		return suitName;
+	}
+	
+	public String getName()
+	{
+		return suitName;
+	}
+
+	public String getAbbr() {
+		return suitAbbr;
+	}
+	
 	
 }
