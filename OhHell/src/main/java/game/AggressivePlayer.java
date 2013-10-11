@@ -32,7 +32,7 @@ public class AggressivePlayer extends Player {
 	@Override
 	public Card playCard(Board board) {
 		Suit trump = board.getTrump();
-		Suit lead = board.getLead().getSuit();
+		Suit lead = board.getLead();
 		List<Card> legalPlays = CardsUtil.legalPlays(this.getHand(), lead);
 		List<Card> winningPlays = new ArrayList<Card>();
 		Card currentlyWinning = CardsUtil.whoWins(board.getCards(), lead, trump);

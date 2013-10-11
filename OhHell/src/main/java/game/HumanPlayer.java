@@ -1,5 +1,7 @@
 package game;
 
+import utils.misc.StringUtil;
+import utils.strategy.CardsUtil;
 import utils.ui.UserUtil;
 import game.play.Board;
 import game.play.Card;
@@ -23,6 +25,7 @@ public class HumanPlayer extends Player {
 		{
 			bidRequest = Integer.parseInt(UserUtil.ask("How many would you like to bid?"));
 		} while ( !acceptable(bidRequest, tricksThisHand, tricksRemaining, restricted));
+		this.getStatus().setBid(bidRequest);
 		return bidRequest;
 	}
 
@@ -48,8 +51,19 @@ public class HumanPlayer extends Player {
 
 	@Override
 	public Card playCard(Board board) {
-		// TODO Auto-generated method stub
-		return null;
+		System.out.println(board.getTrump().getName() + " are trump. You have bid " + this.getStatus().getBid() + " and taken " + this.getStatus().getTaken() + " so far.");
+		if(board.getLead()==null)
+			{
+				System.out.println("You are in the lead.");
+			}
+		else
+		{
+			System.out.println(board.getLead().name() + " were lead.");
+		}
+		System.out.println("Your hand: " + StringUtil.join(",",this.getHand()));
+		Card yourPlay = UserUtil.choose("Which card will you play?", CardsUtil.legalPlays(this.getHand(), board.getLead()));
+		this.getHand().remove(yourPlay);
+		return yourPlay;
 	}
 
 }

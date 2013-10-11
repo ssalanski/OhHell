@@ -9,14 +9,16 @@ public class UserUtil {
 
 	private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	
-	public static int choose(String question, List<String> acceptableAnswers) {
+	public static <T> T choose(String question, List<T> acceptableAnswers) {
 		int choice = -1;
 		String input = "";
+		String choiceString;
 		do {
 			System.out.println(question);
-			for(String choiceString : acceptableAnswers)
+			for(T choiceThing : acceptableAnswers)
 			{
-				System.out.println((1+acceptableAnswers.indexOf(choiceString))+") " + choiceString);
+				choiceString = choiceThing.toString();
+				System.out.println((1+acceptableAnswers.indexOf(choiceThing))+") " + choiceString);
 			}
 			try
 			{
@@ -29,7 +31,7 @@ public class UserUtil {
 			}
 		} while ( choice <= 0 || choice > acceptableAnswers.size());
 		
-		return choice-1;
+		return acceptableAnswers.get(choice-1);
 		
 	}
 	

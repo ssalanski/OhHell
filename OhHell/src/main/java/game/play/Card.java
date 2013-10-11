@@ -33,7 +33,7 @@ public class Card {
 	
 	public String toString()
 	{
-		return "" + getDenomName() + " of " + suit.suitAbbr;
+		return "" + getDenomName() + " of " + suit.getAbbr();
 	}
 
 	private String getDenomName() {

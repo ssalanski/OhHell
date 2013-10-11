@@ -37,7 +37,7 @@ public class GameManager {
 	}
 	
 	private void playHand() {
-		board.clear();
+		
 		dealCards();
 		
 		for(Player player: players)
@@ -50,7 +50,9 @@ public class GameManager {
 		
 		for(int i=0;i<cardsThisHand();i++)
 		{
+			System.out.println("its trick number " + (i+1)+", and "+inLead.getName()+" is in the lead.");
 			inLead = playTrick();
+			System.out.println(inLead.getName() + " won that trick");
 		}
 		thisHand.assessScores();
 		scoreCard.recordHand(thisHand);
@@ -60,15 +62,21 @@ public class GameManager {
 	 * returns the player that won the trick
 	 */
 	private Player playTrick() {
+		board.clear();
 		int leadOffset = players.indexOf(inLead);
 		Player theirTurn = inLead;
+		Card playedCard;
 		for(int turnIndex = 0; turnIndex<players.size(); turnIndex++)
 		{
 			theirTurn = players.get((turnIndex+leadOffset)%players.size());
-			board.put(theirTurn.playCard(board),theirTurn);
+			System.out.println("its turn number " + (turnIndex+1)+": "+theirTurn.getName());
+			playedCard = theirTurn.playCard(board);
+			System.out.println(theirTurn.getName() + " played the " + playedCard.toString());
+			board.put(playedCard,theirTurn);
 		}
 		
 		return board.determineWinner();
+		
 		
 	}
 
