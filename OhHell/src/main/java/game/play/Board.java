@@ -8,7 +8,7 @@ import utils.strategy.CardsUtil;
 
 public class Board extends HashMap<Card, Player> {
 
-	private Card lead;
+	private Suit lead;
 	private Suit trump;
 
 	public String toString() {
@@ -18,16 +18,16 @@ public class Board extends HashMap<Card, Player> {
 	public Player put(Card card, Player player) {
 		if (this.size() == 0) // then this is the first card played, aka the lead. keep track of that
 		{
-			setLead(card);
+			setLead(card.getSuit());
 		}
 		return super.put(card, player);
 	}
 
-	public Card getLead() {
+	public Suit getLead() {
 		return lead;
 	}
 
-	public void setLead(Card lead) {
+	public void setLead(Suit lead) {
 		this.lead = lead;
 	}
 	
@@ -41,7 +41,7 @@ public class Board extends HashMap<Card, Player> {
 	 * finding the winning card and looking up who played it.
 	 */
 	public Player determineWinner() {
-		Card winner = CardsUtil.whoWins(this.keySet(), trump, lead.getSuit());
+		Card winner = CardsUtil.whoWins(this.keySet(), trump, lead);
 		return this.get(winner);
 	}
 
