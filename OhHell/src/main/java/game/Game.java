@@ -51,7 +51,7 @@ public class Game {
 		Player newGuy = null;
 		
 		do {
-			System.out.println("Who will play!??\n\t1)Human\n\tComputer");
+			System.out.println("Who will play!??\n\t1)Human\n\t2)Computer");
 			String input = br.readLine();
 			if( input.contains("1") )
 			{
