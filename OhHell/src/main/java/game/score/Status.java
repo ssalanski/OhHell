@@ -85,6 +85,10 @@ public class Status {
 			return 10 + bid*bid;
 		}
 	}
+
+	public void incrementTricksTaken() {
+		this.taken++;
+	}
 	
 	
 	

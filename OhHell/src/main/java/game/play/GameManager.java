@@ -52,6 +52,7 @@ public class GameManager {
 		{
 			System.out.println("its trick number " + (i+1)+", and "+inLead.getName()+" is in the lead.");
 			inLead = playTrick();
+			inLead.getStatus().incrementTricksTaken();
 			System.out.println(inLead.getName() + " won that trick");
 		}
 		thisHand.assessScores();
