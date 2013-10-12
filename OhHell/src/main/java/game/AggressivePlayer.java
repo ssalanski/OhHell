@@ -43,7 +43,12 @@ public class AggressivePlayer extends Player {
 				winningPlays.add(card);
 			}
 		}
-		Card choice = CardsUtil.whoWins(winningPlays, lead, trump);
+		Card choice;
+		if (winningPlays.size()==0)
+		{
+			choice = CardsUtil.lowest(legalPlays, trump);
+		}
+		choice = CardsUtil.whoWins(winningPlays, lead, trump);
 		assert this.getHand().remove(choice);
 		return choice;
 	}

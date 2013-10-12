@@ -1,5 +1,6 @@
 package utils.strategy;
 
+import game.play.Board;
 import game.play.Card;
 import game.play.Hand;
 import game.play.Suit;
@@ -8,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+
+import utils.misc.ListUtil;
 
 public class CardsUtil {
 
@@ -48,6 +51,43 @@ public class CardsUtil {
 		{
 			return hand;
 		}
+	}
+
+	public static Card lowest(List<Card> legalPlays, Suit trump) {
+		Card low = null;
+		for(Card card : legalPlays)
+		{
+			if (score(card, trump)<score(low, trump))
+			{
+				low = card;
+			}
+		}
+		return low;
+	}
+	
+	private static int score(Card c, Suit trump)
+	{
+		if (c==null)
+		{
+			return -1;
+		}
+		return c.getDenom() + (c.getSuit().equals(trump) ? 20 : 0);
+	}
+
+	public static List<Card> losingPlays(Board board, Hand hand) {
+		Suit trump = board.getTrump();
+		Suit lead = board.getLead();
+		List<Card> legalPlays = CardsUtil.legalPlays(hand, lead);
+		List<Card> losingPlays = new ArrayList<Card>();
+		Card currentlyWinning = CardsUtil.whoWins(board.getCards(), lead, trump);
+		for ( Card card : legalPlays )
+		{
+			if ( currentlyWinning.beats(card, lead, trump) )
+			{
+				losingPlays.add(card);
+			}
+		}
+		return losingPlays;
 	}
 	
 }
