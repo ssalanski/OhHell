@@ -13,8 +13,16 @@ public class WildcardPlayer extends Player {
 
 	@Override
 	public int bid(int tricksThisHand, int tricksRemaining, boolean restricted) {
-		// TODO Auto-generated method stub
-		return 0;
+		int bidRequest = (int) Math.floor(Math.random()*(tricksThisHand+1));
+		if(restricted && bidRequest==tricksRemaining)
+		{
+			// adjust bid if we're restricted. add one, unless we were trying to bid the max, then go down one.
+			return bidRequest + (bidRequest==tricksThisHand ? -1 : 1); 
+		}
+		else
+		{
+			return bidRequest;
+		}
 	}
 
 	@Override
