@@ -26,7 +26,14 @@
     <mkdir dir="${dist}/lib"/>
 
     <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
-    <jar jarfile="${dist}/lib/OhHell-${DSTAMP}.jar" basedir="${build}"/>
+    <jar jarfile="${dist}/lib/OhHell-${DSTAMP}.jar" basedir="${build}">
+      <manifest>
+        <attribute name="Main-Class" value="game.Game"/>
+      </manifest>
+    </jar>
+  	<echo file="${dist}/lib/OhHell.bat" append="false">
+  			java -jar OhHell-${DSTAMP}.jar
+  	</echo>
   </target>
 
   <target name="clean"
@@ -35,4 +42,13 @@
     <delete dir="${build}"/>
     <delete dir="${dist}"/>
   </target>
+	
+	<echo file="${dist}/lib/OhHell.bat" append="false">
+		java -jar OhHell-${DSTAMP}.jar
+	</echo>
+	
+    <target name="run">
+        <java jar="dist/lib/OhHell-${DSTAMP}.jar" fork="true"/>
+    </target>
+	
 </project>
