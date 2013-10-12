@@ -1,7 +1,5 @@
 package game.play;
 
-import static org.junit.Assert.assertTrue;
-
 public class Card {
 
 	private Suit suit;
@@ -9,7 +7,7 @@ public class Card {
 
 	public Card(int denom, Suit suit)
 	{
-		assertTrue( denom > 0 && denom <= 13 );
+		assert ( denom > 0 && denom <= 13 );
 		this.denom = denom;
 		this.suit = suit;
 	}
@@ -27,7 +25,7 @@ public class Card {
 	}
 
 	public void setDenom(int denom) {
-		assertTrue( denom > 0 && denom <= 13 );
+		assert ( denom > 0 && denom <= 13 );
 		this.denom = denom;
 	}
 	
