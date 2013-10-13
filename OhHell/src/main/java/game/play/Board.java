@@ -22,6 +22,13 @@ public class Board extends HashMap<Card, Player> {
 		}
 		return super.put(card, player);
 	}
+	
+	public void clear()
+	{
+		super.clear();
+		this.lead = null;
+		this.trump = null;
+	}
 
 	public Suit getLead() {
 		return lead;
