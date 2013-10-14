@@ -27,7 +27,6 @@ public class Board extends HashMap<Card, Player> {
 	{
 		super.clear();
 		this.lead = null;
-		this.trump = null;
 	}
 
 	public Suit getLead() {
