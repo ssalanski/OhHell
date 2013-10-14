@@ -7,21 +7,15 @@ import game.play.Suit;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-
-import utils.misc.ListUtil;
 
 public class CardsUtil {
 
 	public static Card whoWins(Collection<Card> playedCards, Suit lead, Suit trump) {
-		Iterator<Card> cards = playedCards.iterator();
-		Card winner = cards.next();
-		Card contender = null;
-		while(cards.hasNext())
+		Card winner = null;
+		for(Card contender : playedCards)
 		{
-			contender = cards.next();
-			if(!winner.beats(contender,lead,trump))
+			if(contender.beats(winner,lead,trump))
 			{
 				winner = contender;
 			}
@@ -57,7 +51,7 @@ public class CardsUtil {
 		Card low = null;
 		for(Card card : legalPlays)
 		{
-			if (score(card, trump)<score(low, trump))
+			if (score(card, trump) <= score(low, trump))
 			{
 				low = card;
 			}
