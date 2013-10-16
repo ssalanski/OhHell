@@ -32,7 +32,10 @@ public class WildcardPlayer extends Player {
 	public Card playCard(Board board) {
 		List<Card> legalPlays = CardsUtil.legalPlays(this.getHand(), board.getLead());
 		Card choice = legalPlays.get((int)Math.random()*legalPlays.size());
-		assert this.getHand().remove(choice);
+		if(!this.getHand().remove(choice))
+		{
+			throw new IllegalStateException("Tried to play/remove a card("+choice+") that wasnt in your hand");
+		}
 		return choice;
 	}
 

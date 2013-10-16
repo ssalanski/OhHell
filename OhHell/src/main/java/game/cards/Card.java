@@ -33,6 +33,11 @@ public class Card {
 	{
 		return "" + getDenomName() + " of " + suit.getAbbr();
 	}
+	
+	public boolean equals(Card other)
+	{
+		return this.denom==other.denom && this.suit.equals(other.suit);
+	}
 
 	private String getDenomName() {
 		switch(denom)

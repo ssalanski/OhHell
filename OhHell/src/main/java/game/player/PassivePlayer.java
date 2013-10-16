@@ -44,7 +44,10 @@ public class PassivePlayer extends Player {
 				// TODO: better definition of 'strongest'
 			}
 		}
-		assert this.getHand().remove(choice);
+		if(!this.getHand().remove(choice))
+		{
+			throw new IllegalStateException("Tried to play/remove a card("+choice+") that wasnt in your hand");
+		}
 		return choice;
 	}
 
