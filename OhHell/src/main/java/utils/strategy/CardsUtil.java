@@ -48,7 +48,11 @@ public class CardsUtil {
 	}
 
 	public static Card lowest(List<Card> legalPlays, Suit trump) {
-		Card low = null;
+		if(legalPlays.size()==0)
+		{
+			throw new IllegalArgumentException("Cant decide lowest of no cards");
+		}
+		Card low = legalPlays.get(0);
 		for(Card card : legalPlays)
 		{
 			if (score(card, trump) <= score(low, trump))
@@ -63,7 +67,7 @@ public class CardsUtil {
 	{
 		if (c==null)
 		{
-			return -1;
+			throw new IllegalArgumentException("Cant score null card");
 		}
 		return c.getDenom() + (c.getSuit().equals(trump) ? 20 : 0);
 	}
