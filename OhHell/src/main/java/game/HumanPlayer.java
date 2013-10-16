@@ -23,7 +23,15 @@ public class HumanPlayer extends Player {
 		Integer bidRequest = null;
 		do
 		{
-			bidRequest = Integer.parseInt(UserUtil.ask("How many would you like to bid?"));
+			try
+			{
+				bidRequest = Integer.parseInt(UserUtil.ask("How many would you like to bid?"));
+			}
+			catch (NumberFormatException e)
+			{
+				System.out.println("was that a number?");
+				bidRequest = -1;
+			}
 		} while ( !acceptable(bidRequest, tricksThisHand, tricksRemaining, restricted));
 		this.getStatus().setBid(bidRequest);
 		return bidRequest;
