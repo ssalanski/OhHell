@@ -1,5 +1,8 @@
-package game.play;
+package game.player;
 
+import game.cards.Board;
+import game.cards.Card;
+import game.cards.Hand;
 import game.score.Status;
 
 public abstract class Player {

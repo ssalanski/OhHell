@@ -1,11 +1,10 @@
-package game;
+package game.player;
 
 import utils.misc.StringUtil;
 import utils.strategy.CardsUtil;
 import utils.ui.UserUtil;
-import game.play.Board;
-import game.play.Card;
-import game.play.Player;
+import game.cards.Board;
+import game.cards.Card;
 
 public class HumanPlayer extends Player {
 

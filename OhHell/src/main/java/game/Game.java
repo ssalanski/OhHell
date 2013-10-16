@@ -1,7 +1,10 @@
 package game;
 
-import game.play.GameManager;
-import game.play.Player;
+import game.player.AggressivePlayer;
+import game.player.HumanPlayer;
+import game.player.PassivePlayer;
+import game.player.Player;
+import game.player.WildcardPlayer;
 
 import java.io.BufferedReader;
 import java.io.IOException;

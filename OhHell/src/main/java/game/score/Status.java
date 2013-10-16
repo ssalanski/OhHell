@@ -1,6 +1,6 @@
 package game.score;
 
-import game.play.Hand;
+import game.cards.Hand;
 
 public class Status {
 

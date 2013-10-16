@@ -1,13 +1,12 @@
-package game;
+package game.player;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import utils.strategy.CardsUtil;
-import game.play.Board;
-import game.play.Card;
-import game.play.Player;
-import game.play.Suit;
+import game.cards.Board;
+import game.cards.Card;
+import game.cards.Suit;
 
 public class PassivePlayer extends Player {
 

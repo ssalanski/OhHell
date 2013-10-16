@@ -1,4 +1,6 @@
-package game.play;
+package game.cards;
+
+import game.player.Player;
 
 import java.util.HashMap;
 import java.util.Set;

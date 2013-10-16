@@ -1,4 +1,4 @@
-package game.play;
+package game.cards;
 
 public class Card {
 

@@ -1,8 +1,7 @@
-package game;
+package game.player;
 
-import game.play.Board;
-import game.play.Card;
-import game.play.Player;
+import game.cards.Board;
+import game.cards.Card;
 
 public class IntelligentPlayer extends Player {
 

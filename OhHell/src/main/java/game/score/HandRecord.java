@@ -1,7 +1,7 @@
 package game.score;
 
-import game.play.Board;
-import game.play.Player;
+import game.cards.Board;
+import game.player.Player;
 
 import java.util.HashMap;
 import java.util.List;

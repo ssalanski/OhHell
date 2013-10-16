@@ -1,5 +1,10 @@
-package game.play;
+package game;
 
+import game.cards.Board;
+import game.cards.Card;
+import game.cards.Deck;
+import game.cards.Hand;
+import game.player.Player;
 import game.score.HandRecord;
 import game.score.ScoreCard;
 

@@ -1,9 +1,8 @@
-package game;
+package game.player;
 
-import game.play.Board;
-import game.play.Card;
-import game.play.Player;
-import game.play.Suit;
+import game.cards.Board;
+import game.cards.Card;
+import game.cards.Suit;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,9 +1,9 @@
 package utils.strategy;
 
-import game.play.Board;
-import game.play.Card;
-import game.play.Hand;
-import game.play.Suit;
+import game.cards.Board;
+import game.cards.Card;
+import game.cards.Hand;
+import game.cards.Suit;
 
 import java.util.ArrayList;
 import java.util.Collection;
