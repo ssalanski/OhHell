@@ -10,6 +10,8 @@ import game.score.ScoreCard;
 
 import java.util.List;
 
+import utils.misc.StringUtil;
+
 public class GameManager {
 
 	private ScoreCard scoreCard;
@@ -44,6 +46,7 @@ public class GameManager {
 	private void playHand() {
 		
 		dealCards();
+		System.out.println(thisHand.getBoard().getTrump() + " is trump.");
 		
 		for(Player player: players)
 		{
@@ -74,6 +77,7 @@ public class GameManager {
 		Card playedCard;
 		for(int turnIndex = 0; turnIndex<players.size(); turnIndex++)
 		{
+			describeBoard();
 			theirTurn = players.get((turnIndex+leadOffset)%players.size());
 			System.out.println("its turn number " + (turnIndex+1)+": "+theirTurn.getName());
 			playedCard = theirTurn.playCard(board);
@@ -116,6 +120,49 @@ public class GameManager {
 	private int cardsThisHand()
 	{
 		return Math.abs(7-handNumber)+1;
+	}
+	
+	public String listPlayers()
+	{
+		return StringUtil.join(", ",players);
+	}
+	
+	public String displayBoard()
+	{
+		return StringUtil.join(", ",board.getCards());
+	}
+	
+	public String describeBoard()
+	{
+		String description = board.getTrump() + " is trump\n";
+		String temp = "";
+		for(Card card : board.getCards())
+		{
+			if (board.get(card).equals(inLead))
+			{
+				description += inLead.getName() + " led the " + card.toString() + "\n";
+			}
+			else {
+				temp += board.get(card).getName() + " played the " + card + "\n";
+			}
+		}
+		description += temp;
+		if(	board.getCards().size()==0 )
+		{
+			description += inLead.getName() + " is in the lead.";
+		}
+		else {
+			int remaining = players.size() - board.getCards().size();
+			if(remaining == 0)
+			{
+				description += board.determineWinner().getName() + " won that trick.";
+			}
+			else
+			{
+				description += remaining + " players still to play";
+			}
+		}
+		return description;
 	}
 	
 }
