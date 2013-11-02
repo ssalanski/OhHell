@@ -46,7 +46,7 @@ public class GameManager {
 	private void playHand() {
 		
 		dealCards();
-		System.out.println(thisHand.getBoard().getTrump() + " is trump.");
+		System.out.println(thisHand.getBoard().getTrump() + " are trump.");
 		
 		for(Player player: players)
 		{
@@ -65,6 +65,7 @@ public class GameManager {
 		}
 		thisHand.assessScores();
 		scoreCard.recordHand(thisHand);
+		scoreCard.reportLatest();
 	}
 
 	/*
