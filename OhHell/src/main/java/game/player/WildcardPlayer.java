@@ -20,12 +20,10 @@ public class WildcardPlayer extends Player {
 		if(restricted && bidRequest==tricksRemaining)
 		{
 			// adjust bid if we're restricted. add one, unless we were trying to bid the max, then go down one.
-			return bidRequest + (bidRequest==tricksThisHand ? -1 : 1); 
+			bidRequest = (bidRequest==tricksThisHand ? -1 : 1); 
 		}
-		else
-		{
-			return bidRequest;
-		}
+		this.getStatus().setBid(bidRequest); //TODO: maybe do this in the game manager?
+		return bidRequest;
 	}
 
 	@Override

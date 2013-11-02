@@ -37,7 +37,7 @@ public abstract class Player {
 	}
 	
 	public Hand getHand() {
-		return status.getHand();
+		return status.getHand(); //TODO: maybe put the Hand field directly in player, rather than in status?
 	}
 
 	// should decide how much the player wants to bid for this hand,

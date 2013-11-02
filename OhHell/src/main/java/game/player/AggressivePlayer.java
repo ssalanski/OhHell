@@ -18,14 +18,17 @@ public class AggressivePlayer extends Player {
 
 	@Override
 	public int bid(int tricksThisHand, int tricksRemaining, boolean restricted) {
+		int bidRequest = 0;
 		if (restricted && tricksRemaining==tricksThisHand)
 		{
-			return tricksThisHand-1;
+			bidRequest = tricksThisHand-1;
 		}
 		else
 		{
-			return tricksThisHand;
+			bidRequest = tricksThisHand;
 		}
+		this.getStatus().setBid(bidRequest); //TODO: should this be done in the manager?
+		return bidRequest;
 	}
 
 	@Override

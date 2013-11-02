@@ -17,8 +17,17 @@ public class PassivePlayer extends Player {
 
 	@Override
 	public int bid(int tricksThisHand, int tricksRemaining, boolean restricted) {
-		// TODO Auto-generated method stub
-		return 0;
+		int bidRequest = 0;
+		if(tricksRemaining == 0 && restricted)
+		{
+			bidRequest = 1;
+		}
+		else
+		{
+			bidRequest = 0;
+		}
+		this.getStatus().setBid(bidRequest); //TODO: move this to the manager?
+		return bidRequest;
 	}
 
 	@Override
