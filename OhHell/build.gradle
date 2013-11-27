@@ -1,0 +1,22 @@
+apply plugin: 'java'
+
+jar {
+	doFirst {
+		archiveName = "OhHell-" + getDate('yyyyMMdd') + ".jar"
+	}
+    manifest {
+        attributes 'Implementation-Title': 'Oh Hell', 'Implementation-Date': getDate('yyyy MM dd'), 'Main-Class': 'game.Game'
+    }
+}
+
+def getDate(String frmt) {
+    def date = new Date()
+    def formattedDate = date.format(frmt)
+    return formattedDate
+}
+
+task qwer {
+	println "what...."
+	jar.execute()
+	println "...now?"
+}

@@ -28,6 +28,12 @@ local.properties
 # PDT-specific
 .buildpath
 
+#################
+## Gradle
+#################
+
+# Ignore gradle's artifacts directory
+*/.gradle/*
 
 #################
 ## Visual Studio
