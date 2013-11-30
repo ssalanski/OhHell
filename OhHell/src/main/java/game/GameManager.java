@@ -4,6 +4,7 @@ import game.cards.Board;
 import game.cards.Card;
 import game.cards.Deck;
 import game.cards.Hand;
+import game.player.HumanPlayer;
 import game.player.Player;
 import game.score.HandRecord;
 import game.score.ScoreCard;
@@ -51,7 +52,10 @@ public class GameManager {
 		
 		for(Player player: players)
 		{
-			System.out.println(player.getName()+"'s hand: " + player.getHand());
+			if( player instanceof HumanPlayer)
+			{
+				System.out.println(player.getName()+"'s hand: " + player.getHand());
+			}
 		}
 		
 		bidRound();
