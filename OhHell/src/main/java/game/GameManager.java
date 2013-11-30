@@ -7,6 +7,7 @@ import game.cards.Hand;
 import game.player.Player;
 import game.score.HandRecord;
 import game.score.ScoreCard;
+import game.score.Status;
 
 import java.util.List;
 
@@ -66,6 +67,11 @@ public class GameManager {
 		thisHand.assessScores();
 		scoreCard.recordHand(thisHand);
 		scoreCard.reportLatest();
+		
+		for(Player player: players)
+		{
+			player.setStatus(new Status(player.getStatus())); // maybe dont do this in the playHand method, but right after calling it...
+		}
 	}
 
 	/*
