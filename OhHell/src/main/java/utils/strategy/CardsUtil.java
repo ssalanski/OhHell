@@ -8,6 +8,7 @@ import game.cards.Suit;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Comparator;
 
 public class CardsUtil {
 
@@ -86,6 +87,35 @@ public class CardsUtil {
 			}
 		}
 		return losingPlays;
+	}
+	
+	public static class CardComparator implements Comparator<Card>
+	{
+		private Suit trump;
+		
+		public CardComparator(Suit trump)
+		{
+			this.trump = trump;
+		}
+		
+		@Override
+		public int compare(Card c1, Card c2) {
+			return c2.getSuit().compareTo(c1.getSuit()) * 100 
+					+ (c2.getSuit().equals(trump) ? 1000 : 0) 
+					- (c1.getSuit().equals(trump) ? 1000 : 0)
+					+ c2.getDenom()
+					- c1.getDenom();
+		}
+	}
+
+	public static CardComparator getCardComparator(Suit trump)
+	{
+		return new CardComparator(trump);
+	}
+	
+	public static CardComparator getCardComparator()
+	{
+		return new CardComparator(null);
 	}
 	
 }

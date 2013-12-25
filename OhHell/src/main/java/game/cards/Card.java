@@ -34,9 +34,18 @@ public class Card {
 		return "" + getDenomName() + " of " + suit.getAbbr();
 	}
 	
-	public boolean equals(Card other)
+	@Override
+	public boolean equals(Object other)
 	{
-		return this.denom==other.denom && this.suit.equals(other.suit);
+		if ( !(other instanceof Card) )
+		{
+			return false;
+		}
+		else
+		{
+			Card otherCard = (Card) other;
+			return this.denom==otherCard.denom && this.suit.equals(otherCard.suit);
+		}
 	}
 
 	private String getDenomName() {

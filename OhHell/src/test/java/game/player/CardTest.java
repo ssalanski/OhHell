@@ -1,14 +1,20 @@
 package game.player;
 
-import java.util.List;
-
-import utils.misc.ListUtil;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import game.cards.Board;
 import game.cards.Card;
 import game.cards.Hand;
 import game.cards.Suit;
 
-public abstract class CardTest {
+import java.util.List;
+
+import org.junit.Test;
+
+import utils.misc.ListUtil;
+
+public class CardTest {
 
 	protected Hand precannedHand1 = new Hand(ListUtil.asList(new Card(4,Suit.CLUBS),new Card(7,Suit.DIAMONDS),new Card(13,Suit.SPADES),new Card(2,Suit.HEARTS)));
 	
@@ -24,6 +30,30 @@ public abstract class CardTest {
 			b.put(card, null);
 		}
 		return b;
+	}
+	
+	@Test
+	public void testEquals()
+	{
+		Card oneCard = new Card(4,Suit.SPADES);
+		Card twoCard = new Card(4,Suit.SPADES);
+		
+		assertTrue(oneCard.equals(twoCard));
+		assertEquals(oneCard,twoCard);
+		
+		Card threeCard = new Card(7, Suit.HEARTS);
+		
+		assertFalse(oneCard.equals(threeCard));
+		assertFalse(threeCard.equals(twoCard));
+		
+		Card fourCard = new Card(7, Suit.CLUBS);
+		
+		assertFalse(threeCard.equals(fourCard));
+		
+		Card fiveCard = new Card(5, Suit.CLUBS);
+		
+		assertFalse(fourCard.equals(fiveCard));
+		
 	}
 	
 }

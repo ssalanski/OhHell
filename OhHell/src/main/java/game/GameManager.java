@@ -122,6 +122,10 @@ public class GameManager {
 		}
 		Card trump = deck.drawCard();
 		thisHand.getBoard().setTrump(trump.getSuit());
+		for (Player player : players)
+		{
+			player.getHand().organize(trump.getSuit());
+		}
 	}
 
 	/*
