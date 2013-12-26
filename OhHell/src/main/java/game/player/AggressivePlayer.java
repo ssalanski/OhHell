@@ -37,7 +37,6 @@ public class AggressivePlayer extends Player {
 		Suit lead = board.getLead();
 		List<Card> legalPlays = CardsUtil.legalPlays(this.getHand(), lead);
 		List<Card> winningPlays = new ArrayList<Card>();
-		System.out.println("aggressive player has " + legalPlays.size() + " legal plays.");
 		Card currentlyWinning = CardsUtil.whoWins(board.getCards(), lead, trump);
 		for ( Card card : legalPlays )
 		{
