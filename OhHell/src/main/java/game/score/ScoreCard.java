@@ -22,6 +22,4 @@ public class ScoreCard {
 		return scoreTable.get(hand);
 	}
 	
-	
-	
 }

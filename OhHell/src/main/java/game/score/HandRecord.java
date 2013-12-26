@@ -17,7 +17,7 @@ public class HandRecord {
 		playerStats = new HashMap<Player,Status>(players.size());
 		for (Player player : players)
 		{
-			playerStats.put(player,new Status());
+			playerStats.put(player,player.getStatus());
 		}
 	}
 	

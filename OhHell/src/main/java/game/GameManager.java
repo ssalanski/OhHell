@@ -70,7 +70,7 @@ public class GameManager {
 			System.out.println("its trick number " + (i+1)+", and "+inLead.getName()+" is in the lead.");
 			for (Player player : players)
 			{
-				System.out.println(describeTrickStatus(player));
+				System.out.println("[bid/tricks] " + describeTrickStatus(player));
 			}
 			inLead = playTrick();
 			inLead.getStatus().incrementTricksTaken();
@@ -78,12 +78,29 @@ public class GameManager {
 		}
 		thisHand.assessScores();
 		scoreCard.recordHand(thisHand);
-		scoreCard.reportLatest();
+
+		for (Player player : players)
+		{
+			System.out.println("[result]" + describeHandResults(player));
+		}
 		
 		for(Player player: players)
 		{
 			player.setStatus(new Status(player.getStatus())); // maybe dont do this in the playHand method, but right after calling it...
 		}
+	}
+
+	private String describeHandResults(Player player) {
+		String status;
+		int remaining = player.getStatus().getBid() - player.getStatus().getTaken();
+		if (remaining == 0)
+			status = " made their bid of " + player.getStatus().getBid();
+		else if (remaining > 0)
+			status = " was " + remaining + " below their bid of " + player.getStatus().getBid();
+		else
+			status = " was " + (-remaining) + " over their bid of " + player.getStatus().getBid();
+		String score = " scoring " + player.getStatus().getHandScore() + " points, totaling " + player.getStatus().getTotalScore();
+		return player.getName() + status + score;
 	}
 
 	private String describeTrickStatus(Player player)
