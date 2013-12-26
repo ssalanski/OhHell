@@ -37,7 +37,7 @@ public class GameManager {
 		
 		for (handNumber = 1; handNumber<=13; handNumber++)
 		{
-			inLead = players.get(0);
+			inLead = players.get((handNumber-1)%players.size());
 			deck = new Deck();
 			deck.shuffle();
 			board = new Board();
