@@ -1,5 +1,8 @@
 package networking;
 
+import game.cards.Card;
+import game.cards.Suit;
+
 import java.io.Serializable;
 /*
  * This class defines the different type of messages that will be exchanged between the
@@ -35,6 +38,21 @@ public class GameMessage implements Serializable {
 	}
 	String getMessage() {
 		return message;
+	}
+	Card getCard() {
+		if ( type == MessageType.PLAY ) {
+			// cards encoded as suit-character + number value. ie H2, C12, S7...
+			int denom = Integer.parseInt(message.substring(1));
+			Suit suit = Suit.valueOf(message.substring(0,1));
+			return new Card(denom, suit);
+		}
+		return null;	
+	}
+	Integer getBid() {
+		if ( type == MessageType.BID ) {
+			return Integer.parseInt(message);
+		}
+		return null;
 	}
 }
 
