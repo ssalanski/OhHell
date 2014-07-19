@@ -12,21 +12,25 @@ public class GameMessage implements Serializable {
 	protected static final long serialVersionUID = 1112122200L;
 
 	// The different types of message sent by the Client
-	// WHOISIN to receive the list of the users connected
-	// MESSAGE an ordinary message
-	// LOGOUT to disconnect from the Server
-	static final int WHOISIN = 0, MESSAGE = 1, LOGOUT = 2;
-	private int type;
+	public static enum MessageType
+	{
+		MESSAGE, // arbitrary text, display to console or something
+		LOGOUT,  // client elects to dropout
+		SCORES,  // client requests score information
+		BID,     // client announces bid
+		PLAY;    // client announces card to play
+	}
+	private MessageType type;
 	private String message;
 	
 	// constructor
-	GameMessage(int type, String message) {
+	GameMessage(MessageType type, String message) {
 		this.type = type;
 		this.message = message;
 	}
 	
 	// getters
-	int getType() {
+	MessageType getType() {
 		return type;
 	}
 	String getMessage() {

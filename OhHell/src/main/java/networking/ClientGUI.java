@@ -133,19 +133,19 @@ public class ClientGUI extends JFrame implements ActionListener {
 		Object o = e.getSource();
 		// if it is the Logout button
 		if(o == logout) {
-			client.sendMessage(new GameMessage(GameMessage.LOGOUT, ""));
+			client.sendMessage(new GameMessage(GameMessage.MessageType.LOGOUT, ""));
 			return;
 		}
 		// if it the who is in button
 		if(o == whoIsIn) {
-			client.sendMessage(new GameMessage(GameMessage.WHOISIN, ""));				
+			client.sendMessage(new GameMessage(GameMessage.MessageType.SCORES, ""));				
 			return;
 		}
 
 		// ok it is coming from the JTextField
 		if(connected) {
 			// just have to send the message
-			client.sendMessage(new GameMessage(GameMessage.MESSAGE, tf.getText()));				
+			client.sendMessage(new GameMessage(GameMessage.MessageType.MESSAGE, tf.getText()));				
 			tf.setText("");
 			return;
 		}

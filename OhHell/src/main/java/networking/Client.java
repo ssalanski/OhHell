@@ -200,16 +200,16 @@ public class Client  {
 			String msg = scan.nextLine();
 			// logout if message is LOGOUT
 			if(msg.equalsIgnoreCase("LOGOUT")) {
-				client.sendMessage(new GameMessage(GameMessage.LOGOUT, ""));
+				client.sendMessage(new GameMessage(GameMessage.MessageType.LOGOUT, ""));
 				// break to do the disconnect
 				break;
 			}
 			// message WhoIsIn
 			else if(msg.equalsIgnoreCase("WHOISIN")) {
-				client.sendMessage(new GameMessage(GameMessage.WHOISIN, ""));				
+				client.sendMessage(new GameMessage(GameMessage.MessageType.SCORES, ""));				
 			}
 			else {				// default to ordinary message
-				client.sendMessage(new GameMessage(GameMessage.MESSAGE, msg));
+				client.sendMessage(new GameMessage(GameMessage.MessageType.MESSAGE, msg));
 			}
 		}
 		// done disconnect

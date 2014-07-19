@@ -7,7 +7,7 @@ import java.awt.event.*;
 /*
  * The server as a GUI
  */
-public class ServerGUI extends JFrame implements ActionListener, WindowListener {
+public class GameHostGUI extends JFrame implements ActionListener, WindowListener {
 	
 	private static final long serialVersionUID = 1L;
 	// the stop and start buttons
@@ -17,11 +17,11 @@ public class ServerGUI extends JFrame implements ActionListener, WindowListener 
 	// The port number
 	private JTextField tPortNumber;
 	// my server
-	private Server server;
+	private GameHost server;
 	
 	
 	// server constructor that receive the port to listen to for connection as parameter
-	ServerGUI(int port) {
+	GameHostGUI(int port) {
 		super("Chat Server");
 		server = null;
 		// in the NorthPanel the PortNumber the Start and Stop buttons
@@ -85,7 +85,7 @@ public class ServerGUI extends JFrame implements ActionListener, WindowListener 
 			return;
 		}
 		// ceate a new Server
-		server = new Server(port, this);
+		server = new GameHost(port, this);
 		// and start it as a thread
 		new ServerRunning().start();
 		stopStart.setText("Stop");
@@ -95,7 +95,7 @@ public class ServerGUI extends JFrame implements ActionListener, WindowListener 
 	// entry point to start the Server
 	public static void main(String[] arg) {
 		// start server default port 1500
-		new ServerGUI(1500);
+		new GameHostGUI(1500);
 	}
 
 	/*

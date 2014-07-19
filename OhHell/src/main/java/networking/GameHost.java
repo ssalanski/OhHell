@@ -7,13 +7,13 @@ import java.util.*;
 /*
  * The server that can be run both as a console application or a GUI
  */
-public class Server {
+public class GameHost {
 	// a unique ID for each connection
 	private static int uniqueId;
 	// an ArrayList to keep the list of the Client
 	private ArrayList<ClientThread> al;
 	// if I am in a GUI
-	private ServerGUI sg;
+	private GameHostGUI sg;
 	// to display time
 	private SimpleDateFormat sdf;
 	// the port number to listen for connection
@@ -26,11 +26,11 @@ public class Server {
 	 *  server constructor that receive the port to listen to for connection as parameter
 	 *  in console
 	 */
-	public Server(int port) {
+	public GameHost(int port) {
 		this(port, null);
 	}
 	
-	public Server(int port, ServerGUI sg) {
+	public GameHost(int port, GameHostGUI sg) {
 		// GUI or not
 		this.sg = sg;
 		// the port
@@ -177,7 +177,7 @@ public class Server {
 				
 		}
 		// create a server object and start it
-		Server server = new Server(portNumber);
+		GameHost server = new GameHost(portNumber);
 		server.start();
 	}
 
@@ -245,14 +245,14 @@ public class Server {
 				// Switch on the type of message receive
 				switch(cm.getType()) {
 
-				case GameMessage.MESSAGE:
+				case MESSAGE:
 					broadcast(username + ": " + message);
 					break;
-				case GameMessage.LOGOUT:
+				case LOGOUT:
 					display(username + " disconnected with a LOGOUT message.");
-					keepGoing = false;
+					//keepGoing = false;
 					break;
-				case GameMessage.WHOISIN:
+				case SCORES:
 					writeMsg("List of the users connected at " + sdf.format(new Date()) + "\n");
 					// scan al the users connected
 					for(int i = 0; i < al.size(); ++i) {
