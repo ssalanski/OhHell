@@ -16,46 +16,18 @@ public static class Extensions
     }
 }
 
-public class CardModel : MonoBehaviour
+public class Card
 {
-
-    public Sprite[] clubs_faces;
-    public Sprite[] diamonds_faces;
-    public Sprite[] hearts_faces;
-    public Sprite[] spades_faces;
-    public Sprite cardback;
-
-    public bool showing;
-
     public int denom;
     public Suit suit;
 
-    private Sprite display;
-
-    private void UpdateSprite()
+    public Card(int denom, Suit suit)
     {
-        if (showing)
+        this.denom = denom;
+        this.suit = suit;
+        if (denom < 2 || denom > 14)
         {
-            int index = (denom - 1) % 13;
-            switch (suit)
-            {
-                case Suit.Clubs:
-                    display = clubs_faces[index];
-                    break;
-                case Suit.Diamonds:
-                    display = diamonds_faces[index];
-                    break;
-                case Suit.Hearts:
-                    display = hearts_faces[index];
-                    break;
-                case Suit.Spades:
-                    display = spades_faces[index];
-                    break;
-            }
-        }
-        else
-        {
-            display = cardback;
+            throw new UnityException("Can't have a card with denomination " + denom.ToString());
         }
     }
 
@@ -103,7 +75,50 @@ public class CardModel : MonoBehaviour
                 return "NOTHING!";
         }
     }
+}
 
+public class CardModel : MonoBehaviour
+{
+
+    public Sprite[] clubs_faces;
+    public Sprite[] diamonds_faces;
+    public Sprite[] hearts_faces;
+    public Sprite[] spades_faces;
+    public Sprite cardback;
+
+    public bool showing;
+
+    public Card card;
+
+    private Sprite display;
+
+    private void UpdateSprite()
+    {
+        if (showing)
+        {
+            int index = (card.denom - 1) % 13;
+            switch (card.suit)
+            {
+                case Suit.Clubs:
+                    display = clubs_faces[index];
+                    break;
+                case Suit.Diamonds:
+                    display = diamonds_faces[index];
+                    break;
+                case Suit.Hearts:
+                    display = hearts_faces[index];
+                    break;
+                case Suit.Spades:
+                    display = spades_faces[index];
+                    break;
+            }
+        }
+        else
+        {
+            display = cardback;
+        }
+    }
+    
     // Use this for initialization
     void Start()
     {
