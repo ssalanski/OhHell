@@ -10,7 +10,7 @@ public enum Suit
 // extensions class to provide a .getAbbr() method on the Suit enum
 public static class Extensions
 {
-    public static string getAbbr(this Suit suit)
+    public static string GetAbbr(this Suit suit)
     {
         return suit.ToString().Substring(0, 1);
     }
@@ -59,17 +59,17 @@ public class CardModel : MonoBehaviour
         }
     }
 
-    public string toString()
+    public string GetName()
     {
-        return getDenomName() + " of " + suit.ToString();
+        return GetDenomName() + " of " + suit.ToString();
     }
 
-    public string getAbbr()
+    public string GetAbbr()
     {
-        return (denom == 14 ? "A" : denom.ToString()) + suit.getAbbr();
+        return (denom == 14 ? "A" : denom.ToString()) + suit.GetAbbr();
     }
 
-    private string getDenomName()
+    private string GetDenomName()
     {
         switch (denom)
         {
