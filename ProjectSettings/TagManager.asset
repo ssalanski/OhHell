@@ -38,6 +38,15 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 465764191
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Trick
+    uniqueID: 3680270207
+    locked: 0
+  - name: Hand
+    uniqueID: 87667279
     locked: 0
