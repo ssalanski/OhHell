@@ -109,9 +109,10 @@ MonoBehaviour:
   - {fileID: 21300100, guid: a4c7ac849fffad44fb691f44422cfbe6, type: 3}
   - {fileID: 21300102, guid: a4c7ac849fffad44fb691f44422cfbe6, type: 3}
   cardback: {fileID: 21300000, guid: 78299ba489bc4414d8a7aa63d81b8a95, type: 3}
-  showing: 0
-  denom: 0
-  suit: 0
+  showing: 1
+  card:
+    denom: 8
+    suit: 3
 --- !u!212 &212572946266475626
 SpriteRenderer:
   m_ObjectHideFlags: 1
