@@ -9,11 +9,33 @@ public class CardModel : MonoBehaviour
     public Sprite[] spades_faces;
     public Sprite cardback;
 
+    public Card card;
     public bool showing;
 
-    public Card card;
+    private SpriteRenderer spriteRenderer;
 
-    private Sprite display;
+    private void Awake()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    public void SetCard(Card c)
+    {
+        card = c;
+        UpdateSprite();
+    }
+
+    public void Hide()
+    {
+        showing = false;
+        UpdateSprite();
+    }
+
+    public void Show()
+    {
+        showing = true;
+        UpdateSprite();
+    }
 
     private void UpdateSprite()
     {
@@ -23,34 +45,23 @@ public class CardModel : MonoBehaviour
             switch (card.suit)
             {
                 case Suit.Clubs:
-                    display = clubs_faces[index];
+                    spriteRenderer.sprite = clubs_faces[index];
                     break;
                 case Suit.Diamonds:
-                    display = diamonds_faces[index];
+                    spriteRenderer.sprite = diamonds_faces[index];
                     break;
                 case Suit.Hearts:
-                    display = hearts_faces[index];
+                    spriteRenderer.sprite = hearts_faces[index];
                     break;
                 case Suit.Spades:
-                    display = spades_faces[index];
+                    spriteRenderer.sprite = spades_faces[index];
                     break;
             }
         }
         else
         {
-            display = cardback;
+            spriteRenderer.sprite = cardback;
         }
     }
-
-    // Use this for initialization
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+    
 }
