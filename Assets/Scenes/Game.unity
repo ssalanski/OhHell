@@ -282,3 +282,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handAnchorPrefab: {fileID: 1882224409190648, guid: f0f86e88bff4c5540b8fbe12c8ac77de,
     type: 2}
+  numOtherPlayers: 3
