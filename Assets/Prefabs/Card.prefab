@@ -105,7 +105,7 @@ MonoBehaviour:
   - {fileID: 21300098, guid: 933515edece5e944d8a83472f0533067, type: 3}
   - {fileID: 21300100, guid: 933515edece5e944d8a83472f0533067, type: 3}
   - {fileID: 21300102, guid: 933515edece5e944d8a83472f0533067, type: 3}
-  cardBack: {fileID: 0}
+  cardBack: {fileID: 21300000, guid: 90185326688fc614b9e0742ce4488895, type: 3}
   thisCard:
     denom: 1
     suit: 3
