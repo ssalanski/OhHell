@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     {
         GameObject handAnchor;
         handAnchor = Instantiate(handAnchorPrefab, gameObject.transform);
+        handAnchor.transform.localPosition += Vector3.down * 3.5f;
         playerHand = handAnchor.GetComponent<HandModel>();
     }
 
