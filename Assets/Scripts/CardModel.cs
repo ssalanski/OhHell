@@ -9,6 +9,8 @@ public class CardModel : MonoBehaviour
     public Card thisCard;
     public bool showing;
 
+    public bool selected;
+
     SpriteRenderer spriteRenderer;
 
     private void Awake()
@@ -18,12 +20,12 @@ public class CardModel : MonoBehaviour
 
     void Start()
     {
-
+        SetSprite();
     }
 
     private void Update()
     {
-        SetSprite();
+
     }
 
     internal void SetCard(Card c)
@@ -69,4 +71,13 @@ public class CardModel : MonoBehaviour
             spriteRenderer.sprite = cardBack;
         }
     }
+
+    internal void SetSelected(bool s)
+    {
+        selected = s;
+        Vector3 pos = transform.localPosition;
+        pos.y = s ? 0.5f : 0.0f;
+        transform.localPosition = pos;
+    }
+
 }
