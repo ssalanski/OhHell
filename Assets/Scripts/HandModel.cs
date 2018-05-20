@@ -33,6 +33,12 @@ public class HandModel : MonoBehaviour
 
     }
 
+    internal void PlayCard(CardModel cardModel)
+    {
+        cards.Remove(cardModel);
+        Destroy(cardModel.gameObject);
+    }
+
     internal void SelectCard(CardModel selectedCardModel)
     {
         foreach (CardModel cm in cards)

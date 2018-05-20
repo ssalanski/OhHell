@@ -32,7 +32,7 @@ public class CardModel : MonoBehaviour
     {
         if(selected)
         {
-            // will play the card
+            gameObject.GetComponentInParent<HandModel>().PlayCard(this);
         }
         else
         {
