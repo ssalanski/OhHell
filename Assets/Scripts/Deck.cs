@@ -25,7 +25,7 @@ public class Deck
 
     private Stack<Card> deck;
 
-    public Deck(bool shuffled)
+    public Deck(bool shuffled=true)
     {
         List<Card> cards = new List<Card>(52);
         foreach (Suit s in Card.Suits)

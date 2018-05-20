@@ -13,8 +13,11 @@ public class GameManager : MonoBehaviour
     private const float tableMinor = 3.5f;
     private const float tableMajor = 6.0f;
 
+    private Deck deck;
+
     void Start()
     {
+        deck = new Deck();
         GameObject handAnchor;
 
         // instantiate the players hand
@@ -71,19 +74,19 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            playerHand.TakeCard(new Card(Suit.Diamonds, 1));
+            playerHand.TakeCard(deck.DrawCard());
         }
         else if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            otherHands[0].TakeCard(new Card(Suit.Diamonds, 1));
+            otherHands[0].TakeCard(deck.DrawCard());
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            otherHands[1].TakeCard(new Card(Suit.Diamonds, 1));
+            otherHands[1].TakeCard(deck.DrawCard());
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            otherHands[2].TakeCard(new Card(Suit.Diamonds, 1));
+            otherHands[2].TakeCard(deck.DrawCard());
         }
     }
 
