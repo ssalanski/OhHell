@@ -10,19 +10,24 @@ public class GameManager : MonoBehaviour
     HandModel playerHand;
     List<HandModel> otherHands;
 
+    private const float tableMinor = 3.5f;
+    private const float tableMajor = 6.0f;
+
     void Start()
     {
         GameObject handAnchor;
+
+        // instantiate the players hand
         handAnchor = Instantiate(handAnchorPrefab, gameObject.transform);
-        handAnchor.transform.localPosition += Vector3.down * 3.5f;
+        handAnchor.transform.localPosition += Vector3.down * tableMinor;
         playerHand = handAnchor.GetComponent<HandModel>();
 
+        // instantiate the other players hands, placement/spacing depends on count
         otherHands = new List<HandModel>(numOtherPlayers);
-        //float otherPlayerSpacing = numOtherPlayers == 1 ? 0 : numOtherPlayers == 2 ? 120 : 180f / (numOtherPlayers - 1);
         if (numOtherPlayers == 1)
         {
             handAnchor = Instantiate(handAnchorPrefab, gameObject.transform);
-            handAnchor.transform.localPosition += Vector3.up * 3.5f;
+            handAnchor.transform.localPosition += Vector3.up * tableMinor;
             handAnchor.transform.Rotate(new Vector3(0, 0, 180));
             otherHands.Add(handAnchor.GetComponent<HandModel>());
             print(otherHands.Count);
@@ -55,11 +60,9 @@ public class GameManager : MonoBehaviour
 
     private Vector3 getEllipsePositionAtAngle(float angle)
     {
-        float a = 6f;
-        float b = 3.5f;
         float theta = angle * Mathf.Deg2Rad;
-        float x = a * b / Mathf.Sqrt(b * b + Mathf.Pow(a * Mathf.Tan(theta), 2)) * Mathf.Sign(Mathf.Cos(theta));
-        float y = b * Mathf.Sqrt(1 - Mathf.Pow(x / a, 2));
+        float x = tableMajor * tableMinor / Mathf.Sqrt(tableMinor * tableMinor + Mathf.Pow(tableMajor * Mathf.Tan(theta), 2)) * Mathf.Sign(Mathf.Cos(theta));
+        float y = tableMinor * Mathf.Sqrt(1 - Mathf.Pow(x / tableMajor, 2));
         return new Vector3(x, y, 0);
     }
 
