@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4419586895356702}
   - component: {fileID: 212825645162964180}
+  - component: {fileID: 114787138965509976}
   m_Layer: 0
   m_Name: Card
   m_TagString: Untagged
@@ -34,12 +35,81 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1962652594725874}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.8571856, y: -1.5722975, z: 0}
+  m_LocalPosition: {x: -2.79, y: 5.17, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114787138965509976
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1962652594725874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6bfb4abeffef8642b8279ec747ecf25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cardFaces:
+  - {fileID: 21300000, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300002, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300004, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300006, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300008, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300010, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300012, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300014, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300016, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300018, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300020, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300022, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300024, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300026, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300028, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300030, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300032, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300034, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300036, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300038, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300040, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300042, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300044, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300046, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300048, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300050, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300052, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300054, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300056, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300058, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300060, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300062, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300064, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300066, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300068, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300070, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300072, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300074, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300076, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300078, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300080, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300082, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300084, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300086, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300088, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300090, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300092, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300094, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300096, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300098, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300100, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  - {fileID: 21300102, guid: 933515edece5e944d8a83472f0533067, type: 3}
+  cardBack: {fileID: 0}
+  thisCard:
+    denom: 1
+    suit: 3
+  showing: 0
 --- !u!212 &212825645162964180
 SpriteRenderer:
   m_ObjectHideFlags: 1

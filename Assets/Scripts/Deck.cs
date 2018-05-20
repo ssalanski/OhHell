@@ -5,6 +5,7 @@ using Random = UnityEngine.Random;
 
 public enum Suit { Clubs, Diamonds, Hearts, Spades }
 
+[System.Serializable]
 public class Card
 {
     public static Suit[] Suits = { Suit.Clubs, Suit.Diamonds, Suit.Hearts, Suit.Spades };
