@@ -206,6 +206,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1301996887}
   - component: {fileID: 1301996886}
+  - component: {fileID: 1301996888}
   m_Layer: 0
   m_Name: Table
   m_TagString: Untagged
@@ -268,3 +269,16 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1301996888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1301996885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9df0b8f2648b2d34cbf6bcaf4264fb70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  handAnchorPrefab: {fileID: 1882224409190648, guid: f0f86e88bff4c5540b8fbe12c8ac77de,
+    type: 2}
