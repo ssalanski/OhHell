@@ -28,6 +28,11 @@ public class CardModel : MonoBehaviour
 
     }
 
+    private void OnMouseDown()
+    {
+        SetSelected(!selected);
+    }
+
     internal void SetCard(Card c)
     {
         thisCard = c;
