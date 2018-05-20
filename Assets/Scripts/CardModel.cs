@@ -30,7 +30,14 @@ public class CardModel : MonoBehaviour
 
     private void OnMouseDown()
     {
-        SetSelected(!selected);
+        if(selected)
+        {
+            // will play the card
+        }
+        else
+        {
+            gameObject.GetComponentInParent<HandModel>().SelectCard(this);
+        }
     }
 
     internal void SetCard(Card c)

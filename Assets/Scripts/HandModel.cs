@@ -33,4 +33,11 @@ public class HandModel : MonoBehaviour
 
     }
 
+    internal void SelectCard(CardModel selectedCardModel)
+    {
+        foreach (CardModel cm in cards)
+        {
+            cm.SetSelected(cm.Equals(selectedCardModel));
+        }
+    }
 }
