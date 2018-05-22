@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class CardModel : MonoBehaviour
 {
@@ -93,4 +94,7 @@ public class CardModel : MonoBehaviour
         transform.localPosition = pos;
     }
 
+    public static Comparison<CardModel> basicComparison = (c1, c2) => (int)c1.thisCard.suit * 20 + c1.thisCard.denom - (int)c2.thisCard.suit * 20 - c2.thisCard.denom;
+
 }
+

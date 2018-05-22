@@ -23,14 +23,7 @@ public class HandModel : MonoBehaviour
         cm1.SetCard(c);
 
         cards.Add(cm1);
-
-        // spread out cards
-        for (int i = 0; i < cards.Count; i++)
-        {
-            cards[i].transform.localPosition = new Vector3(((cards.Count - 1) * (-0.5f) + i) * 0.35f, 0, -0.1f*i);
-            cards[i].GetComponent<SpriteRenderer>().sortingOrder = i;
-        }
-
+        OrganizeCards();
     }
 
     internal void PlayCard(CardModel cardModel)
@@ -44,6 +37,17 @@ public class HandModel : MonoBehaviour
         foreach (CardModel cm in cards)
         {
             cm.SetSelected(cm.Equals(selectedCardModel));
+        }
+    }
+
+    internal void OrganizeCards()
+    {
+        cards.Sort(CardModel.basicComparison);
+        // spread out cards
+        for (int i = 0; i < cards.Count; i++)
+        {
+            cards[i].transform.localPosition = new Vector3(((cards.Count - 1) * (-0.5f) + i) * 0.35f, 0, -0.1f * i);
+            cards[i].GetComponent<SpriteRenderer>().sortingOrder = i;
         }
     }
 }
