@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Random = UnityEngine.Random;
 
 public enum Suit { Clubs, Diamonds, Hearts, Spades }
@@ -18,6 +16,57 @@ public class Card
         suit = s;
     }
 
+    public bool Beats(Card other, Suit lead, Suit trump)
+    {
+        if (other == null)
+        {
+            return true;
+        }
+        if (other.suit == trump)
+        {
+            if (this.suit == trump)
+            {
+                return this.denom > other.denom;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            if (this.suit == trump)
+            {
+                return true;
+            }
+            else
+            {
+                if (other.suit == lead)
+                {
+                    if (this.suit == lead)
+                    {
+                        return this.denom > other.denom;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    if (this.suit == lead)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return this.denom > other.denom;
+                    }
+                }
+            }
+        }
+    }
+
 }
 
 public class Deck
@@ -25,7 +74,7 @@ public class Deck
 
     private Stack<Card> deck;
 
-    public Deck(bool shuffled=true)
+    public Deck(bool shuffled = true)
     {
         List<Card> cards = new List<Card>(52);
         foreach (Suit s in Card.Suits)
