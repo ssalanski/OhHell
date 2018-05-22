@@ -29,7 +29,9 @@ public class HandModel : MonoBehaviour
     internal void PlayCard(CardModel cardModel)
     {
         cards.Remove(cardModel);
-        Destroy(cardModel.gameObject);
+        TrickModel trick = GetComponentInParent<GameManager>().GetComponentInChildren<TrickModel>();
+        trick.TakeCard(cardModel.gameObject);
+        OrganizeCards();
     }
 
     internal void SelectCard(CardModel selectedCardModel)
