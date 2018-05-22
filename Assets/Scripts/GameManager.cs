@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public GameObject handAnchorPrefab;
+    public GameObject trickAnchorPrefab;
     public int numOtherPlayers;
 
     HandModel playerHand;
@@ -59,6 +60,9 @@ public class GameManager : MonoBehaviour
                 otherHands.Add(handAnchor.GetComponent<HandModel>());
             }
         }
+
+        GameObject trickAnchor = Instantiate(trickAnchorPrefab, gameObject.transform);
+
     }
 
     private Vector3 getEllipsePositionAtAngle(float angle)
