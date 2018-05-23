@@ -7,10 +7,15 @@ public class HandModel : MonoBehaviour
 {
     List<CardModel> cards;
     public GameObject cardPrefab;
-    
-    void Start()
+
+    private void Awake()
     {
         cards = new List<CardModel>();
+    }
+
+    void Start()
+    {
+        
     }
 
     public void TakeCard(Card c)
