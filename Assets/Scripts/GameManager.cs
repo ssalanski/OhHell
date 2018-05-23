@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
 
     private Deck deck;
 
-    void Start()
+    void DealNewHand(int numberOfCards)
     {
         deck = new Deck();
         GameObject handAnchor;
@@ -56,15 +56,12 @@ public class GameManager : MonoBehaviour
                 float playerAngle = playerSpacing * playerIdx;
                 handAnchor = Instantiate(handAnchorPrefab, gameObject.transform);
                 handAnchor.transform.localPosition += getEllipsePositionAtAngle(playerAngle);
-                handAnchor.transform.Rotate(new Vector3(0, 0, 90+playerAngle));
+                handAnchor.transform.Rotate(new Vector3(0, 0, 90 + playerAngle));
                 allHands.Add(handAnchor.GetComponent<HandModel>());
             }
         }
 
-        GameObject trickAnchor = Instantiate(trickAnchorPrefab, gameObject.transform);
-
-        int cardsThisHand = 7;
-        for (int cardNumber = 0; cardNumber < cardsThisHand; cardNumber++)
+        for (int cardNumber = 0; cardNumber < numberOfCards; cardNumber++)
         {
             foreach (HandModel hm in allHands)
             {
@@ -72,7 +69,14 @@ public class GameManager : MonoBehaviour
             }
         }
 
-}
+        Instantiate(trickAnchorPrefab, gameObject.transform);
+
+    }
+
+    void Start()
+    {
+        DealNewHand(7);
+    }
 
     private Vector3 getEllipsePositionAtAngle(float angle)
     {
