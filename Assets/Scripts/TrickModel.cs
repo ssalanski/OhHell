@@ -16,6 +16,7 @@ public class TrickModel : MonoBehaviour
 
     public void TakeCard(GameObject playedCard)
     {
+        playedCard.tag = "in trick";
         CardModel cardModel = playedCard.GetComponent<CardModel>();
         cardModel.showing = true;
 

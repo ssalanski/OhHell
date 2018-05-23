@@ -23,6 +23,7 @@ public class HandModel : MonoBehaviour
         GameObject uiCard;
         uiCard = Instantiate(cardPrefab, gameObject.transform);
         uiCard.GetComponent<SpriteRenderer>().sortingLayerName = "Hand";
+        uiCard.tag = "in hand";
         CardModel cm1 = uiCard.GetComponent<CardModel>();
         cm1.showing = true;
         cm1.SetCard(c);
