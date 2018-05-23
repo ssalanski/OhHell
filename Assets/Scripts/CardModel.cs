@@ -10,8 +10,6 @@ public class CardModel : MonoBehaviour
     public Card thisCard;
     public bool showing;
 
-    public bool selected;
-
     SpriteRenderer spriteRenderer;
 
     private void Awake()
@@ -33,14 +31,7 @@ public class CardModel : MonoBehaviour
     {
         if (gameObject.CompareTag("in hand"))
         {
-            if (selected)
-            {
-                gameObject.GetComponentInParent<HandModel>().PlayCard(this);
-            }
-            else
-            {
-                gameObject.GetComponentInParent<HandModel>().SelectCard(this);
-            }
+            gameObject.GetComponentInParent<HandModel>().ClickCard(this);
         }
     }
 
@@ -87,14 +78,6 @@ public class CardModel : MonoBehaviour
         {
             spriteRenderer.sprite = cardBack;
         }
-    }
-
-    internal void SetSelected(bool s)
-    {
-        selected = s;
-        Vector3 pos = transform.localPosition;
-        pos.y = s ? 0.5f : 0.0f;
-        transform.localPosition = pos;
     }
 
     public static Comparison<CardModel> basicComparison = (c1, c2) => (int)c1.thisCard.suit * 20 + c1.thisCard.denom - (int)c2.thisCard.suit * 20 - c2.thisCard.denom;

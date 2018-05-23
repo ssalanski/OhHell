@@ -8,9 +8,12 @@ public class HandModel : MonoBehaviour
     List<CardModel> cards;
     public GameObject cardPrefab;
 
+    private CardModel selectedCardModel;
+
     private void Awake()
     {
         cards = new List<CardModel>();
+        selectedCardModel = null;
     }
 
     void Start()
@@ -34,17 +37,28 @@ public class HandModel : MonoBehaviour
 
     internal void PlayCard(CardModel cardModel)
     {
+        selectedCardModel = null;
         cards.Remove(cardModel);
         TrickModel trick = GetComponentInParent<GameManager>().GetComponentInChildren<TrickModel>();
         trick.TakeCard(cardModel.gameObject);
         OrganizeCards();
     }
 
-    internal void SelectCard(CardModel selectedCardModel)
+    internal void ClickCard(CardModel clickedCardModel)
     {
-        foreach (CardModel cm in cards)
+        if (clickedCardModel == selectedCardModel)
         {
-            cm.SetSelected(cm.Equals(selectedCardModel));
+            PlayCard(selectedCardModel);
+        }
+        else
+        {
+            selectedCardModel = clickedCardModel;
+            foreach (CardModel cm in cards)
+            {
+                Vector3 pos = cm.transform.localPosition;
+                pos.y = cm.Equals(selectedCardModel) ? 0.5f : 0.0f;
+                cm.transform.localPosition = pos;
+            }
         }
     }
 
@@ -58,4 +72,5 @@ public class HandModel : MonoBehaviour
             cards[i].GetComponent<SpriteRenderer>().sortingOrder = i;
         }
     }
+    
 }
