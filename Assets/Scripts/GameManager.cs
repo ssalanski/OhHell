@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     public int numOtherPlayers;
 
     HandModel playerHand;
-    List<HandModel> otherHands;
+    List<HandModel> allHands;
 
     private const float tableMinor = 3.5f;
     private const float tableMajor = 6.0f;
@@ -27,26 +27,26 @@ public class GameManager : MonoBehaviour
         playerHand = handAnchor.GetComponent<HandModel>();
 
         // instantiate the other players hands, placement/spacing depends on count
-        otherHands = new List<HandModel>(numOtherPlayers);
+        allHands = new List<HandModel>(numOtherPlayers);
+        allHands.Add(playerHand);
         if (numOtherPlayers == 1)
         {
             handAnchor = Instantiate(handAnchorPrefab, gameObject.transform);
             handAnchor.transform.localPosition += Vector3.up * tableMinor;
             handAnchor.transform.Rotate(new Vector3(0, 0, 180));
-            otherHands.Add(handAnchor.GetComponent<HandModel>());
-            print(otherHands.Count);
+            allHands.Add(handAnchor.GetComponent<HandModel>());
         }
         else if (numOtherPlayers == 2)
         {
             handAnchor = Instantiate(handAnchorPrefab, gameObject.transform);
             handAnchor.transform.localPosition += getEllipsePositionAtAngle(30);
             handAnchor.transform.Rotate(new Vector3(0, 0, 120));
-            otherHands.Add(handAnchor.GetComponent<HandModel>());
+            allHands.Add(handAnchor.GetComponent<HandModel>());
 
             handAnchor = Instantiate(handAnchorPrefab, gameObject.transform);
             handAnchor.transform.localPosition += getEllipsePositionAtAngle(150);
             handAnchor.transform.Rotate(new Vector3(0, 0, -120));
-            otherHands.Add(handAnchor.GetComponent<HandModel>());
+            allHands.Add(handAnchor.GetComponent<HandModel>());
         }
         else
         {
@@ -57,7 +57,7 @@ public class GameManager : MonoBehaviour
                 handAnchor = Instantiate(handAnchorPrefab, gameObject.transform);
                 handAnchor.transform.localPosition += getEllipsePositionAtAngle(playerAngle);
                 handAnchor.transform.Rotate(new Vector3(0, 0, 90+playerAngle));
-                otherHands.Add(handAnchor.GetComponent<HandModel>());
+                allHands.Add(handAnchor.GetComponent<HandModel>());
             }
         }
 
@@ -66,8 +66,7 @@ public class GameManager : MonoBehaviour
         int cardsThisHand = 7;
         for (int cardNumber = 0; cardNumber < cardsThisHand; cardNumber++)
         {
-            playerHand.TakeCard(deck.DrawCard());
-            foreach (HandModel hm in otherHands)
+            foreach (HandModel hm in allHands)
             {
                 hm.TakeCard(deck.DrawCard());
             }
