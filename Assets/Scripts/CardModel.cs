@@ -31,13 +31,16 @@ public class CardModel : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if(selected)
+        if (gameObject.CompareTag("in hand"))
         {
-            gameObject.GetComponentInParent<HandModel>().PlayCard(this);
-        }
-        else
-        {
-            gameObject.GetComponentInParent<HandModel>().SelectCard(this);
+            if (selected)
+            {
+                gameObject.GetComponentInParent<HandModel>().PlayCard(this);
+            }
+            else
+            {
+                gameObject.GetComponentInParent<HandModel>().SelectCard(this);
+            }
         }
     }
 
