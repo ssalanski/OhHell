@@ -63,7 +63,17 @@ public class GameManager : MonoBehaviour
 
         GameObject trickAnchor = Instantiate(trickAnchorPrefab, gameObject.transform);
 
-    }
+        int cardsThisHand = 7;
+        for (int cardNumber = 0; cardNumber < cardsThisHand; cardNumber++)
+        {
+            playerHand.TakeCard(deck.DrawCard());
+            foreach (HandModel hm in otherHands)
+            {
+                hm.TakeCard(deck.DrawCard());
+            }
+        }
+
+}
 
     private Vector3 getEllipsePositionAtAngle(float angle)
     {
@@ -76,22 +86,6 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            playerHand.TakeCard(deck.DrawCard());
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            otherHands[0].TakeCard(deck.DrawCard());
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            otherHands[1].TakeCard(deck.DrawCard());
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            otherHands[2].TakeCard(deck.DrawCard());
-        }
     }
 
 }
