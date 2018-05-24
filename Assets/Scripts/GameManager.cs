@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     // containers that change throughout the game
     private HandModel playerHand;
     private List<HandModel> allHands;
+    private TrickModel currentTrick;
     private Deck deck;
 
     // actual constants
@@ -73,7 +74,8 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        Instantiate(trickAnchorPrefab, gameObject.transform);
+        GameObject trickAnchor = Instantiate(trickAnchorPrefab, gameObject.transform);
+        currentTrick = trickAnchor.GetComponent<TrickModel>();
 
     }
 
