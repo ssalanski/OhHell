@@ -85,9 +85,22 @@ public class GameManager : MonoBehaviour
 
     }
 
+    private IEnumerator TurnTaker()
+    {
+        foreach (HandModel hm in allHands)
+        {
+            // have this hand take its turn
+            hm.TakeTurn(currentTrick, trumpCard.GetComponent<CardModel>().thisCard.suit);
+            // wait until its done with its turn
+            yield return new WaitUntil(() => !hm.yourTurn);
+        }
+
+    }
+
     void Start()
     {
         DealNewHand(7);
+        StartCoroutine(TurnTaker());
     }
 
     private Vector3 getEllipsePositionAtAngle(float angle)
