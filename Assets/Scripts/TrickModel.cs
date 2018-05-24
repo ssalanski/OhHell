@@ -1,18 +1,19 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class TrickModel : MonoBehaviour
 {
-    
-    Dictionary<HandModel, CardModel> cards;
+
+    Dictionary<Card, HandModel> cards;
     public GameObject cardPrefab;
     public Suit? lead; // is using nullable '?' the best practice?
 
     // Use this for initialization
     void Start()
     {
-        cards = new Dictionary<HandModel, CardModel>();
+        cards = new Dictionary<Card, HandModel>();
     }
 
     public void TakeCard(GameObject playedCard)
@@ -21,16 +22,16 @@ public class TrickModel : MonoBehaviour
         CardModel cardModel = playedCard.GetComponent<CardModel>();
         cardModel.showing = true;
 
-        cards.Add(cardModel.GetComponentInParent<HandModel>(), cardModel);
+        cards.Add(cardModel.thisCard, cardModel.GetComponentInParent<HandModel>());
         Transform sourceHand = cardModel.transform.parent;
 
         cardModel.transform.parent = gameObject.transform;
         cardModel.transform.localPosition = new Vector3(0, 0, 0);
         cardModel.transform.Translate(Vector3.down, sourceHand);
 
-        if(lead==null)
+        if (lead == null)
         {
-            lead = playedCard.GetComponent<CardModel>().thisCard.suit;
+            lead = cardModel.thisCard.suit;
         }
 
     }
@@ -39,5 +40,18 @@ public class TrickModel : MonoBehaviour
     void Update()
     {
 
+    }
+
+    internal HandModel GetWinner()
+    {
+        Card winning = null;
+        foreach (Card cm in cards.Keys)
+        {
+            if (cm.Beats(winning, Suit.Diamonds, Suit.Spades))
+            {
+                winning = cm;
+            }
+        }
+        return cards[winning];
     }
 }

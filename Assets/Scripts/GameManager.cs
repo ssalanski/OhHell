@@ -94,6 +94,8 @@ public class GameManager : MonoBehaviour
             // wait until its done with its turn
             yield return new WaitUntil(() => !hm.yourTurn);
         }
+        HandModel winner = currentTrick.GetWinner();
+        Debug.Log(allHands.IndexOf(winner) + " won that trick");
 
     }
 
