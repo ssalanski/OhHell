@@ -9,6 +9,7 @@ public class HandModel : MonoBehaviour
     public GameObject cardPrefab;
 
     private CardModel selectedCardModel;
+    public bool yourTurn = false;
 
     private void Awake()
     {
@@ -37,11 +38,20 @@ public class HandModel : MonoBehaviour
 
     internal void PlayCard(CardModel cardModel)
     {
-        selectedCardModel = null;
-        cards.Remove(cardModel);
-        TrickModel trick = GetComponentInParent<GameManager>().GetComponentInChildren<TrickModel>();
-        trick.TakeCard(cardModel.gameObject);
-        OrganizeCards();
+        if (yourTurn)
+        {
+            selectedCardModel = null;
+            cards.Remove(cardModel);
+            TrickModel trick = GetComponentInParent<GameManager>().GetComponentInChildren<TrickModel>();
+            trick.TakeCard(cardModel.gameObject);
+            OrganizeCards();
+            Debug.Log("its no longer your turn! " + gameObject.GetHashCode());
+            yourTurn = false;
+        }
+        else
+        {
+            Debug.Log("its not your turn!");
+        }
     }
 
     internal void ClickCard(CardModel clickedCardModel)
@@ -72,5 +82,11 @@ public class HandModel : MonoBehaviour
             cards[i].GetComponent<SpriteRenderer>().sortingOrder = i;
         }
     }
-    
+
+    internal void TakeTurn(TrickModel currentTrick, Suit suit)
+    {
+        // implement lead following enforcement later
+        Debug.Log("its your turn now! " + gameObject.GetHashCode());
+        yourTurn = true;
+    }
 }
