@@ -4,19 +4,23 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    // prefabs linked in from unity editor
     public GameObject handAnchorPrefab;
     public GameObject trickAnchorPrefab;
+
+    // game setting value
     public int numOtherPlayers;
 
-    HandModel playerHand;
-    List<HandModel> allHands;
+    // containers that change throughout the game
+    private HandModel playerHand;
+    private List<HandModel> allHands;
+    private Deck deck;
 
+    // actual constants
     private const float tableMinor = 3.5f;
     private const float tableMajor = 6.0f;
 
-    private Deck deck;
-
-    void DealNewHand(int numberOfCards)
+    private void DealNewHand(int numberOfCards)
     {
         deck = new Deck();
         GameObject handAnchor;
