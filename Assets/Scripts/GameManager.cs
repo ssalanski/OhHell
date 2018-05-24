@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
     // prefabs linked in from unity editor
     public GameObject handAnchorPrefab;
     public GameObject trickAnchorPrefab;
+    public GameObject cardPrefab;
 
     // game setting value
     public int numOtherPlayers;
@@ -15,6 +16,7 @@ public class GameManager : MonoBehaviour
     private HandModel playerHand;
     private List<HandModel> allHands;
     private TrickModel currentTrick;
+    private GameObject trumpCard;
     private Deck deck;
 
     // actual constants
@@ -73,6 +75,10 @@ public class GameManager : MonoBehaviour
                 hm.TakeCard(deck.DrawCard());
             }
         }
+
+        trumpCard = Instantiate(cardPrefab, gameObject.transform);
+        trumpCard.GetComponent<CardModel>().SetCard(deck.DrawCard());
+        trumpCard.GetComponent<CardModel>().showing = true;
 
         GameObject trickAnchor = Instantiate(trickAnchorPrefab, gameObject.transform);
         currentTrick = trickAnchor.GetComponent<TrickModel>();
