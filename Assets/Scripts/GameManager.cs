@@ -95,7 +95,7 @@ public class GameManager : MonoBehaviour
             // wait until its done with its turn
             yield return new WaitUntil(() => !hm.yourTurn);
         }
-        HandModel winner = currentTrick.GetWinner();
+        HandModel winner = currentTrick.GetWinner(trumpCard.GetComponent<CardModel>().thisCard.suit);
         Debug.Log(allHands.IndexOf(winner) + " won that trick");
 
     }

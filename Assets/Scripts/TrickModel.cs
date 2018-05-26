@@ -42,12 +42,12 @@ public class TrickModel : MonoBehaviour
 
     }
 
-    internal HandModel GetWinner()
+    internal HandModel GetWinner(Suit trumpSuit)
     {
         Card winning = null;
         foreach (Card cm in cards.Keys)
         {
-            if (cm.Beats(winning, Suit.Diamonds, Suit.Spades))
+            if (cm.Beats(winning, lead.Value, trumpSuit))
             {
                 winning = cm;
             }
