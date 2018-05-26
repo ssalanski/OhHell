@@ -77,6 +77,7 @@ public class GameManager : MonoBehaviour
         }
 
         trumpCard = Instantiate(cardPrefab, gameObject.transform);
+        trumpCard.transform.localPosition = new Vector3(6.7f, -3.86f, -0.1f);
         trumpCard.GetComponent<CardModel>().SetCard(deck.DrawCard());
         trumpCard.GetComponent<CardModel>().showing = true;
 
