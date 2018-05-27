@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class TrickModel : MonoBehaviour
 {
-
-    Dictionary<Card, HandModel> cards;
     public GameObject cardPrefab;
+    
+    public Dictionary<Card, HandModel> cards;
     public Suit? lead; // is using nullable '?' the best practice?
 
     // Use this for initialization

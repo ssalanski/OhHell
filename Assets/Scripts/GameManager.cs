@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     private HandModel playerHand;
     private List<HandModel> allHands;
     private TrickModel currentTrick;
+    private HandModel leader;
     private GameObject trumpCard;
     private Deck deck;
 
@@ -81,29 +82,39 @@ public class GameManager : MonoBehaviour
         trumpCard.GetComponent<CardModel>().SetCard(deck.DrawCard());
         trumpCard.GetComponent<CardModel>().showing = true;
 
-        GameObject trickAnchor = Instantiate(trickAnchorPrefab, gameObject.transform);
-        currentTrick = trickAnchor.GetComponent<TrickModel>();
-
     }
 
-    private IEnumerator TurnTaker()
+    private IEnumerator PlayTrick(int leadOffset)
     {
-        foreach (HandModel hm in allHands)
+        for(int turnIndex = 0; turnIndex < numOtherPlayers+1; turnIndex++ )
         {
-            // have this hand take its turn
-            hm.TakeTurn(currentTrick, trumpCard.GetComponent<CardModel>().thisCard.suit);
-            // wait until its done with its turn
-            yield return new WaitUntil(() => !hm.yourTurn);
+            int playerIndex = (turnIndex + leadOffset) % (numOtherPlayers + 1);
+            allHands[playerIndex].TakeTurn(currentTrick, trumpCard.GetComponent<CardModel>().thisCard.suit);
+            yield return new WaitUntil(() => !allHands[playerIndex].yourTurn);
         }
         HandModel winner = currentTrick.GetWinner(trumpCard.GetComponent<CardModel>().thisCard.suit);
         Debug.Log(allHands.IndexOf(winner) + " won that trick");
+        leader = winner;
+        yield return new WaitForSeconds(2);
+    }
 
+    private IEnumerator PlayRound(int dealerOffset)
+    {
+        DealNewHand(7);
+        leader = allHands[0];
+        for(int cardNumber=0;cardNumber<7;cardNumber++)
+        {
+            GameObject trickAnchor = Instantiate(trickAnchorPrefab, gameObject.transform);
+            currentTrick = trickAnchor.GetComponent<TrickModel>();
+            yield return PlayTrick(allHands.IndexOf(leader));
+            currentTrick.gameObject.SetActive(false);  // not destroying it because this info may be useful later
+        }
+        Debug.Log("played all cards in this round");
     }
 
     void Start()
     {
-        DealNewHand(7);
-        StartCoroutine(TurnTaker());
+        StartCoroutine(PlayRound(0));
     }
 
     private Vector3 getEllipsePositionAtAngle(float angle)
