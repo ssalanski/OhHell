@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4892207191739468}
   - component: {fileID: 114324031128199970}
   m_Layer: 0
-  m_Name: HandAnchor
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -5,16 +5,16 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     // prefabs linked in from unity editor
-    public GameObject handAnchorPrefab;
-    public GameObject trickAnchorPrefab;
+    public GameObject playerPrefab;
+    public GameObject trickPrefab;
     public GameObject cardPrefab;
 
     // game setting value
     public int numOtherPlayers;
 
     // containers that change throughout the game
-    private HandModel playerHand;
-    private List<HandModel> allHands;
+    private HandModel humanPlayerHand;
+    private List<HandModel> allPlayers;
     private TrickModel currentTrick;
     private HandModel leader;
     private GameObject trumpCard;
@@ -27,34 +27,34 @@ public class GameManager : MonoBehaviour
     private void DealNewHand(int numberOfCards)
     {
         deck = new Deck();
-        GameObject handAnchor;
+        GameObject player;
 
-        // instantiate the players hand
-        handAnchor = Instantiate(handAnchorPrefab, gameObject.transform);
-        handAnchor.transform.localPosition += Vector3.down * tableMinor;
-        playerHand = handAnchor.GetComponent<HandModel>();
+        // instantiate the (human) players hand
+        player = Instantiate(playerPrefab, gameObject.transform);
+        player.transform.localPosition += Vector3.down * tableMinor;
+        humanPlayerHand = player.GetComponent<HandModel>();
 
         // instantiate the other players hands, placement/spacing depends on count
-        allHands = new List<HandModel>(numOtherPlayers);
-        allHands.Add(playerHand);
+        allPlayers = new List<HandModel>(numberOfPlayers);
+        allPlayers.Add(humanPlayerHand);
         if (numOtherPlayers == 1)
         {
-            handAnchor = Instantiate(handAnchorPrefab, gameObject.transform);
-            handAnchor.transform.localPosition += Vector3.up * tableMinor;
-            handAnchor.transform.Rotate(new Vector3(0, 0, 180));
-            allHands.Add(handAnchor.GetComponent<HandModel>());
+            player = Instantiate(playerPrefab, gameObject.transform);
+            player.transform.localPosition += Vector3.up * tableMinor;
+            player.transform.Rotate(new Vector3(0, 0, 180));
+            allPlayers.Add(player.GetComponent<HandModel>());
         }
         else if (numOtherPlayers == 2)
         {
-            handAnchor = Instantiate(handAnchorPrefab, gameObject.transform);
-            handAnchor.transform.localPosition += getEllipsePositionAtAngle(30);
-            handAnchor.transform.Rotate(new Vector3(0, 0, -120));
-            allHands.Add(handAnchor.GetComponent<HandModel>());
+            player = Instantiate(playerPrefab, gameObject.transform);
+            player.transform.localPosition += getEllipsePositionAtAngle(30);
+            player.transform.Rotate(new Vector3(0, 0, -120));
+            allPlayers.Add(player.GetComponent<HandModel>());
 
-            handAnchor = Instantiate(handAnchorPrefab, gameObject.transform);
-            handAnchor.transform.localPosition += getEllipsePositionAtAngle(150);
-            handAnchor.transform.Rotate(new Vector3(0, 0, 120));
-            allHands.Add(handAnchor.GetComponent<HandModel>());
+            player = Instantiate(playerPrefab, gameObject.transform);
+            player.transform.localPosition += getEllipsePositionAtAngle(150);
+            player.transform.Rotate(new Vector3(0, 0, 120));
+            allPlayers.Add(player.GetComponent<HandModel>());
         }
         else
         {
@@ -62,10 +62,10 @@ public class GameManager : MonoBehaviour
             for (int playerIdx = 0; playerIdx < numOtherPlayers; playerIdx++)
             {
                 float playerAngle = playerSpacing * playerIdx;
-                handAnchor = Instantiate(handAnchorPrefab, gameObject.transform);
-                handAnchor.transform.localPosition += getEllipsePositionAtAngle(playerAngle);
-                handAnchor.transform.Rotate(new Vector3(0, 0, 270 - playerAngle));
-                allHands.Add(handAnchor.GetComponent<HandModel>());
+                player = Instantiate(playerPrefab, gameObject.transform);
+                player.transform.localPosition += getEllipsePositionAtAngle(playerAngle);
+                player.transform.Rotate(new Vector3(0, 0, 270 - playerAngle));
+                allPlayers.Add(player.GetComponent<HandModel>());
             }
         }
 
@@ -89,11 +89,11 @@ public class GameManager : MonoBehaviour
         for(int turnIndex = 0; turnIndex < numOtherPlayers+1; turnIndex++ )
         {
             int playerIndex = (turnIndex + leadOffset) % (numOtherPlayers + 1);
-            allHands[playerIndex].SetTurnFlag(true); // (currentTrick, trumpCard.GetComponent<CardModel>().thisCard.suit);
-            yield return new WaitUntil(() => !allHands[playerIndex].IsYourTurn());
+            allPlayers[playerIndex].SetTurnFlag(true); // (currentTrick, trumpCard.GetComponent<CardModel>().thisCard.suit);
+            yield return new WaitUntil(() => !allPlayers[playerIndex].IsYourTurn());
         }
         HandModel winner = currentTrick.GetWinner(trumpCard.GetComponent<CardModel>().thisCard.suit);
-        Debug.Log(allHands.IndexOf(winner) + " won that trick");
+        Debug.Log(allPlayers.IndexOf(winner) + " won that trick");
         leader = winner;
         yield return new WaitForSeconds(2);
     }
@@ -101,16 +101,16 @@ public class GameManager : MonoBehaviour
     private IEnumerator PlayRound(int dealerOffset)
     {
         DealNewHand(7);
-        leader = allHands[0];
-        for(int cardNumber=0;cardNumber<7;cardNumber++)
+        leader = allPlayers[0];
+        for (int cardNumber = 0; cardNumber < 7; cardNumber++)
         {
-            GameObject trickAnchor = Instantiate(trickAnchorPrefab, gameObject.transform);
+            GameObject trickAnchor = Instantiate(trickPrefab, gameObject.transform);
             currentTrick = trickAnchor.GetComponent<TrickModel>();
-            foreach(HandModel hm in allHands)
+            foreach (HandModel hm in allPlayers)
             {
                 hm.SetCurrentTrick(currentTrick);
             }
-            yield return PlayTrick(allHands.IndexOf(leader));
+            yield return PlayTrick(allPlayers.IndexOf(leader));
             currentTrick.gameObject.SetActive(false);  // not destroying it because this info may be useful later
         }
         Debug.Log("played all cards in this round");
