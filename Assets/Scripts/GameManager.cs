@@ -106,6 +106,10 @@ public class GameManager : MonoBehaviour
         {
             GameObject trickAnchor = Instantiate(trickAnchorPrefab, gameObject.transform);
             currentTrick = trickAnchor.GetComponent<TrickModel>();
+            foreach(HandModel hm in allHands)
+            {
+                hm.SetCurrentTrick(currentTrick);
+            }
             yield return PlayTrick(allHands.IndexOf(leader));
             currentTrick.gameObject.SetActive(false);  // not destroying it because this info may be useful later
         }

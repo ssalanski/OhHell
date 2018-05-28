@@ -8,6 +8,7 @@ public class HandModel : MonoBehaviour
     List<CardModel> cards;
     public GameObject cardPrefab;
 
+    private TrickModel currentTrick;
     private CardModel selectedCardModel;
     private bool yourTurn = false;
 
@@ -93,12 +94,21 @@ public class HandModel : MonoBehaviour
         }
         else
         {
-            selectedCardModel = clickedCardModel;
-            foreach (CardModel cm in cards)
+            // enforce following suit
+            if (cards.Find(c => c.thisCard.suit == currentTrick.lead) != null && clickedCardModel.thisCard.suit != currentTrick.lead)
             {
-                Vector3 pos = cm.transform.localPosition;
-                pos.y = cm.Equals(selectedCardModel) ? 0.5f : 0.0f;
-                cm.transform.localPosition = pos;
+                // if you have at least one card in the lead suit, then dont allow selecting a card that cant be played
+                return;
+            }
+            else
+            {
+                selectedCardModel = clickedCardModel;
+                foreach (CardModel cm in cards)
+                {
+                    Vector3 pos = cm.transform.localPosition;
+                    pos.y = cm.Equals(selectedCardModel) ? 0.5f : 0.0f;
+                    cm.transform.localPosition = pos;
+                }
             }
         }
     }
@@ -114,6 +124,8 @@ public class HandModel : MonoBehaviour
         }
     }
 
+    internal void SetCurrentTrick(TrickModel newCurrentTrick)
     {
+        currentTrick = newCurrentTrick;
     }
 }
