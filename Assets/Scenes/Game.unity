@@ -285,4 +285,4 @@ MonoBehaviour:
   trickPrefab: {fileID: 1363920710143606, guid: c7da3aceee8d86248967a3601cddde23,
     type: 2}
   cardPrefab: {fileID: 1962652594725874, guid: cbb4da390555a2c4ab72811865d64ef4, type: 2}
-  numOtherPlayers: 4
+  numPlayers: 5

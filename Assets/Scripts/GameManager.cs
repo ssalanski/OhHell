@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     public GameObject cardPrefab;
 
     // game setting value
-    public int numOtherPlayers;
+    public int numPlayers;
 
     // containers that change throughout the game
     private HandModel humanPlayerHand;
@@ -37,14 +37,14 @@ public class GameManager : MonoBehaviour
         // instantiate the other players hands, placement/spacing depends on count
         allPlayers = new List<HandModel>(numberOfPlayers);
         allPlayers.Add(humanPlayerHand);
-        if (numOtherPlayers == 1)
+        if (numPlayers == 2)
         {
             player = Instantiate(playerPrefab, gameObject.transform);
             player.transform.localPosition += Vector3.up * tableMinor;
             player.transform.Rotate(new Vector3(0, 0, 180));
             allPlayers.Add(player.GetComponent<HandModel>());
         }
-        else if (numOtherPlayers == 2)
+        else if (numPlayers == 3)
         {
             player = Instantiate(playerPrefab, gameObject.transform);
             player.transform.localPosition += getEllipsePositionAtAngle(30);
@@ -58,8 +58,8 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            float playerSpacing = 180f / (numOtherPlayers - 1);
-            for (int playerIdx = 0; playerIdx < numOtherPlayers; playerIdx++)
+            float playerSpacing = 180f / (numPlayers - 2);
+            for (int playerIdx = 0; playerIdx < numPlayers - 1; playerIdx++)
             {
                 float playerAngle = playerSpacing * playerIdx;
                 player = Instantiate(playerPrefab, gameObject.transform);
@@ -71,7 +71,7 @@ public class GameManager : MonoBehaviour
 
         for (int cardNumber = 0; cardNumber < numberOfCards; cardNumber++)
         {
-            foreach (HandModel hm in allHands)
+            foreach (HandModel hm in allPlayers)
             {
                 hm.TakeCard(deck.DrawCard());
             }
@@ -86,9 +86,9 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator PlayTrick(int leadOffset)
     {
-        for(int turnIndex = 0; turnIndex < numOtherPlayers+1; turnIndex++ )
+        for (int turnIndex = 0; turnIndex < numPlayers; turnIndex++)
         {
-            int playerIndex = (turnIndex + leadOffset) % (numOtherPlayers + 1);
+            int playerIndex = (turnIndex + leadOffset) % numPlayers;
             allPlayers[playerIndex].SetTurnFlag(true); // (currentTrick, trumpCard.GetComponent<CardModel>().thisCard.suit);
             yield return new WaitUntil(() => !allPlayers[playerIndex].IsYourTurn());
         }
