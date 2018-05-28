@@ -24,9 +24,8 @@ public class GameManager : MonoBehaviour
     private const float tableMinor = 3.5f;
     private const float tableMajor = 6.0f;
 
-    private void DealNewHand(int numberOfCards)
+    private void SetTable(int numberOfPlayers)
     {
-        deck = new Deck();
         GameObject player;
 
         // instantiate the (human) players hand
@@ -68,6 +67,13 @@ public class GameManager : MonoBehaviour
                 allPlayers.Add(player.GetComponent<HandModel>());
             }
         }
+
+    }
+
+    private void DealNewHand(int numberOfCards)
+    {
+        deck = new Deck();
+
 
         for (int cardNumber = 0; cardNumber < numberOfCards; cardNumber++)
         {
@@ -118,6 +124,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        SetTable(numPlayers);
         StartCoroutine(PlayRound(0));
     }
 
