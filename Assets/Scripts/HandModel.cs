@@ -47,6 +47,8 @@ public class HandModel : MonoBehaviour
             OrganizeCards();
             Debug.Log("its no longer your turn! " + gameObject.GetHashCode());
             yourTurn = false;
+            LineRenderer turnLine = gameObject.GetComponent<LineRenderer>();
+            Destroy(turnLine);
         }
         else
         {
@@ -88,5 +90,12 @@ public class HandModel : MonoBehaviour
         // implement lead following enforcement later
         Debug.Log("its your turn now! " + gameObject.GetHashCode());
         yourTurn = true;
+        LineRenderer lr = gameObject.AddComponent<LineRenderer>();
+        lr.SetPosition(0, gameObject.transform.position + Vector3.back*0.25f);
+        lr.SetPosition(1, gameObject.transform.parent.position + Vector3.back*0.25f);
+        lr.startWidth = 1;
+        lr.endWidth = 0;
+        lr.material.color = Color.green;
+        lr.alignment = LineAlignment.Local;
     }
 }
