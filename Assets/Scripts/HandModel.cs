@@ -9,7 +9,7 @@ public class HandModel : MonoBehaviour
     public GameObject cardPrefab;
 
     private CardModel selectedCardModel;
-    public bool yourTurn = false;
+    private bool yourTurn = false;
 
     private void Awake()
     {
@@ -19,7 +19,39 @@ public class HandModel : MonoBehaviour
 
     void Start()
     {
-        
+
+    }
+
+    public void SetTurnFlag(bool isYourTurn)
+    {
+        if(isYourTurn == yourTurn)
+        {
+            // no change in turn state, dont do anything
+            return;
+        }
+
+        if (isYourTurn)
+        {
+            LineRenderer lr = gameObject.AddComponent<LineRenderer>();
+            lr.SetPosition(0, gameObject.transform.position + Vector3.back * 0.25f);
+            lr.SetPosition(1, gameObject.transform.parent.position + Vector3.back * 0.25f);
+            lr.startWidth = 1;
+            lr.endWidth = 0;
+            lr.material.color = Color.green;
+            lr.alignment = LineAlignment.Local;
+            yourTurn = true;
+        }
+        else
+        {
+            LineRenderer turnLine = gameObject.GetComponent<LineRenderer>();
+            Destroy(turnLine);
+            yourTurn = false;
+        }
+    }
+
+    public bool IsYourTurn()
+    {
+        return yourTurn;
     }
 
     public void TakeCard(Card c)
@@ -45,10 +77,7 @@ public class HandModel : MonoBehaviour
             TrickModel trick = GetComponentInParent<GameManager>().GetComponentInChildren<TrickModel>();
             trick.TakeCard(cardModel.gameObject);
             OrganizeCards();
-            Debug.Log("its no longer your turn! " + gameObject.GetHashCode());
-            yourTurn = false;
-            LineRenderer turnLine = gameObject.GetComponent<LineRenderer>();
-            Destroy(turnLine);
+            SetTurnFlag(false);
         }
         else
         {
@@ -85,17 +114,6 @@ public class HandModel : MonoBehaviour
         }
     }
 
-    internal void TakeTurn(TrickModel currentTrick, Suit suit)
     {
-        // implement lead following enforcement later
-        Debug.Log("its your turn now! " + gameObject.GetHashCode());
-        yourTurn = true;
-        LineRenderer lr = gameObject.AddComponent<LineRenderer>();
-        lr.SetPosition(0, gameObject.transform.position + Vector3.back*0.25f);
-        lr.SetPosition(1, gameObject.transform.parent.position + Vector3.back*0.25f);
-        lr.startWidth = 1;
-        lr.endWidth = 0;
-        lr.material.color = Color.green;
-        lr.alignment = LineAlignment.Local;
     }
 }
