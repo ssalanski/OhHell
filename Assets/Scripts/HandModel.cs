@@ -10,6 +10,7 @@ public class HandModel : MonoBehaviour
 
     private TrickModel currentTrick;
     private CardModel selectedCardModel;
+    [SerializeField]
     private bool yourTurn = false;
 
     private void Awake()
