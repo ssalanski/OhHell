@@ -38,6 +38,8 @@ public class GameManager : MonoBehaviour
         player = Instantiate(playerPrefab, gameObject.transform);
         player.transform.localPosition += Vector3.down * tableMinor;
         humanPlayerHand = player.GetComponent<HandModel>();
+        player.GetComponent<PlayerModel>().playerInfo.anchor = TextAnchor.UpperCenter;
+        player.GetComponent<PlayerModel>().playerInfo.transform.Rotate(new Vector3(0, 0, 180));
 
         // instantiate the other players hands, placement/spacing depends on count
         allPlayers = new List<HandModel>(numberOfPlayers);
