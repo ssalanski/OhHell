@@ -24,6 +24,12 @@ public class GameManager : MonoBehaviour
     private const float tableMinor = 3.5f;
     private const float tableMajor = 6.0f;
 
+    void Start()
+    {
+        SetTable(numPlayers);
+        StartCoroutine(PlayRound(0));
+    }
+
     private void SetTable(int numberOfPlayers)
     {
         GameObject player;
@@ -90,20 +96,6 @@ public class GameManager : MonoBehaviour
 
     }
 
-    private IEnumerator PlayTrick(int leadOffset)
-    {
-        for (int turnIndex = 0; turnIndex < numPlayers; turnIndex++)
-        {
-            int playerIndex = (turnIndex + leadOffset) % numPlayers;
-            allPlayers[playerIndex].SetTurnFlag(true); // (currentTrick, trumpCard.GetComponent<CardModel>().thisCard.suit);
-            yield return new WaitUntil(() => !allPlayers[playerIndex].IsYourTurn());
-        }
-        HandModel winner = currentTrick.GetWinner(trumpCard.GetComponent<CardModel>().thisCard.suit);
-        Debug.Log(allPlayers.IndexOf(winner) + " won that trick");
-        leader = winner;
-        yield return new WaitForSeconds(2);
-    }
-
     private IEnumerator PlayRound(int dealerOffset)
     {
         DealNewHand(7);
@@ -122,11 +114,20 @@ public class GameManager : MonoBehaviour
         Debug.Log("played all cards in this round");
     }
 
-    void Start()
+    private IEnumerator PlayTrick(int leadOffset)
     {
-        SetTable(numPlayers);
-        StartCoroutine(PlayRound(0));
+        for (int turnIndex = 0; turnIndex < numPlayers; turnIndex++)
+        {
+            int playerIndex = (turnIndex + leadOffset) % numPlayers;
+            allPlayers[playerIndex].SetTurnFlag(true); // (currentTrick, trumpCard.GetComponent<CardModel>().thisCard.suit);
+            yield return new WaitUntil(() => !allPlayers[playerIndex].IsYourTurn());
+        }
+        HandModel winner = currentTrick.GetWinner(trumpCard.GetComponent<CardModel>().thisCard.suit);
+        Debug.Log(allPlayers.IndexOf(winner) + " won that trick");
+        leader = winner;
+        yield return new WaitForSeconds(2);
     }
+
 
     private Vector3 getEllipsePositionAtAngle(float angle)
     {
