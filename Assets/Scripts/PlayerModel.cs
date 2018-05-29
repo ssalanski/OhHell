@@ -1,8 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerModel : MonoBehaviour {
+public class PlayerModel : MonoBehaviour
+{
 
     public string playerName;
     private List<TrickModel> tricksTaken;
@@ -10,15 +10,36 @@ public class PlayerModel : MonoBehaviour {
     public int currentBid;
     public int tricksTakenCount = 0;
 
-	// Use this for initialization
-	void Start () {
+    public TextMesh playerInfo;
+
+    private void Awake()
+    {
+        GameObject textAnchor = new GameObject();
+        playerInfo = textAnchor.AddComponent<TextMesh>();
+        textAnchor.transform.SetParent(gameObject.transform);
+        textAnchor.transform.localPosition = new Vector3(0, -0.5f, -2);
+        textAnchor.transform.localRotation = textAnchor.transform.parent.localRotation;
+        textAnchor.transform.localRotation = Quaternion.identity;
+        textAnchor.transform.Rotate(new Vector3(0, 0, 180));
+
+        playerInfo.text = "Bid: 3 Taken: 6";
+        playerInfo.anchor = TextAnchor.LowerCenter;
+        playerInfo.alignment = TextAlignment.Center;
+        playerInfo.characterSize = 0.1f;
+        playerInfo.fontSize = 40;
+    }
+
+    // Use this for initialization
+    void Start()
+    {
         tricksTaken = new List<TrickModel>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
 
     public void TakeTrick(TrickModel trick)
     {
