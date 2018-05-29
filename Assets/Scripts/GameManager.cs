@@ -98,6 +98,7 @@ public class GameManager : MonoBehaviour
     {
         DealNewHand(cardCount);
         leader = allPlayers[dealerOffset];
+        BidRound(cardCount,dealerOffset);
         for (int cardNumber = 0; cardNumber < cardCount; cardNumber++)
         {
             GameObject trickAnchor = Instantiate(trickPrefab, gameObject.transform);
@@ -110,6 +111,19 @@ public class GameManager : MonoBehaviour
             currentTrick.gameObject.SetActive(false);  // not destroying it because this info may be useful later
         }
         Debug.Log("played all cards in this round");
+    }
+
+    private void BidRound(int cardCount,int dealerOffset)
+    {
+        int bidTotal = 0;
+        // start bidIndex at 1, player to the left of the dealer starts bidding
+        for (int bidIndex = 1; bidIndex < numPlayers; bidIndex++)
+        {
+            int playerIndex = (bidIndex + dealerOffset) % numPlayers;
+            bidTotal += allPlayers[playerIndex].GetComponentInParent<PlayerModel>().MakeBid(bidTotal, cardCount);
+        }
+        // now have the dealer bid, passing restricted=true
+        leader.GetComponentInParent<PlayerModel>().MakeBid(bidTotal, cardCount, true);
     }
 
     private IEnumerator PlayTrick(int leadOffset)
