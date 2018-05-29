@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerModel : MonoBehaviour
@@ -7,7 +8,7 @@ public class PlayerModel : MonoBehaviour
     public string playerName;
     private List<TrickModel> tricksTaken;
 
-    public int currentBid;
+    public int currentBid = 0;
     public int tricksTakenCount = 0;
 
     public TextMesh playerInfo;
@@ -22,7 +23,7 @@ public class PlayerModel : MonoBehaviour
         textAnchor.transform.localRotation = Quaternion.identity;
         textAnchor.transform.Rotate(new Vector3(0, 0, 180));
 
-        playerInfo.text = "Bid: 3 Taken: 6";
+        playerInfo.text = "Bid: ? Taken: -";
         playerInfo.anchor = TextAnchor.LowerCenter;
         playerInfo.alignment = TextAlignment.Center;
         playerInfo.characterSize = 0.1f;
@@ -45,6 +46,7 @@ public class PlayerModel : MonoBehaviour
     {
         tricksTaken.Add(trick);
         tricksTakenCount++;
+        UpdatePlayerInfoText();
     }
 
     internal int MakeBid(int bidTotal, int cardCount, bool restricted = false)
@@ -56,7 +58,18 @@ public class PlayerModel : MonoBehaviour
         {
             bid = UnityEngine.Random.Range(0, cardCount + 1);
         }
-        currentBid = bid;
+        SetBid(bid);
         return bid;
+    }
+
+    internal void SetBid(int bid)
+    {
+        currentBid = bid;
+        UpdatePlayerInfoText();
+    }
+
+    private void UpdatePlayerInfoText()
+    {
+        playerInfo.text = String.Format("Bid: {0}, Taken: {1}", currentBid, tricksTakenCount);
     }
 }
