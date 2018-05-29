@@ -80,7 +80,6 @@ public class GameManager : MonoBehaviour
     {
         deck = new Deck();
 
-
         for (int cardNumber = 0; cardNumber < numberOfCards; cardNumber++)
         {
             foreach (HandModel hm in allPlayers)
@@ -93,7 +92,6 @@ public class GameManager : MonoBehaviour
         trumpCard.transform.localPosition = new Vector3(6.7f, -3.86f, -0.1f);
         trumpCard.GetComponent<CardModel>().SetCard(deck.DrawCard());
         trumpCard.GetComponent<CardModel>().showing = true;
-
     }
 
     private IEnumerator PlayRound(int dealerOffset)
@@ -124,6 +122,7 @@ public class GameManager : MonoBehaviour
         }
         HandModel winner = currentTrick.GetWinner(trumpCard.GetComponent<CardModel>().thisCard.suit);
         Debug.Log(allPlayers.IndexOf(winner) + " won that trick");
+        winner.GetComponentInParent<PlayerModel>().TakeTrick(currentTrick);
         leader = winner;
         yield return new WaitForSeconds(2);
     }
