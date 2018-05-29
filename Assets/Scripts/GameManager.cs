@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         SetTable(numPlayers);
-        StartCoroutine(PlayRound(0));
+        StartCoroutine(PlayRound(7,0));
     }
 
     private void SetTable(int numberOfPlayers)
@@ -94,11 +94,11 @@ public class GameManager : MonoBehaviour
         trumpCard.GetComponent<CardModel>().showing = true;
     }
 
-    private IEnumerator PlayRound(int dealerOffset)
+    private IEnumerator PlayRound(int cardCount, int dealerOffset)
     {
-        DealNewHand(7);
-        leader = allPlayers[0];
-        for (int cardNumber = 0; cardNumber < 7; cardNumber++)
+        DealNewHand(cardCount);
+        leader = allPlayers[dealerOffset];
+        for (int cardNumber = 0; cardNumber < cardCount; cardNumber++)
         {
             GameObject trickAnchor = Instantiate(trickPrefab, gameObject.transform);
             currentTrick = trickAnchor.GetComponent<TrickModel>();
