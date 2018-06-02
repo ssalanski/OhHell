@@ -24,6 +24,11 @@ public class GameManager : MonoBehaviour
     private const float tableMinor = 3.5f;
     private const float tableMajor = 6.0f;
 
+    private void Awake()
+    {
+        numPlayers = GameObject.Find("OhHellGame").GetComponent<OptionsManager>().playerCount;
+    }
+
     void Start()
     {
         SetTable(numPlayers);
