@@ -14,9 +14,9 @@ public class GameManager : MonoBehaviour
 
     // containers that change throughout the game
     private HandModel humanPlayerHand;
-    private List<HandModel> allPlayers;
+    private List<GameObject> allPlayers;
     private TrickModel currentTrick;
-    private HandModel leader;
+    private GameObject leader;
     private GameObject trumpCard;
     private Deck deck;
 
@@ -42,26 +42,26 @@ public class GameManager : MonoBehaviour
         player.GetComponent<PlayerModel>().playerInfo.transform.Rotate(new Vector3(0, 0, 180));
 
         // instantiate the other players hands, placement/spacing depends on count
-        allPlayers = new List<HandModel>(numberOfPlayers);
-        allPlayers.Add(humanPlayerHand);
+        allPlayers = new List<GameObject>(numberOfPlayers);
+        allPlayers.Add(player);
         if (numPlayers == 2)
         {
             player = Instantiate(playerPrefab, gameObject.transform);
             player.transform.localPosition += Vector3.up * tableMinor;
             player.transform.Rotate(new Vector3(0, 0, 180));
-            allPlayers.Add(player.GetComponent<HandModel>());
+            allPlayers.Add(player);
         }
         else if (numPlayers == 3)
         {
             player = Instantiate(playerPrefab, gameObject.transform);
             player.transform.localPosition += getEllipsePositionAtAngle(30);
             player.transform.Rotate(new Vector3(0, 0, -120));
-            allPlayers.Add(player.GetComponent<HandModel>());
+            allPlayers.Add(player);
 
             player = Instantiate(playerPrefab, gameObject.transform);
             player.transform.localPosition += getEllipsePositionAtAngle(150);
             player.transform.Rotate(new Vector3(0, 0, 120));
-            allPlayers.Add(player.GetComponent<HandModel>());
+            allPlayers.Add(player);
         }
         else
         {
@@ -72,7 +72,7 @@ public class GameManager : MonoBehaviour
                 player = Instantiate(playerPrefab, gameObject.transform);
                 player.transform.localPosition += getEllipsePositionAtAngle(playerAngle);
                 player.transform.Rotate(new Vector3(0, 0, 270 - playerAngle));
-                allPlayers.Add(player.GetComponent<HandModel>());
+                allPlayers.Add(player);
             }
         }
 
@@ -84,9 +84,9 @@ public class GameManager : MonoBehaviour
 
         for (int cardNumber = 0; cardNumber < numberOfCards; cardNumber++)
         {
-            foreach (HandModel hm in allPlayers)
+            foreach (GameObject player in allPlayers)
             {
-                hm.TakeCard(deck.DrawCard());
+                player.GetComponent<HandModel>().TakeCard(deck.DrawCard());
             }
         }
 
@@ -105,9 +105,9 @@ public class GameManager : MonoBehaviour
         {
             GameObject trickAnchor = Instantiate(trickPrefab, gameObject.transform);
             currentTrick = trickAnchor.GetComponent<TrickModel>();
-            foreach (HandModel hm in allPlayers)
+            foreach (GameObject player in allPlayers)
             {
-                hm.SetCurrentTrick(currentTrick);
+                player.GetComponent<HandModel>().SetCurrentTrick(currentTrick);
             }
             yield return PlayTrick(allPlayers.IndexOf(leader));
             currentTrick.gameObject.SetActive(false);  // not destroying it because this info may be useful later
@@ -133,10 +133,10 @@ public class GameManager : MonoBehaviour
         for (int turnIndex = 0; turnIndex < numPlayers; turnIndex++)
         {
             int playerIndex = (turnIndex + leadOffset) % numPlayers;
-            allPlayers[playerIndex].SetTurnFlag(true); // (currentTrick, trumpCard.GetComponent<CardModel>().thisCard.suit);
-            yield return new WaitUntil(() => !allPlayers[playerIndex].IsYourTurn());
+            allPlayers[playerIndex].GetComponent<HandModel>().SetTurnFlag(true); // (currentTrick, trumpCard.GetComponent<CardModel>().thisCard.suit);
+            yield return new WaitUntil(() => !allPlayers[playerIndex].GetComponent<HandModel>().IsYourTurn());
         }
-        HandModel winner = currentTrick.GetWinner(trumpCard.GetComponent<CardModel>().thisCard.suit);
+        GameObject winner = currentTrick.GetWinner(trumpCard.GetComponent<CardModel>().thisCard.suit);
         Debug.Log(allPlayers.IndexOf(winner) + " won that trick");
         winner.GetComponentInParent<PlayerModel>().TakeTrick(currentTrick);
         leader = winner;

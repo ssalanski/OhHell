@@ -7,13 +7,13 @@ public class TrickModel : MonoBehaviour
 {
     public GameObject cardPrefab;
     
-    public Dictionary<Card, HandModel> cards;
+    public Dictionary<Card, GameObject> cards;
     public Suit? lead; // is using nullable '?' the best practice?
 
     // Use this for initialization
     void Start()
     {
-        cards = new Dictionary<Card, HandModel>();
+        cards = new Dictionary<Card, GameObject>();
     }
 
     public void TakeCard(GameObject playedCard)
@@ -22,7 +22,7 @@ public class TrickModel : MonoBehaviour
         CardModel cardModel = playedCard.GetComponent<CardModel>();
         cardModel.showing = true;
 
-        cards.Add(cardModel.thisCard, cardModel.GetComponentInParent<HandModel>());
+        cards.Add(cardModel.thisCard, cardModel.transform.parent.gameObject);
         Transform sourceHand = cardModel.transform.parent;
 
         cardModel.transform.parent = gameObject.transform;
@@ -42,7 +42,7 @@ public class TrickModel : MonoBehaviour
 
     }
 
-    internal HandModel GetWinner(Suit trumpSuit)
+    internal GameObject GetWinner(Suit trumpSuit)
     {
         Card winning = null;
         foreach (Card cm in cards.Keys)
