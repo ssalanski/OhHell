@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
 
     // game setting value
     public int numPlayers;
+    public int cardCount;
 
     // containers that change throughout the game
     private HandModel humanPlayerHand;
@@ -27,12 +28,13 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         numPlayers = GameObject.Find("OhHellGame").GetComponent<OptionsManager>().playerCount;
+        cardCount = GameObject.Find("OhHellGame").GetComponent<OptionsManager>().cardCount;
     }
 
     void Start()
     {
         SetTable(numPlayers);
-        StartCoroutine(PlayRound(7,0));
+        StartCoroutine(PlayRound(cardCount,0));
     }
 
     private void SetTable(int numberOfPlayers)

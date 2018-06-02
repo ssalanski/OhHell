@@ -6,6 +6,18 @@ using UnityEngine.UI;
 public class OptionsManager : MonoBehaviour {
 
     public Text playerCountLabel;
+    public Text cardCountLabel;
+
+    public int cardCount { get; set; }
+    public float cardCountF
+    {
+        set
+        {
+            cardCount = (int)value;
+            cardCountLabel.text = string.Format("Card Count: {0}", cardCount);
+        }
+    }
+
     public int playerCount { get; set; }
     public float playerCountF
     {
@@ -22,9 +34,11 @@ public class OptionsManager : MonoBehaviour {
     }
 
     // Use this for initialization
-    void Start () {
-
-	}
+    void Start ()
+    {
+        playerCountLabel.text = string.Format("Player Count: {0}", 4);
+        cardCountLabel.text = string.Format("Card Count: {0}", 5);
+    }
 	
 	// Update is called once per frame
 	void Update () {
