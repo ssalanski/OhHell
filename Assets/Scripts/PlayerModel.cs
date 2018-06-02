@@ -10,6 +10,7 @@ public class PlayerModel : MonoBehaviour
 
     public int currentBid = 0;
     public int tricksTakenCount = 0;
+    public int score = 0;
 
     public TextMesh playerInfo;
 
@@ -68,8 +69,22 @@ public class PlayerModel : MonoBehaviour
         UpdatePlayerInfoText();
     }
 
-    private void UpdatePlayerInfoText()
+    private void UpdatePlayerInfoText(bool includeScore=false)
     {
-        playerInfo.text = String.Format("Bid: {0}, Taken: {1}", currentBid, tricksTakenCount);
+        if (includeScore)
+        {
+            playerInfo.text = String.Format("Bid: {0}, Taken: {1}\nScore:{2}", currentBid, tricksTakenCount, score);
+            playerInfo.transform.localPosition = new Vector3(0, 0, -2);
+        }
+        else
+        {
+            playerInfo.text = String.Format("Bid: {0}, Taken: {1}", currentBid, tricksTakenCount);
+        }
+    }
+
+    internal void UpdateScore()
+    {
+        score = currentBid == tricksTakenCount ? 10 + tricksTakenCount * tricksTakenCount : -5 * Math.Abs(currentBid - tricksTakenCount);
+        UpdatePlayerInfoText(true);
     }
 }

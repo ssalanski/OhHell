@@ -113,6 +113,10 @@ public class GameManager : MonoBehaviour
             currentTrick.gameObject.SetActive(false);  // not destroying it because this info may be useful later
         }
         Debug.Log("played all cards in this round");
+        foreach (GameObject player in allPlayers)
+        {
+            player.GetComponent<PlayerModel>().UpdateScore();
+        }
     }
 
     private void BidRound(int cardCount,int dealerOffset)
