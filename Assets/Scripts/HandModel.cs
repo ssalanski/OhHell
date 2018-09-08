@@ -40,7 +40,7 @@ public class HandModel : MonoBehaviour
             lr.startWidth = 1;
             lr.endWidth = 0;
             lr.material.color = Color.green;
-            lr.alignment = LineAlignment.Local;
+            lr.alignment = LineAlignment.TransformZ;
             yourTurn = true;
         }
         else
