@@ -36,8 +36,8 @@ public class OptionsManager : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
-        playerCountLabel.text = string.Format("Player Count: {0}", 4);
-        cardCountLabel.text = string.Format("Card Count: {0}", 5);
+        playerCountF = 4;
+        cardCountF = 5;
     }
 	
 	// Update is called once per frame
