@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         SetTable(numPlayers);
-        StartCoroutine(PlayRound(cardCount,0));
+        StartCoroutine(PlayGame());
     }
 
     private void SetTable(int numberOfPlayers)
@@ -83,6 +83,15 @@ public class GameManager : MonoBehaviour
             }
         }
 
+    }
+
+    private IEnumerator PlayGame()
+    {
+        int[] cardCounts = { 4, 3, 2, 1, 2, 3, 4 };
+        for (int handNumber = 0; handNumber < cardCounts.Length; handNumber++)
+        {
+            yield return PlayRound(cardCounts[handNumber], handNumber % numPlayers);
+        }
     }
 
     private void DealNewHand(int numberOfCards)
