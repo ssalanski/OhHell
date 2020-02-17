@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -87,10 +88,11 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator PlayGame()
     {
-        int[] cardCounts = { 4, 3, 2, 1, 2, 3, 4 };
+        int[] cardCounts = Enumerable.Range(2 - cardCount, 2 * cardCount - 1).ToArray();
         for (int handNumber = 0; handNumber < cardCounts.Length; handNumber++)
         {
-            yield return PlayRound(cardCounts[handNumber], handNumber % numPlayers);
+            int handCardCount = handNumber < cardCount ? 2 - cardCounts[handNumber] : cardCounts[handNumber];
+            yield return PlayRound(handCardCount, handNumber % numPlayers);
         }
     }
 
@@ -116,7 +118,7 @@ public class GameManager : MonoBehaviour
     {
         DealNewHand(cardCount);
         leader = allPlayers[dealerOffset];
-        BidRound(cardCount,dealerOffset);
+        BidRound(cardCount, dealerOffset);
         for (int cardNumber = 0; cardNumber < cardCount; cardNumber++)
         {
             GameObject trickAnchor = Instantiate(trickPrefab, gameObject.transform);
@@ -135,7 +137,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void BidRound(int cardCount,int dealerOffset)
+    private void BidRound(int cardCount, int dealerOffset)
     {
         int bidTotal = 0;
         // start bidIndex at 1, player to the left of the dealer starts bidding
