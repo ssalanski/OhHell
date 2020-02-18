@@ -11,7 +11,7 @@ public class TrickModel : MonoBehaviour
     public Suit? lead; // is using nullable '?' the best practice?
 
     // Use this for initialization
-    void Start()
+    void Awake()
     {
         cards = new Dictionary<Card, GameObject>();
     }
