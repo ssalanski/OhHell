@@ -10,6 +10,7 @@ public class HandModel : MonoBehaviour
 
     private TrickModel currentTrick;
     private CardModel selectedCardModel;
+    private bool isFaceUp = false;
 
     private void Awake()
     {
@@ -25,12 +26,11 @@ public class HandModel : MonoBehaviour
 
     public void TakeCard(Card c)
     {
-        GameObject uiCard;
-        uiCard = Instantiate(cardPrefab, gameObject.transform);
+        GameObject uiCard = Instantiate(cardPrefab, gameObject.transform);
         uiCard.GetComponent<SpriteRenderer>().sortingLayerName = "Hand";
         uiCard.tag = "in hand";
         CardModel cm1 = uiCard.GetComponent<CardModel>();
-        cm1.showing = true;
+        cm1.showing = isFaceUp;
         cm1.SetCard(c);
 
         cards.Add(cm1);
@@ -48,8 +48,8 @@ public class HandModel : MonoBehaviour
         {
             selectedCardModel = null;
             cards.Remove(cardModel);
-            TrickModel trick = GetComponentInParent<GameManager>().GetComponentInChildren<TrickModel>();
-            trick.TakeCard(cardModel);
+            cardModel.ShowCard();
+            currentTrick.TakeCard(cardModel);
             OrganizeCards();
             GetComponentInParent<PlayerModel>().SetTurnFlag(false);
         }
@@ -100,5 +100,10 @@ public class HandModel : MonoBehaviour
     internal void SetCurrentTrick(TrickModel newCurrentTrick)
     {
         currentTrick = newCurrentTrick;
+    }
+
+    internal void setFaceUp(bool v)
+    {
+        isFaceUp = true;
     }
 }

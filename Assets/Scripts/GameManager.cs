@@ -16,7 +16,6 @@ public class GameManager : MonoBehaviour
     public int cardCount;
 
     // containers that change throughout the game
-    private HandModel humanPlayerHand;
     private List<GameObject> allPlayers;
     private TrickModel currentTrick;
     private GameObject leader;
@@ -46,7 +45,7 @@ public class GameManager : MonoBehaviour
         // instantiate the (human) players hand
         player = Instantiate(playerPrefab, gameObject.transform);
         player.transform.localPosition += Vector3.down * tableMinor;
-        humanPlayerHand = player.GetComponent<HandModel>();
+        player.GetComponent<HandModel>().setFaceUp(true);
         player.GetComponent<PlayerModel>().playerInfo.anchor = TextAnchor.UpperCenter;
         player.GetComponent<PlayerModel>().playerInfo.transform.Rotate(new Vector3(0, 0, 180));
 
