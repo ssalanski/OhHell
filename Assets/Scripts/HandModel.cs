@@ -49,7 +49,7 @@ public class HandModel : MonoBehaviour
             selectedCardModel = null;
             cards.Remove(cardModel);
             TrickModel trick = GetComponentInParent<GameManager>().GetComponentInChildren<TrickModel>();
-            trick.TakeCard(cardModel.gameObject);
+            trick.TakeCard(cardModel);
             OrganizeCards();
             GetComponentInParent<PlayerModel>().SetTurnFlag(false);
         }

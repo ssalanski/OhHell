@@ -16,22 +16,21 @@ public class TrickModel : MonoBehaviour
         cards = new Dictionary<Card, GameObject>();
     }
 
-    public void TakeCard(GameObject playedCard)
+    public void TakeCard(CardModel playedCard)
     {
-        playedCard.tag = "in trick";
-        CardModel cardModel = playedCard.GetComponent<CardModel>();
-        cardModel.showing = true;
+        playedCard.gameObject.tag = "in trick";
+        playedCard.showing = true;
+        
+        cards.Add(playedCard.thisCard, playedCard.transform.parent.gameObject);
+        Transform sourceHand = playedCard.transform.parent;
 
-        cards.Add(cardModel.thisCard, cardModel.transform.parent.gameObject);
-        Transform sourceHand = cardModel.transform.parent;
-
-        cardModel.transform.parent = gameObject.transform;
-        cardModel.transform.localPosition = new Vector3(0, 0, 0);
-        cardModel.transform.Translate(Vector3.down, sourceHand);
+        playedCard.transform.parent = gameObject.transform;
+        playedCard.transform.localPosition = new Vector3(0, 0, 0);
+        playedCard.transform.Translate(Vector3.down, sourceHand);
 
         if (lead == null)
         {
-            lead = cardModel.thisCard.suit;
+            lead = playedCard.thisCard.suit;
         }
 
     }
