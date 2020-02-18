@@ -45,7 +45,7 @@ public class PlayerModel : MonoBehaviour
 
     }
 
-    public void SetTurnFlag(bool isYourTurn)
+    public virtual void SetTurnFlag(bool isYourTurn)
     {
         if(isYourTurn == yourTurn)
         {

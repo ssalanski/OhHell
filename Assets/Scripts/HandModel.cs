@@ -37,6 +37,11 @@ public class HandModel : MonoBehaviour
         OrganizeCards();
     }
 
+    internal List<CardModel> getCards()
+    {
+        return cards;
+    }
+
     internal void PlayCard(CardModel cardModel)
     {
         if (GetComponentInParent<PlayerModel>().IsYourTurn())

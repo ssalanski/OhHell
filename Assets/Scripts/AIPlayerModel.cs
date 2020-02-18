@@ -1,4 +1,6 @@
 ﻿
+using System.Collections.Generic;
+
 public class AIPlayerModel : PlayerModel
 {
     public override int MakeBid(int bidTotal, int cardCount, bool restricted = false)
@@ -12,5 +14,21 @@ public class AIPlayerModel : PlayerModel
         }
         SetBid(bid);
         return bid;
+    }
+
+    public override void SetTurnFlag(bool isYourTurn)
+    {
+        base.SetTurnFlag(isYourTurn);
+        if(IsYourTurn())
+        {
+            CardModel chosen = ChooseCard(gameObject.GetComponentInParent<HandModel>().getCards());
+            gameObject.GetComponentInParent<HandModel>().PlayCard(chosen);
+        }
+    }
+
+    public CardModel ChooseCard(List<CardModel> cardsInHand)
+    {
+        // wow such sophisticated AI
+        return cardsInHand[0];
     }
 }
