@@ -10,8 +10,6 @@ public class HandModel : MonoBehaviour
 
     private TrickModel currentTrick;
     private CardModel selectedCardModel;
-    [SerializeField]
-    private bool yourTurn = false;
 
     private void Awake()
     {
@@ -24,37 +22,6 @@ public class HandModel : MonoBehaviour
 
     }
 
-    public void SetTurnFlag(bool isYourTurn)
-    {
-        if(isYourTurn == yourTurn)
-        {
-            // no change in turn state, dont do anything
-            return;
-        }
-
-        if (isYourTurn)
-        {
-            LineRenderer lr = gameObject.AddComponent<LineRenderer>();
-            lr.SetPosition(0, gameObject.transform.position + Vector3.back * 0.25f);
-            lr.SetPosition(1, gameObject.transform.parent.position + Vector3.back * 0.25f);
-            lr.startWidth = 1;
-            lr.endWidth = 0;
-            lr.material.color = Color.green;
-            lr.alignment = LineAlignment.TransformZ;
-            yourTurn = true;
-        }
-        else
-        {
-            LineRenderer turnLine = gameObject.GetComponent<LineRenderer>();
-            Destroy(turnLine);
-            yourTurn = false;
-        }
-    }
-
-    public bool IsYourTurn()
-    {
-        return yourTurn;
-    }
 
     public void TakeCard(Card c)
     {
@@ -72,14 +39,14 @@ public class HandModel : MonoBehaviour
 
     internal void PlayCard(CardModel cardModel)
     {
-        if (yourTurn)
+        if (GetComponentInParent<PlayerModel>().IsYourTurn())
         {
             selectedCardModel = null;
             cards.Remove(cardModel);
             TrickModel trick = GetComponentInParent<GameManager>().GetComponentInChildren<TrickModel>();
             trick.TakeCard(cardModel.gameObject);
             OrganizeCards();
-            SetTurnFlag(false);
+            GetComponentInParent<PlayerModel>().SetTurnFlag(false);
         }
         else
         {
