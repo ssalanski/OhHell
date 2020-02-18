@@ -12,10 +12,11 @@ public class PlayerModel : MonoBehaviour
     public int tricksTakenCount = 0;
     public int score = 0;
     private List<TrickModel> tricksTaken;
+    protected TrickModel currentTrick;
 
     [SerializeField]
     private bool yourTurn = false;
-    
+
     private void Awake()
     {
         GameObject textAnchor = new GameObject();
@@ -47,7 +48,7 @@ public class PlayerModel : MonoBehaviour
 
     public virtual void SetTurnFlag(bool isYourTurn)
     {
-        if(isYourTurn == yourTurn)
+        if (isYourTurn == yourTurn)
         {
             // no change in turn state, dont do anything
             return;
@@ -103,7 +104,7 @@ public class PlayerModel : MonoBehaviour
         UpdatePlayerInfoText();
     }
 
-    private void UpdatePlayerInfoText(bool includeScore=false)
+    private void UpdatePlayerInfoText(bool includeScore = false)
     {
         if (includeScore)
         {
@@ -120,5 +121,10 @@ public class PlayerModel : MonoBehaviour
     {
         score = currentBid == tricksTakenCount ? 10 + tricksTakenCount * tricksTakenCount : -5 * Math.Abs(currentBid - tricksTakenCount);
         UpdatePlayerInfoText(true);
+    }
+
+    internal void SetCurrentTrick(TrickModel newCurrentTrick)
+    {
+        currentTrick = newCurrentTrick;
     }
 }

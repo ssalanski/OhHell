@@ -126,6 +126,7 @@ public class GameManager : MonoBehaviour
             currentTrick = trickAnchor.GetComponent<TrickModel>();
             foreach (GameObject player in allPlayers)
             {
+                player.GetComponent<PlayerModel>().SetCurrentTrick(currentTrick);
                 player.GetComponent<HandModel>().SetCurrentTrick(currentTrick);
             }
             yield return PlayTrick(allPlayers.IndexOf(leader));

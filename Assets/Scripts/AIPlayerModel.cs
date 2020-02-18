@@ -1,5 +1,6 @@
 ﻿
 using System.Collections.Generic;
+using UnityEngine;
 
 public class AIPlayerModel : PlayerModel
 {
@@ -19,16 +20,25 @@ public class AIPlayerModel : PlayerModel
     public override void SetTurnFlag(bool isYourTurn)
     {
         base.SetTurnFlag(isYourTurn);
-        if(IsYourTurn())
+        if (IsYourTurn())
         {
-            CardModel chosen = ChooseCard(gameObject.GetComponentInParent<HandModel>().getCards());
+            CardModel chosen = ChooseCard(gameObject.GetComponentInParent<HandModel>().getCards(), currentTrick);
             gameObject.GetComponentInParent<HandModel>().PlayCard(chosen);
         }
     }
 
-    public CardModel ChooseCard(List<CardModel> cardsInHand)
+    public CardModel ChooseCard(List<CardModel> cardsInHand, TrickModel currentTrick)
     {
-        // wow such sophisticated AI
-        return cardsInHand[0];
+        CardModel[] legalPlays;
+        if (cardsInHand.Exists(c => c.thisCard.suit == currentTrick.lead))
+        {
+            legalPlays = cardsInHand.FindAll(cm => cm.thisCard.suit == currentTrick.lead).ToArray();
+        }
+        else
+        {
+            legalPlays = cardsInHand.ToArray();
+        }
+
+        return legalPlays[Random.Range(0, legalPlays.Length)];
     }
 }
