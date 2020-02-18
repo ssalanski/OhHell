@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
     // prefabs linked in from unity editor
     public GameObject playerPrefab;
+    public GameObject aiPlayerPrefab;
     public GameObject trickPrefab;
     public GameObject cardPrefab;
 
@@ -34,11 +35,11 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        SetTable(numPlayers);
+        SetTable();
         StartCoroutine(PlayGame());
     }
 
-    private void SetTable(int numberOfPlayers)
+    private void SetTable()
     {
         GameObject player;
 
@@ -50,23 +51,23 @@ public class GameManager : MonoBehaviour
         player.GetComponent<PlayerModel>().playerInfo.transform.Rotate(new Vector3(0, 0, 180));
 
         // instantiate the other players hands, placement/spacing depends on count
-        allPlayers = new List<GameObject>(numberOfPlayers);
+        allPlayers = new List<GameObject>(numPlayers);
         allPlayers.Add(player);
         if (numPlayers == 2)
         {
-            player = Instantiate(playerPrefab, gameObject.transform);
+            player = Instantiate(aiPlayerPrefab, gameObject.transform);
             player.transform.localPosition += Vector3.up * tableMinor;
             player.transform.Rotate(new Vector3(0, 0, 180));
             allPlayers.Add(player);
         }
         else if (numPlayers == 3)
         {
-            player = Instantiate(playerPrefab, gameObject.transform);
+            player = Instantiate(aiPlayerPrefab, gameObject.transform);
             player.transform.localPosition += getEllipsePositionAtAngle(30);
             player.transform.Rotate(new Vector3(0, 0, -120));
             allPlayers.Add(player);
 
-            player = Instantiate(playerPrefab, gameObject.transform);
+            player = Instantiate(aiPlayerPrefab, gameObject.transform);
             player.transform.localPosition += getEllipsePositionAtAngle(150);
             player.transform.Rotate(new Vector3(0, 0, 120));
             allPlayers.Add(player);
@@ -77,7 +78,7 @@ public class GameManager : MonoBehaviour
             for (int playerIdx = 0; playerIdx < numPlayers - 1; playerIdx++)
             {
                 float playerAngle = playerSpacing * playerIdx;
-                player = Instantiate(playerPrefab, gameObject.transform);
+                player = Instantiate(aiPlayerPrefab, gameObject.transform);
                 player.transform.localPosition += getEllipsePositionAtAngle(playerAngle);
                 player.transform.Rotate(new Vector3(0, 0, 270 - playerAngle));
                 allPlayers.Add(player);

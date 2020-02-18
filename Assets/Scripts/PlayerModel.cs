@@ -84,7 +84,7 @@ public class PlayerModel : MonoBehaviour
         UpdatePlayerInfoText();
     }
 
-    internal int MakeBid(int bidTotal, int cardCount, bool restricted = false)
+    public virtual int MakeBid(int bidTotal, int cardCount, bool restricted = false)
     {
         // random bidding, even for player (for now)
         int bid = UnityEngine.Random.Range(0, cardCount + 1);
