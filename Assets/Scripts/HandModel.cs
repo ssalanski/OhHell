@@ -51,7 +51,6 @@ public class HandModel : MonoBehaviour
             cardModel.ShowCard();
             currentTrick.TakeCard(cardModel);
             OrganizeCards();
-            GetComponentInParent<PlayerModel>().SetTurnFlag(false);
         }
         else
         {

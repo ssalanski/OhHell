@@ -170,8 +170,7 @@ public class GameManager : MonoBehaviour
         {
             int playerIndex = (turnIndex + leadOffset) % numPlayers;
             PlayerModel currentPlayer = allPlayers[playerIndex].GetComponent<PlayerModel>();
-            currentPlayer.SetTurnFlag(true); // (currentTrick, trumpCard.GetComponent<CardModel>().thisCard.suit);
-            yield return new WaitUntil(() => !currentPlayer.IsYourTurn());
+            yield return currentPlayer.TakeTurn();
         }
         GameObject winner = currentTrick.GetWinner(trumpCard.GetComponent<CardModel>().thisCard.suit);
         Debug.Log(allPlayers.IndexOf(winner) + " won that trick");

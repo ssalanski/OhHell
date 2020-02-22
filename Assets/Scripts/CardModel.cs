@@ -15,6 +15,7 @@ public class CardModel : MonoBehaviour
     float startTime;
     Vector3 startPosition;
     Vector3 endPosition;
+    Action onComplete;
 
     SpriteRenderer spriteRenderer;
 
@@ -37,6 +38,7 @@ public class CardModel : MonoBehaviour
             {
                 transform.position = endPosition;
                 sliding = false;
+                onComplete();
             }
             else
             {
@@ -97,13 +99,14 @@ public class CardModel : MonoBehaviour
             spriteRenderer.sprite = cardBack;
         }
     }
-
-    internal void SlideToPosition(Vector3 playedCardDestination)
+    
+    internal void SlideToPosition(Vector3 playedCardDestination, Action a)
     {
         startTime = Time.time;
         startPosition = transform.position;
         sliding = true;
         endPosition = playedCardDestination;
+        onComplete = a;
     }
 
     public static Comparison<CardModel> basicComparison = (c1, c2) => (int)c1.thisCard.suit * 20 + c1.thisCard.denom - (int)c2.thisCard.suit * 20 - c2.thisCard.denom;

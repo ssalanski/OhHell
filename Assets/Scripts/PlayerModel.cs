@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -119,5 +120,11 @@ public class PlayerModel : MonoBehaviour
     internal void SetCurrentTrick(TrickModel newCurrentTrick)
     {
         currentTrick = newCurrentTrick;
+    }
+
+    internal IEnumerator TakeTurn()
+    {
+        SetTurnFlag(true);
+        return new WaitUntil(() => !IsYourTurn());
     }
 }
