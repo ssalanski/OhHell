@@ -53,29 +53,7 @@ public class PlayerModel : MonoBehaviour
 
     public virtual void SetTurnFlag(bool isYourTurn)
     {
-        if (isYourTurn == yourTurn)
-        {
-            // no change in turn state, dont do anything
-            return;
-        }
-
-        if (isYourTurn)
-        {
-            LineRenderer lr = gameObject.AddComponent<LineRenderer>();
-            lr.SetPosition(0, gameObject.transform.position + Vector3.back * 0.25f);
-            lr.SetPosition(1, gameObject.transform.parent.position + Vector3.back * 0.25f);
-            lr.startWidth = 1;
-            lr.endWidth = 0;
-            lr.material.color = Color.green;
-            lr.alignment = LineAlignment.TransformZ;
-            yourTurn = true;
-        }
-        else
-        {
-            LineRenderer turnLine = gameObject.GetComponent<LineRenderer>();
-            Destroy(turnLine);
-            yourTurn = false;
-        }
+        yourTurn = isYourTurn;
     }
 
     public bool IsYourTurn()
