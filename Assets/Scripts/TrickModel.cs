@@ -22,11 +22,15 @@ public class TrickModel : MonoBehaviour
         playedCard.showing = true;
         
         cards.Add(playedCard.thisCard, playedCard.transform.parent.gameObject);
+
+        // snap transform to look at source hand, to get the vector representing one unit towards that player
         Transform sourceHand = playedCard.transform.parent;
+        gameObject.transform.LookAt(sourceHand);
+        Vector3 playedCardDestination = gameObject.transform.TransformVector(Vector3.forward);
+        gameObject.transform.rotation = Quaternion.identity; // snap transform back
 
         playedCard.transform.parent = gameObject.transform;
-        playedCard.transform.localPosition = new Vector3(0, 0, 0);
-        playedCard.transform.Translate(Vector3.down, sourceHand);
+        playedCard.transform.position = playedCardDestination;
 
         if (lead == null)
         {
