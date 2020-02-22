@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-
     // prefabs linked in from unity editor
     public GameObject playerPrefab;
     public GameObject aiPlayerPrefab;
@@ -24,6 +23,8 @@ public class GameManager : MonoBehaviour
     private GameObject leader;
     private GameObject trumpCard;
     private Deck deck;
+
+    private bool gameOver = false;
 
     // actual constants
     private const float tableMinor = 3.5f;
@@ -103,6 +104,8 @@ public class GameManager : MonoBehaviour
             int handCardCount = handNumber < cardCount ? 2 - cardCounts[handNumber] : cardCounts[handNumber];
             yield return PlayRound(handCardCount, handNumber % numPlayers);
         }
+        gameOver = true;
+        scorekeeper.Show();
     }
 
     private void DealNewHand(int numberOfCards)
@@ -189,13 +192,16 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (!gameOver)
         {
-            scorekeeper.show();
-        }
-        else if (Input.GetKeyUp(KeyCode.Tab))
-        {
-            scorekeeper.hide();
+            if (Input.GetKeyDown(KeyCode.Tab))
+            {
+                scorekeeper.Show();
+            }
+            else if (Input.GetKeyUp(KeyCode.Tab))
+            {
+                scorekeeper.Hide();
+            }
         }
     }
 

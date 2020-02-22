@@ -21,7 +21,7 @@ public class Scorekeeper : MonoBehaviour
     {
         int numPlayers = GameObject.Find("OhHellGame").GetComponent<OptionsManager>().playerCount;
         scoreTable = GameObject.Find("ScoreTable").gameObject;
-        hide();
+        Hide();
     }
     // Start is called before the first frame update
     void Start()
@@ -52,12 +52,12 @@ public class Scorekeeper : MonoBehaviour
         }
     }
 
-    public void show()
+    public void Show()
     {
         gameObject.SetActive(true);
     }
 
-    public void hide()
+    public void Hide()
     {
         gameObject.SetActive(false);
     }
