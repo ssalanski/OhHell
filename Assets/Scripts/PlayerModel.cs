@@ -94,6 +94,10 @@ public class PlayerModel : MonoBehaviour
         playerInfo.text = "Bid: ?, Taken: -";
         currentBid = -1;
         tricksTakenCount = 0;
+        foreach( TrickModel trick in tricksTaken)
+        {
+            GameObject.Destroy(trick.gameObject);
+        }
         tricksTaken.Clear();
     }
 
