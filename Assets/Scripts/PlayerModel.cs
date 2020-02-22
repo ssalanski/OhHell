@@ -5,12 +5,11 @@ using UnityEngine;
 public class PlayerModel : MonoBehaviour
 {
 
-    public string playerName;
+    public string playerName = "";
     public TextMesh playerInfo;
 
     public int currentBid = 0;
     public int tricksTakenCount = 0;
-    public int score = 0;
     private List<TrickModel> tricksTaken;
     protected TrickModel currentTrick;
 
@@ -78,13 +77,6 @@ public class PlayerModel : MonoBehaviour
         return yourTurn;
     }
 
-    public void TakeTrick(TrickModel trick)
-    {
-        tricksTaken.Add(trick);
-        tricksTakenCount++;
-        UpdatePlayerInfoText();
-    }
-
     public virtual int MakeBid(int bidTotal, int cardCount, bool restricted = false)
     {
         // random bidding, even for player (for now)
@@ -104,23 +96,24 @@ public class PlayerModel : MonoBehaviour
         UpdatePlayerInfoText();
     }
 
-    private void UpdatePlayerInfoText(bool includeScore = false)
+    public void TakeTrick(TrickModel trick)
     {
-        if (includeScore)
-        {
-            playerInfo.text = String.Format("Bid: {0}, Taken: {1}\nScore:{2}", currentBid, tricksTakenCount, score);
-            playerInfo.transform.localPosition = new Vector3(0, 0, -2);
-        }
-        else
-        {
-            playerInfo.text = String.Format("Bid: {0}, Taken: {1}", currentBid, tricksTakenCount);
-        }
+        tricksTaken.Add(trick);
+        tricksTakenCount++;
+        UpdatePlayerInfoText();
     }
 
-    internal void UpdateScore()
+    public void Reset()
     {
-        score = currentBid == tricksTakenCount ? 10 + tricksTakenCount * tricksTakenCount : -5 * Math.Abs(currentBid - tricksTakenCount);
-        UpdatePlayerInfoText(true);
+        playerInfo.text = "Bid: ?, Taken: -";
+        currentBid = -1;
+        tricksTakenCount = 0;
+        tricksTaken.Clear();
+    }
+
+    private void UpdatePlayerInfoText()
+    {
+        playerInfo.text = String.Format("Bid: {0}, Taken: {1}", currentBid, tricksTakenCount);
     }
 
     internal void SetCurrentTrick(TrickModel newCurrentTrick)

@@ -34,11 +34,11 @@ public class GameManager : MonoBehaviour
         numPlayers = GameObject.Find("OhHellGame").GetComponent<OptionsManager>().playerCount;
         cardCount = GameObject.Find("OhHellGame").GetComponent<OptionsManager>().cardCount;
         scorekeeper = GameObject.Find("ScorecardPanel").GetComponent<Scorekeeper>();
+        SetTable();
     }
 
     void Start()
     {
-        SetTable();
         StartCoroutine(PlayGame());
     }
 
@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
         player.GetComponent<HandModel>().setFaceUp(true);
         player.GetComponent<PlayerModel>().playerInfo.anchor = TextAnchor.UpperCenter;
         player.GetComponent<PlayerModel>().playerInfo.transform.Rotate(new Vector3(0, 0, 180));
+        player.GetComponent<PlayerModel>().playerName = "You";
 
         // instantiate the other players hands, placement/spacing depends on count
         allPlayers = new List<GameObject>(numPlayers);
@@ -61,6 +62,7 @@ public class GameManager : MonoBehaviour
             player = Instantiate(aiPlayerPrefab, gameObject.transform);
             player.transform.localPosition += Vector3.up * tableMinor;
             player.transform.Rotate(new Vector3(0, 0, 180));
+            player.GetComponent<PlayerModel>().playerName = "Them";
             allPlayers.Add(player);
         }
         else if (numPlayers == 3)
@@ -68,11 +70,13 @@ public class GameManager : MonoBehaviour
             player = Instantiate(aiPlayerPrefab, gameObject.transform);
             player.transform.localPosition += getEllipsePositionAtAngle(30);
             player.transform.Rotate(new Vector3(0, 0, -120));
+            player.GetComponent<PlayerModel>().playerName = "Dumb";
             allPlayers.Add(player);
 
             player = Instantiate(aiPlayerPrefab, gameObject.transform);
             player.transform.localPosition += getEllipsePositionAtAngle(150);
             player.transform.Rotate(new Vector3(0, 0, 120));
+            player.GetComponent<PlayerModel>().playerName = "Dumber";
             allPlayers.Add(player);
         }
         else
@@ -84,10 +88,11 @@ public class GameManager : MonoBehaviour
                 player = Instantiate(aiPlayerPrefab, gameObject.transform);
                 player.transform.localPosition += getEllipsePositionAtAngle(playerAngle);
                 player.transform.Rotate(new Vector3(0, 0, 270 - playerAngle));
+                player.GetComponent<PlayerModel>().playerName = "AI " + (playerIdx + 1);
                 allPlayers.Add(player);
             }
         }
-
+        scorekeeper.Initialize(allPlayers.Select<GameObject, PlayerModel>(pObj => pObj.GetComponent<PlayerModel>()).ToList());
     }
 
     private IEnumerator PlayGame()
@@ -136,9 +141,10 @@ public class GameManager : MonoBehaviour
             currentTrick.gameObject.SetActive(false);  // not destroying it because this info may be useful later
         }
         Debug.Log("played all cards in this round");
+        scorekeeper.RecordRoundScores();
         foreach (GameObject player in allPlayers)
         {
-            player.GetComponent<PlayerModel>().UpdateScore();
+            player.GetComponent<PlayerModel>().Reset();
         }
     }
 
@@ -183,7 +189,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Tab))
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
             scorekeeper.show();
         }
