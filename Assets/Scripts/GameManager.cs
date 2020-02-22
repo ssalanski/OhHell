@@ -5,11 +5,14 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+
     // prefabs linked in from unity editor
     public GameObject playerPrefab;
     public GameObject aiPlayerPrefab;
     public GameObject trickPrefab;
     public GameObject cardPrefab;
+
+    private GameObject scorecard;
 
     // game setting value
     public int numPlayers;
@@ -30,6 +33,8 @@ public class GameManager : MonoBehaviour
     {
         numPlayers = GameObject.Find("OhHellGame").GetComponent<OptionsManager>().playerCount;
         cardCount = GameObject.Find("OhHellGame").GetComponent<OptionsManager>().cardCount;
+        scorecard = GameObject.Find("ScorecardPanel");
+        scorecard.SetActive(false);
     }
 
     void Start()
@@ -179,6 +184,14 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(Input.GetKeyDown(KeyCode.Tab))
+        {
+            scorecard.SetActive(true);
+        }
+        else if (Input.GetKeyUp(KeyCode.Tab))
+        {
+            scorecard.SetActive(false);
+        }
     }
 
 }
