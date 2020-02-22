@@ -91,7 +91,6 @@ public class CardModel : MonoBehaviour
         {
             int spriteIndex = ((int)thisCard.suit) * 13 + thisCard.denom - 1;
             spriteIndex = spriteIndex % 13 == 0 ? spriteIndex - 13 : spriteIndex;
-            System.Console.WriteLine(spriteIndex);
             spriteRenderer.sprite = cardFaces[spriteIndex];
         }
         else

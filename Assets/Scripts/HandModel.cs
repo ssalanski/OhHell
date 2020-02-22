@@ -54,7 +54,7 @@ public class HandModel : MonoBehaviour
         }
         else
         {
-            Debug.Log("its not your turn!");
+            Debug.LogWarning("Can't play card if it's not your turn!");
         }
     }
 

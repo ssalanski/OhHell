@@ -93,7 +93,6 @@ public class TrickModel : MonoBehaviour
         startPosition = transform.localPosition;
         sliding = true;
         endPosition = Vector3.left * 2;
-        Debug.Log("going to slide from " + startPosition + " to " + endPosition);
-        onComplete = delegate () { };
+        onComplete = delegate () { }; // TODO: implement similar wait-for-slide-completion before proceeding with next trick
     }
 }

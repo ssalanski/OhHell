@@ -149,7 +149,7 @@ public class GameManager : MonoBehaviour
             }
             yield return PlayTrick(allPlayers.IndexOf(leader));
         }
-        Debug.Log("played all cards in this round");
+
         scorekeeper.RecordRoundScores();
         scorekeeper.Show();
         yield return new WaitUntil(() => !scorekeeper.gameObject.activeInHierarchy);
@@ -181,7 +181,6 @@ public class GameManager : MonoBehaviour
             yield return currentPlayer.TakeTurn();
         }
         PlayerModel winner = currentTrick.GetWinner(trumpCard.GetComponent<CardModel>().thisCard.suit);
-        Debug.Log(winner.playerName + " won that trick");
         winner.TakeTrick(currentTrick);
         leader = winner;
         yield return new WaitForSeconds(2);
