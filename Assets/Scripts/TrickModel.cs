@@ -30,7 +30,7 @@ public class TrickModel : MonoBehaviour
         gameObject.transform.rotation = Quaternion.identity; // snap transform back
 
         playedCard.transform.parent = gameObject.transform;
-        playedCard.transform.position = playedCardDestination;
+        playedCard.SlideToPosition(playedCardDestination);
 
         if (lead == null)
         {

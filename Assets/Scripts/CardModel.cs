@@ -10,6 +10,12 @@ public class CardModel : MonoBehaviour
     public Card thisCard;
     public bool showing;
 
+    const float SLIDE_TIME = 1; // one second
+    bool sliding = false;
+    float startTime;
+    Vector3 startPosition;
+    Vector3 endPosition;
+
     SpriteRenderer spriteRenderer;
 
     private void Awake()
@@ -24,7 +30,19 @@ public class CardModel : MonoBehaviour
 
     private void Update()
     {
-
+        if (sliding)
+        {
+            float progress = (Time.time - startTime) / SLIDE_TIME;
+            if (progress >= 1)
+            {
+                transform.position = endPosition;
+                sliding = false;
+            }
+            else
+            {
+                transform.position = Vector3.Lerp(startPosition, endPosition, progress);
+            }
+        }
     }
 
     private void OnMouseDown()
@@ -78,6 +96,14 @@ public class CardModel : MonoBehaviour
         {
             spriteRenderer.sprite = cardBack;
         }
+    }
+
+    internal void SlideToPosition(Vector3 playedCardDestination)
+    {
+        startTime = Time.time;
+        startPosition = transform.position;
+        sliding = true;
+        endPosition = playedCardDestination;
     }
 
     public static Comparison<CardModel> basicComparison = (c1, c2) => (int)c1.thisCard.suit * 20 + c1.thisCard.denom - (int)c2.thisCard.suit * 20 - c2.thisCard.denom;
