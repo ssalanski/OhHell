@@ -148,7 +148,6 @@ public class GameManager : MonoBehaviour
                 player.GetHand().SetCurrentTrick(currentTrick);
             }
             yield return PlayTrick(allPlayers.IndexOf(leader));
-            currentTrick.gameObject.SetActive(false);  // not destroying it because this info may be useful later
         }
         Debug.Log("played all cards in this round");
         scorekeeper.RecordRoundScores();
