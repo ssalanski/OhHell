@@ -151,6 +151,8 @@ public class GameManager : MonoBehaviour
         }
         Debug.Log("played all cards in this round");
         scorekeeper.RecordRoundScores();
+        scorekeeper.Show();
+        yield return new WaitUntil(() => !scorekeeper.gameObject.activeInHierarchy);
         foreach (PlayerModel player in allPlayers)
         {
             player.Reset();
