@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     public GameObject trickPrefab;
     public GameObject cardPrefab;
 
-    private GameObject scorecard;
+    private Scorekeeper scorekeeper;
 
     // game setting value
     public int numPlayers;
@@ -33,8 +33,7 @@ public class GameManager : MonoBehaviour
     {
         numPlayers = GameObject.Find("OhHellGame").GetComponent<OptionsManager>().playerCount;
         cardCount = GameObject.Find("OhHellGame").GetComponent<OptionsManager>().cardCount;
-        scorecard = GameObject.Find("ScorecardPanel");
-        scorecard.SetActive(false);
+        scorekeeper = GameObject.Find("ScorecardPanel").GetComponent<Scorekeeper>();
     }
 
     void Start()
@@ -186,11 +185,11 @@ public class GameManager : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Tab))
         {
-            scorecard.SetActive(true);
+            scorekeeper.show();
         }
         else if (Input.GetKeyUp(KeyCode.Tab))
         {
-            scorecard.SetActive(false);
+            scorekeeper.hide();
         }
     }
 
