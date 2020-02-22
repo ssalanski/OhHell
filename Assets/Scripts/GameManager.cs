@@ -18,9 +18,9 @@ public class GameManager : MonoBehaviour
     public int cardCount;
 
     // containers that change throughout the game
-    private List<GameObject> allPlayers;
+    private List<PlayerModel> allPlayers;
     private TrickModel currentTrick;
-    private GameObject leader;
+    private PlayerModel leader;
     private GameObject trumpCard;
     private Deck deck;
 
@@ -45,40 +45,46 @@ public class GameManager : MonoBehaviour
 
     private void SetTable()
     {
-        GameObject player;
+        allPlayers = new List<PlayerModel>(numPlayers);
+
+        GameObject playerObject;
+        PlayerModel playerModel;
 
         // instantiate the (human) players hand
-        player = Instantiate(playerPrefab, gameObject.transform);
-        player.transform.localPosition += Vector3.down * tableMinor;
-        player.GetComponent<HandModel>().setFaceUp(true);
-        player.GetComponent<PlayerModel>().playerInfo.anchor = TextAnchor.UpperCenter;
-        player.GetComponent<PlayerModel>().playerInfo.transform.Rotate(new Vector3(0, 0, 180));
-        player.GetComponent<PlayerModel>().playerName = "You";
+        playerObject = Instantiate(playerPrefab, gameObject.transform);
+        playerObject.transform.localPosition += Vector3.down * tableMinor;
+        playerModel = playerObject.GetComponent<PlayerModel>();
+        playerModel.playerInfo.anchor = TextAnchor.UpperCenter;
+        playerModel.playerInfo.transform.Rotate(new Vector3(0, 0, 180));
+        playerModel.GetHand().setFaceUp(true);
+        playerModel.playerName = "You";
+        allPlayers.Add(playerModel);
 
         // instantiate the other players hands, placement/spacing depends on count
-        allPlayers = new List<GameObject>(numPlayers);
-        allPlayers.Add(player);
         if (numPlayers == 2)
         {
-            player = Instantiate(aiPlayerPrefab, gameObject.transform);
-            player.transform.localPosition += Vector3.up * tableMinor;
-            player.transform.Rotate(new Vector3(0, 0, 180));
-            player.GetComponent<PlayerModel>().playerName = "Them";
-            allPlayers.Add(player);
+            playerObject = Instantiate(aiPlayerPrefab, gameObject.transform);
+            playerObject.transform.localPosition += Vector3.up * tableMinor;
+            playerObject.transform.Rotate(new Vector3(0, 0, 180));
+            playerModel = playerObject.GetComponent<PlayerModel>();
+            playerModel.playerName = "Them";
+            allPlayers.Add(playerModel);
         }
         else if (numPlayers == 3)
         {
-            player = Instantiate(aiPlayerPrefab, gameObject.transform);
-            player.transform.localPosition += getEllipsePositionAtAngle(30);
-            player.transform.Rotate(new Vector3(0, 0, -120));
-            player.GetComponent<PlayerModel>().playerName = "Dumb";
-            allPlayers.Add(player);
+            playerObject = Instantiate(aiPlayerPrefab, gameObject.transform);
+            playerObject.transform.localPosition += getEllipsePositionAtAngle(30);
+            playerObject.transform.Rotate(new Vector3(0, 0, -120));
+            playerModel = playerObject.GetComponent<PlayerModel>();
+            playerModel.playerName = "Dumb";
+            allPlayers.Add(playerModel);
 
-            player = Instantiate(aiPlayerPrefab, gameObject.transform);
-            player.transform.localPosition += getEllipsePositionAtAngle(150);
-            player.transform.Rotate(new Vector3(0, 0, 120));
-            player.GetComponent<PlayerModel>().playerName = "Dumber";
-            allPlayers.Add(player);
+            playerObject = Instantiate(aiPlayerPrefab, gameObject.transform);
+            playerObject.transform.localPosition += getEllipsePositionAtAngle(150);
+            playerObject.transform.Rotate(new Vector3(0, 0, 120));
+            playerModel = playerObject.GetComponent<PlayerModel>();
+            playerModel.playerName = "Dumber";
+            allPlayers.Add(playerModel);
         }
         else
         {
@@ -86,14 +92,15 @@ public class GameManager : MonoBehaviour
             for (int playerIdx = 0; playerIdx < numPlayers - 1; playerIdx++)
             {
                 float playerAngle = playerSpacing * playerIdx;
-                player = Instantiate(aiPlayerPrefab, gameObject.transform);
-                player.transform.localPosition += getEllipsePositionAtAngle(playerAngle);
-                player.transform.Rotate(new Vector3(0, 0, 270 - playerAngle));
-                player.GetComponent<PlayerModel>().playerName = "AI " + (playerIdx + 1);
-                allPlayers.Add(player);
+                playerObject = Instantiate(aiPlayerPrefab, gameObject.transform);
+                playerObject.transform.localPosition += getEllipsePositionAtAngle(playerAngle);
+                playerObject.transform.Rotate(new Vector3(0, 0, 270 - playerAngle));
+                playerModel = playerObject.GetComponent<PlayerModel>();
+                playerModel.playerName = "AI " + (playerIdx + 1);
+                allPlayers.Add(playerModel);
             }
         }
-        scorekeeper.Initialize(allPlayers.Select<GameObject, PlayerModel>(pObj => pObj.GetComponent<PlayerModel>()).ToList());
+        scorekeeper.Initialize(allPlayers);
     }
 
     private IEnumerator PlayGame()
@@ -114,9 +121,9 @@ public class GameManager : MonoBehaviour
 
         for (int cardNumber = 0; cardNumber < numberOfCards; cardNumber++)
         {
-            foreach (GameObject player in allPlayers)
+            foreach (PlayerModel player in allPlayers)
             {
-                player.GetComponent<HandModel>().TakeCard(deck.DrawCard());
+                player.GetHand().TakeCard(deck.DrawCard());
             }
         }
 
@@ -135,19 +142,19 @@ public class GameManager : MonoBehaviour
         {
             GameObject trickAnchor = Instantiate(trickPrefab, gameObject.transform);
             currentTrick = trickAnchor.GetComponent<TrickModel>();
-            foreach (GameObject player in allPlayers)
+            foreach (PlayerModel player in allPlayers)
             {
-                player.GetComponent<PlayerModel>().SetCurrentTrick(currentTrick);
-                player.GetComponent<HandModel>().SetCurrentTrick(currentTrick);
+                player.SetCurrentTrick(currentTrick);
+                player.GetHand().SetCurrentTrick(currentTrick);
             }
             yield return PlayTrick(allPlayers.IndexOf(leader));
             currentTrick.gameObject.SetActive(false);  // not destroying it because this info may be useful later
         }
         Debug.Log("played all cards in this round");
         scorekeeper.RecordRoundScores();
-        foreach (GameObject player in allPlayers)
+        foreach (PlayerModel player in allPlayers)
         {
-            player.GetComponent<PlayerModel>().Reset();
+            player.Reset();
         }
     }
 
@@ -158,7 +165,7 @@ public class GameManager : MonoBehaviour
         for (int bidIndex = 1; bidIndex < numPlayers; bidIndex++)
         {
             int playerIndex = (bidIndex + dealerOffset) % numPlayers;
-            bidTotal += allPlayers[playerIndex].GetComponentInParent<PlayerModel>().MakeBid(bidTotal, cardCount);
+            bidTotal += allPlayers[playerIndex].MakeBid(bidTotal, cardCount);
         }
         // now have the dealer bid, passing restricted=true
         leader.GetComponentInParent<PlayerModel>().MakeBid(bidTotal, cardCount, true);
@@ -169,12 +176,12 @@ public class GameManager : MonoBehaviour
         for (int turnIndex = 0; turnIndex < numPlayers; turnIndex++)
         {
             int playerIndex = (turnIndex + leadOffset) % numPlayers;
-            PlayerModel currentPlayer = allPlayers[playerIndex].GetComponent<PlayerModel>();
+            PlayerModel currentPlayer = allPlayers[playerIndex];
             yield return currentPlayer.TakeTurn();
         }
-        GameObject winner = currentTrick.GetWinner(trumpCard.GetComponent<CardModel>().thisCard.suit);
-        Debug.Log(allPlayers.IndexOf(winner) + " won that trick");
-        winner.GetComponentInParent<PlayerModel>().TakeTrick(currentTrick);
+        PlayerModel winner = currentTrick.GetWinner(trumpCard.GetComponent<CardModel>().thisCard.suit);
+        Debug.Log(winner.playerName + " won that trick");
+        winner.TakeTrick(currentTrick);
         leader = winner;
         yield return new WaitForSeconds(2);
     }

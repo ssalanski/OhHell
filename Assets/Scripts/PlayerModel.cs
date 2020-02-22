@@ -46,6 +46,11 @@ public class PlayerModel : MonoBehaviour
 
     }
 
+    public HandModel GetHand()
+    {
+        return GetComponentInParent<HandModel>();
+    }
+
     public virtual void SetTurnFlag(bool isYourTurn)
     {
         if (isYourTurn == yourTurn)

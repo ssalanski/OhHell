@@ -22,8 +22,8 @@ public class AIPlayerModel : PlayerModel
         base.SetTurnFlag(isYourTurn);
         if (IsYourTurn())
         {
-            CardModel chosen = ChooseCard(gameObject.GetComponentInParent<HandModel>().getCards(), currentTrick);
-            gameObject.GetComponentInParent<HandModel>().PlayCard(chosen);
+            CardModel chosen = ChooseCard(GetHand().getCards(), currentTrick);
+            GetHand().PlayCard(chosen);
         }
     }
 
