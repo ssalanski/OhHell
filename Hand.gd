@@ -9,11 +9,11 @@ var cards = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	receive_card(11)
-	receive_card(22)
-	receive_card(33)
-	receive_card(44)
+	pass
 
+func show_hand():
+	for card in cards:
+		card.set_faceup(true)
 
 func receive_card(c):
 	var new_card = Card.instance()

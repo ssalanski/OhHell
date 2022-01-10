@@ -17,9 +17,10 @@ func set_table():
 	player.position = $MainPlayerAnchor.position
 	player.receive_card(3)
 	player.receive_card(5)
-	player.receive_card(12)
+	player.receive_card(32)
 	player.receive_card(46)
 	player.receive_card(50)
+	player.show_hand()
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

@@ -1,18 +1,24 @@
 extends Node2D
 
+var value = null
+var faceup = false
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-
+const FACEDOWN = 52
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$CardFace.frame = 52
 
-func set_value(val):
-	$CardFace.frame = val
+func set_faceup(f):
+	faceup = f
+	update_face()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func set_value(v):
+	value = v
+	update_face()
+
+func update_face():
+	if faceup:
+		$CardFace.frame = value
+	else:
+		$CardFace.frame = FACEDOWN
