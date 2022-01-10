@@ -1,20 +1,23 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://assets/art/table.png" type="Texture" id=1]
 [ext_resource path="res://Hand.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Game.gd" type="Script" id=3]
 
-[node name="Node2D" type="Node2D"]
+[node name="GameNode" type="Node2D"]
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_vertical_guides_": [ 512.0 ]
+}
+Hand = ExtResource( 2 )
 
 [node name="Table" type="Sprite" parent="."]
-scale = Vector2( 0.71, 0.67 )
+scale = Vector2( 0.706207, 0.666667 )
 texture = ExtResource( 1 )
 centered = false
 
-[node name="player1" parent="." instance=ExtResource( 2 )]
-position = Vector2( 586, 419 )
+[node name="MainPlayerAnchor" type="Position2D" parent="."]
+position = Vector2( 512, 514 )
 
-[node name="player2" parent="." instance=ExtResource( 2 )]
-position = Vector2( 784, 144 )
-
-[node name="player3" parent="." instance=ExtResource( 2 )]
-position = Vector2( 324, 278 )
+[node name="TrumpCardAnchor" type="Position2D" parent="."]
+position = Vector2( 94, 514 )

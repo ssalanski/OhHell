@@ -24,7 +24,7 @@ func receive_card(c):
 	
 const CARD_GAP = 30
 func arrange_hand():
-	var h = (cards.size() - 1) * CARD_GAP/2
+	var h = -CARD_GAP/2 * (cards.size() - 1)
 	for card in cards:
 		card.position = Vector2(h,0)
 		h = h + CARD_GAP
