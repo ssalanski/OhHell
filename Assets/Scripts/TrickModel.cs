@@ -95,12 +95,12 @@ public class TrickModel : MonoBehaviour
         winning.gameObject.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
     }
 
-    internal void SlideToPlayer()
+    internal void SlideToPlayer(int trickSlot)
     {
         startTime = Time.time;
         startPosition = transform.localPosition;
         sliding = true;
-        endPosition = Vector3.left * 2;
+        endPosition = Vector3.left * (2 + trickSlot * 0.25f);
         onComplete = delegate () { }; // TODO: implement similar wait-for-slide-completion before proceeding with next trick
     }
 

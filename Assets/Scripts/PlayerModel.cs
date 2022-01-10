@@ -83,7 +83,7 @@ public class PlayerModel : MonoBehaviour
     public void TakeTrick(TrickModel trick)
     {
         trick.transform.parent = gameObject.transform;
-        trick.SlideToPlayer();
+        trick.SlideToPlayer(tricksTakenCount);
         tricksTaken.Add(trick);
         tricksTakenCount++;
         UpdatePlayerInfoText();
