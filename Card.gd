@@ -10,6 +10,8 @@ extends Node2D
 func _ready():
 	$CardFace.frame = 52
 
+func set_value(val):
+	$CardFace.frame = val
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):

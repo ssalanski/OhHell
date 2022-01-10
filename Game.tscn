@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://assets/art/table.png" type="Texture" id=1]
+[ext_resource path="res://Hand.tscn" type="PackedScene" id=2]
 
 [node name="Node2D" type="Node2D"]
 
@@ -8,3 +9,12 @@
 scale = Vector2( 0.71, 0.67 )
 texture = ExtResource( 1 )
 centered = false
+
+[node name="player1" parent="." instance=ExtResource( 2 )]
+position = Vector2( 586, 419 )
+
+[node name="player2" parent="." instance=ExtResource( 2 )]
+position = Vector2( 784, 144 )
+
+[node name="player3" parent="." instance=ExtResource( 2 )]
+position = Vector2( 324, 278 )
