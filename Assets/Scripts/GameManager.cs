@@ -158,6 +158,7 @@ public class GameManager : MonoBehaviour
         {
             player.Reset();
         }
+        GameObject.Destroy(trumpCard);
     }
 
     private void BidRound(int cardCount, int dealerOffset)
