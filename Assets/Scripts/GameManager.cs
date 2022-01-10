@@ -112,7 +112,7 @@ public class GameManager : MonoBehaviour
             yield return PlayRound(handCardCount, handNumber % numPlayers);
         }
         gameOver = true;
-        scorekeeper.Show();
+        scorekeeper.Show(true);
     }
 
     private void DealNewHand(int numberOfCards)
@@ -142,6 +142,7 @@ public class GameManager : MonoBehaviour
         {
             GameObject trickAnchor = Instantiate(trickPrefab, gameObject.transform);
             currentTrick = trickAnchor.GetComponent<TrickModel>();
+            currentTrick.SetTrump(trumpCard.GetComponent<CardModel>().thisCard.suit);
             foreach (PlayerModel player in allPlayers)
             {
                 player.SetCurrentTrick(currentTrick);
@@ -151,7 +152,7 @@ public class GameManager : MonoBehaviour
         }
 
         scorekeeper.RecordRoundScores();
-        scorekeeper.Show();
+        scorekeeper.Show(true);
         yield return new WaitUntil(() => !scorekeeper.gameObject.activeInHierarchy);
         foreach (PlayerModel player in allPlayers)
         {
@@ -181,6 +182,8 @@ public class GameManager : MonoBehaviour
             yield return currentPlayer.TakeTurn();
         }
         PlayerModel winner = currentTrick.GetWinner(trumpCard.GetComponent<CardModel>().thisCard.suit);
+        currentTrick.HilightWinner();
+        yield return new WaitForSeconds(2);
         winner.TakeTrick(currentTrick);
         leader = winner;
         yield return new WaitForSeconds(2);
@@ -202,7 +205,7 @@ public class GameManager : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Tab))
             {
-                scorekeeper.Show();
+                scorekeeper.Show(false);
             }
             else if (Input.GetKeyUp(KeyCode.Tab))
             {

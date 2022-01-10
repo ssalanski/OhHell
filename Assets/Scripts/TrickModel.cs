@@ -8,7 +8,9 @@ public class TrickModel : MonoBehaviour
     public GameObject cardPrefab;
 
     public Dictionary<CardModel, PlayerModel> cards;
+    public Suit trumpSuit;
     public Suit? lead; // is using nullable '?' the best practice?
+    public CardModel winning = null;
 
     const float SLIDE_TIME = 1; // one second
     bool sliding = false;
@@ -44,6 +46,14 @@ public class TrickModel : MonoBehaviour
             lead = playedCard.thisCard.suit;
         }
 
+        foreach (CardModel cm in cards.Keys)
+        {
+            if (cm.thisCard.Beats(winning?.thisCard, lead.Value, trumpSuit))
+            {
+                winning = cm;
+            }
+        }
+
     }
 
     // Update is called once per frame
@@ -69,6 +79,7 @@ public class TrickModel : MonoBehaviour
                 {
                     child.localRotation = Quaternion.Lerp(child.localRotation, Quaternion.identity, progress * .1f);
                     child.localPosition = Vector3.Lerp(child.localPosition, Vector3.zero, progress * .1f);
+                    child.localScale = Vector3.Lerp(transform.localScale, new Vector3(1, 1, 1), progress * 0.1f);
                 }
             }
         }
@@ -76,15 +87,12 @@ public class TrickModel : MonoBehaviour
 
     internal PlayerModel GetWinner(Suit trumpSuit)
     {
-        CardModel winning = null;
-        foreach (CardModel cm in cards.Keys)
-        {
-            if (cm.thisCard.Beats(winning?.thisCard, lead.Value, trumpSuit))
-            {
-                winning = cm;
-            }
-        }
         return cards[winning];
+    }
+
+    internal void HilightWinner()
+    {
+        winning.gameObject.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
     }
 
     internal void SlideToPlayer()
@@ -94,5 +102,10 @@ public class TrickModel : MonoBehaviour
         sliding = true;
         endPosition = Vector3.left * 2;
         onComplete = delegate () { }; // TODO: implement similar wait-for-slide-completion before proceeding with next trick
+    }
+
+    internal void SetTrump(Suit suit)
+    {
+        trumpSuit = suit;
     }
 }

@@ -52,8 +52,9 @@ public class Scorekeeper : MonoBehaviour
         }
     }
 
-    public void Show()
+    public void Show(bool displayDismissPrompt)
     {
+
         gameObject.SetActive(true);
     }
 
