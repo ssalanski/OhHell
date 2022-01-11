@@ -2,6 +2,8 @@ extends Node2D
 
 export(PackedScene) var Card
 
+signal play_card(ref)
+
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
@@ -41,7 +43,13 @@ func on_card_clicked(ref):
 	set_process(true)
 
 func _process(_delta):
-	primed_card = cards[max_click_idx]
+	if primed_card == cards[max_click_idx]:
+		cards.remove(max_click_idx)
+		primed_card.disconnect("card_clicked", self, "on_card_clicked")
+		emit_signal("play_card", primed_card)
+	else:
+		primed_card = cards[max_click_idx]
 	max_click_idx = -1
+	print("%d cards in hand" % cards.size())
 	arrange_hand()
 	set_process(false)

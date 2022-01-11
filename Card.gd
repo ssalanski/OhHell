@@ -25,7 +25,7 @@ func update_face():
 	else:
 		$CardFace.frame = FACEDOWN
 
-func _on_CardNode_input_event(viewport, event, shape_idx):
+func _on_CardNode_input_event(_viewport, event, _shape_idx):
 	if event is InputEventMouseButton:
 		if event.pressed:
 			emit_signal("card_clicked", self)
