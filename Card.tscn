@@ -1,4 +1,4 @@
-[gd_scene load_steps=57 format=2]
+[gd_scene load_steps=58 format=2]
 
 [ext_resource path="res://assets/art/cardsheet.png" type="Texture" id=1]
 [ext_resource path="res://assets/art/cardback.png" type="Texture" id=2]
@@ -272,8 +272,16 @@ animations = [ {
 "speed": 0.0
 } ]
 
-[node name="CardNode" type="Node2D"]
+[sub_resource type="RectangleShape2D" id=54]
+extents = Vector2( 36, 48 )
+
+[node name="CardNode" type="Area2D"]
 script = ExtResource( 3 )
 
 [node name="CardFace" type="AnimatedSprite" parent="."]
 frames = SubResource( 53 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 54 )
+
+[connection signal="input_event" from="." to="." method="_on_CardNode_input_event"]

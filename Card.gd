@@ -1,5 +1,7 @@
 extends Node2D
 
+signal card_clicked(ref)
+
 var value = null
 var faceup = false
 
@@ -22,3 +24,8 @@ func update_face():
 		$CardFace.frame = value
 	else:
 		$CardFace.frame = FACEDOWN
+
+func _on_CardNode_input_event(viewport, event, shape_idx):
+	if event is InputEventMouseButton:
+		if event.pressed:
+			emit_signal("card_clicked", self)
