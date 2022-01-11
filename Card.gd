@@ -25,6 +25,14 @@ func update_face():
 	else:
 		$CardFace.frame = FACEDOWN
 
+# numeric values for comparison purposes
+# club=0,diamond=1,heart=2,spade=3 (since that's the order in cardsheet.png)
+func get_suit():
+	return int(value/13)
+# 2=0,3=1,...Q=10,K=11,A=12
+func get_denom():
+	return value % 13
+
 func _on_CardNode_input_event(_viewport, event, _shape_idx):
 	if event is InputEventMouseButton:
 		if event.pressed:
