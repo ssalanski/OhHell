@@ -1,11 +1,13 @@
 extends Node2D
 
+export(PackedScene) var Card
 export(PackedScene) var Hand
 export(PackedScene) var Trick
 
 const num_players = 4 # TODO: make adjustable
 
 var players = []
+var trumpCard
 var currentTrick
 
 func _init():
@@ -42,6 +44,11 @@ func deal_hand(num_cards):
 			player.receive_card(deck.pop_back())
 	for player in players:
 		player.show_hand()
+	trumpCard = Card.instance()
+	add_child(trumpCard)
+	trumpCard.set_value(deck.pop_back())
+	trumpCard.set_faceup(true)
+	trumpCard.position = $TrumpCardAnchor.position
 
 
 func on_play_card(ref):
