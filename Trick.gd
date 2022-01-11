@@ -1,9 +1,6 @@
 extends Node2D
 
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
 var cards = {}
 var trumpSuit = null
 var leadSuit = null
@@ -18,4 +15,5 @@ func accept_card(player, card):
 	card.look_at(player.position)
 	card.rotate(PI/2)
 	cards[player] = card
-
+	if leadSuit == null:
+		leadSuit = card.get_suit()

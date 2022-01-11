@@ -4,9 +4,7 @@ export(PackedScene) var Card
 
 signal play_card(ref)
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+
 var cards = []
 var max_click_idx = -1
 var primed_card = null
@@ -41,23 +39,39 @@ func arrange_hand():
 
 func on_card_clicked(ref):
 	max_click_idx = max(cards.find(ref), max_click_idx)
+	print(max_click_idx)
 	set_process(true)
 
 func _process(_delta):
-	if primed_card == cards[max_click_idx]:
-		if can_play:
-			cards.remove(max_click_idx)
-			primed_card.disconnect("card_clicked", self, "on_card_clicked")
-			can_play = false
-			emit_signal("play_card", primed_card)
+	var clicked_card = cards[max_click_idx]
+	if is_legal(clicked_card):
+		if primed_card == clicked_card:
+			if can_play:
+				cards.remove(max_click_idx)
+				primed_card.disconnect("card_clicked", self, "on_card_clicked")
+				can_play = false
+				emit_signal("play_card", primed_card)
+			else:
+				print("cant play, not your turn")
 		else:
-			print("cant play, not your turn")
-	else:
-		primed_card = cards[max_click_idx]
+			primed_card = clicked_card
+		print("%d cards in hand" % cards.size())
+		arrange_hand()
 	max_click_idx = -1
-	print("%d cards in hand" % cards.size())
-	arrange_hand()
 	set_process(false)
+
+func is_legal(card):
+	var leadSuit = get_parent().currentTrick.leadSuit
+	if leadSuit == null:
+		print("mycardsuit:%d leadcardsuit:null"%[card.get_suit()])
+	else:
+		print("mycardsuit:%d leadcardsuit:%d"%[card.get_suit(),leadSuit])
+	if card.get_suit() == leadSuit:
+		return true
+	for c in cards:
+		if c.get_suit() == leadSuit:
+			return false
+	return true
 
 func take_turn():
 	can_play = true

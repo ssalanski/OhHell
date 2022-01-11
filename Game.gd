@@ -34,7 +34,7 @@ func set_table():
 		add_child(otherPlayer)
 		players.append(otherPlayer)
 		otherPlayer.connect("play_card", self, "on_play_card")
-		otherPlayer.position = Vector2(0,200).rotated(i*3.14/2) + Vector2(512,300)
+		otherPlayer.position = Vector2(0,200).rotated(i*PI/2) + Vector2(512,300)
 	
 
 func deal_hand(num_cards):
