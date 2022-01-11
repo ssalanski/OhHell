@@ -10,6 +10,7 @@ signal play_card(ref)
 var cards = []
 var max_click_idx = -1
 var primed_card = null
+var can_play = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -44,12 +45,19 @@ func on_card_clicked(ref):
 
 func _process(_delta):
 	if primed_card == cards[max_click_idx]:
-		cards.remove(max_click_idx)
-		primed_card.disconnect("card_clicked", self, "on_card_clicked")
-		emit_signal("play_card", primed_card)
+		if can_play:
+			cards.remove(max_click_idx)
+			primed_card.disconnect("card_clicked", self, "on_card_clicked")
+			can_play = false
+			emit_signal("play_card", primed_card)
+		else:
+			print("cant play, not your turn")
 	else:
 		primed_card = cards[max_click_idx]
 	max_click_idx = -1
 	print("%d cards in hand" % cards.size())
 	arrange_hand()
 	set_process(false)
+
+func take_turn():
+	can_play = true

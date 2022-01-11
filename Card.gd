@@ -9,7 +9,7 @@ const FACEDOWN = 52
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	$CardFace.frame = 52
+	$CardFace.frame = FACEDOWN
 
 func set_faceup(f):
 	faceup = f
