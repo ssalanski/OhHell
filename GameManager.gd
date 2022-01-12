@@ -16,6 +16,9 @@ func host_game():
 	get_tree().network_peer = peer
 	i_am_host = true
 
+func start_game():
+	pass
+
 func _on_player_connected(id):
 	print("NETWORK EVENT: player connected: " + str(id))
 	# register the host player with the client

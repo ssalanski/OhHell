@@ -110,7 +110,7 @@ text = "Connected Players"
 [node name="PlayerList" type="Label" parent="GameLobby"]
 margin_top = 18.0
 margin_right = 118.0
-margin_bottom = 18.0
+margin_bottom = 32.0
 text = "x"
 
 [node name="StartGameButton" type="Button" parent="GameLobby"]
@@ -118,16 +118,18 @@ visible = false
 margin_top = 22.0
 margin_right = 118.0
 margin_bottom = 42.0
+disabled = true
 text = "Start Game"
 
 [node name="DisconnectButton" type="Button" parent="GameLobby"]
-margin_top = 22.0
+margin_top = 36.0
 margin_right = 118.0
-margin_bottom = 42.0
+margin_bottom = 56.0
 text = "Disconnect"
 
 [connection signal="pressed" from="MainMenu/HostButton" to="." method="_on_HostButton_pressed"]
 [connection signal="pressed" from="MainMenu/JoinMenuButton" to="." method="_on_JoinMenuButton_pressed"]
 [connection signal="pressed" from="JoinServerMenu/JoinButton" to="." method="_on_JoinButton_pressed"]
 [connection signal="pressed" from="JoinServerMenu/BackButton" to="." method="_on_BackButton_pressed"]
+[connection signal="pressed" from="GameLobby/StartGameButton" to="." method="_on_StartGameButton_pressed"]
 [connection signal="pressed" from="GameLobby/DisconnectButton" to="." method="_on_StopHostingButton_pressed"]
