@@ -56,3 +56,7 @@ func _on_StopHostingButton_pressed():
 func _on_StartGameButton_pressed():
 	$GameLobby.hide()
 	GameManager.start_game()
+
+
+func _on_QuitButton_pressed():
+	get_tree().quit()

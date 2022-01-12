@@ -34,6 +34,12 @@ margin_right = 84.0
 margin_bottom = 44.0
 text = "Join Game"
 
+[node name="QuitButton" type="Button" parent="MainMenu"]
+margin_top = 48.0
+margin_right = 84.0
+margin_bottom = 68.0
+text = "Quit"
+
 [node name="JoinServerMenu" type="VBoxContainer" parent="."]
 visible = false
 anchor_left = 0.5
@@ -130,6 +136,7 @@ text = "Disconnect"
 
 [connection signal="pressed" from="MainMenu/HostButton" to="." method="_on_HostButton_pressed"]
 [connection signal="pressed" from="MainMenu/JoinMenuButton" to="." method="_on_JoinMenuButton_pressed"]
+[connection signal="pressed" from="MainMenu/QuitButton" to="." method="_on_QuitButton_pressed"]
 [connection signal="pressed" from="JoinServerMenu/JoinButton" to="." method="_on_JoinButton_pressed"]
 [connection signal="pressed" from="JoinServerMenu/BackButton" to="." method="_on_BackButton_pressed"]
 [connection signal="pressed" from="GameLobby/StartGameButton" to="." method="_on_StartGameButton_pressed"]
