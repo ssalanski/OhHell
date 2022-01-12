@@ -95,9 +95,10 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -59.0
-margin_top = -20.0
+margin_top = -37.5
 margin_right = 59.0
-margin_bottom = 20.0
+margin_bottom = 37.5
+grow_vertical = 0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -107,24 +108,24 @@ margin_right = 118.0
 margin_bottom = 14.0
 text = "Connected Players"
 
-[node name="PlayerList" type="Label" parent="GameLobby"]
+[node name="PlayerList" type="ItemList" parent="GameLobby"]
 margin_top = 18.0
 margin_right = 118.0
-margin_bottom = 32.0
-text = "x"
+margin_bottom = 27.0
+size_flags_vertical = 3
+auto_height = true
 
 [node name="StartGameButton" type="Button" parent="GameLobby"]
-visible = false
-margin_top = 22.0
+margin_top = 31.0
 margin_right = 118.0
-margin_bottom = 42.0
+margin_bottom = 51.0
 disabled = true
 text = "Start Game"
 
 [node name="DisconnectButton" type="Button" parent="GameLobby"]
-margin_top = 36.0
+margin_top = 55.0
 margin_right = 118.0
-margin_bottom = 56.0
+margin_bottom = 75.0
 text = "Disconnect"
 
 [connection signal="pressed" from="MainMenu/HostButton" to="." method="_on_HostButton_pressed"]

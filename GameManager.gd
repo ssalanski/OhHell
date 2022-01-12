@@ -1,6 +1,7 @@
 extends Node
 
 signal connected_players_update(players)
+signal disconnected_from_host
 
 const GAME_PORT = 20202
 
@@ -69,6 +70,7 @@ func close_connections():
 	get_tree().network_peer = null
 	i_am_host = false
 	players = {}
+	emit_signal("disconnected_from_host")
 
 
 func _ready():
