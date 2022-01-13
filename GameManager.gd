@@ -34,6 +34,14 @@ remote func start_game():
 	game.set_players(player_list)
 	get_node("/root").add_child(game)
 
+func send_card(id, card):
+	print("sending card %d to %d" % [card,id])
+	rpc_id(id, "receive_card", card)
+	
+func send_trump(card):
+	for player_id in players:
+		rpc_id(player_id,"receive_trump",card)
+
 func _on_player_connected(id):
 	print("NETWORK EVENT: player connected: " + str(id))
 	# register the host player with the client
@@ -57,6 +65,15 @@ func join_server(host):
 	var peer = NetworkedMultiplayerENet.new()
 	var e = peer.create_client(host, GAME_PORT)
 	get_tree().network_peer = peer
+
+remote func receive_card(card):
+	print("remote received card: %d" % card)
+	game.me.receive_card(card)
+	game.me.show_hand()
+
+remote func receive_trump(card):
+	print("remote received trump: %d" % card)
+	game.set_trump(card)
 
 func _on_server_connected():
 	print("connected to server")

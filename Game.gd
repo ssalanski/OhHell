@@ -19,12 +19,6 @@ func _ready():
 	#set_table()
 	play_hand(5)
 
-func play_hand(num_cards):
-	deal_hand(num_cards)
-	for trick_num in range(num_cards):
-		print("playing round %d"%trick_num)
-		yield(play_round(), "completed")
-
 var _player_list
 func set_players(player_list):
 	_player_list = player_list
@@ -59,20 +53,45 @@ func set_table():
 		else:
 			var rotated_slot_num = (player.seat - me.seat) % players.size()
 			player.position = Vector2(0,200).rotated(rotated_slot_num*PI/2) + Vector2(512,300)
-	
+
+
+func play_hand(num_cards):
+	if get_tree().is_network_server():
+		deal_hand(num_cards)
+	else:
+		deal_fake_hands_to_others(num_cards)
+	for trick_num in range(num_cards):
+		print("playing round %d"%trick_num)
+		yield(play_round(), "completed")
 
 func deal_hand(num_cards):
 	var deck = range(0,52)
 	deck.shuffle()
 	for _cardnum in range(num_cards):
 		for player in players:
-			player.receive_card(deck.pop_back())
+			var c = deck.pop_back()
+			player.receive_card(c)
+			if player != me:
+				GameManager.send_card(player.id,c)
 	me.show_hand()
+	# TODO: showing all hands on host for debug purposes
+	for player in players:
+		player.show_hand()
+	set_trump(deck.pop_back())
+	GameManager.send_trump(trumpCard.value)
+
+func set_trump(trump_card_value):
 	trumpCard = Card.instance()
 	add_child(trumpCard)
-	trumpCard.set_value(deck.pop_back())
+	trumpCard.set_value(trump_card_value)
 	trumpCard.set_faceup(true)
 	trumpCard.position = $TrumpCardAnchor.position
+
+func deal_fake_hands_to_others(num_cards):
+	for _cardnum in range(num_cards):
+		for player in players:
+			if player != me:
+				player.receive_card(52)
 
 func play_round():
 	currentTrick = Trick.instance()
