@@ -4,9 +4,9 @@ export(PackedScene) var Card
 export(PackedScene) var Hand
 export(PackedScene) var Trick
 
-const num_players = 4 # TODO: make adjustable
-
 var players = []
+var me
+
 var trumpCard
 var currentTrick
 
@@ -15,26 +15,50 @@ func _init():
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	yield(get_tree().create_timer(1),"timeout")
-	set_table()
-	deal_hand(5)
-	for _cardnum in range(5):
-		print("playing round %d"%_cardnum)
+	seat_players()
+	#set_table()
+	play_hand(5)
+
+func play_hand(num_cards):
+	deal_hand(num_cards)
+	for trick_num in range(num_cards):
+		print("playing round %d"%trick_num)
 		yield(play_round(), "completed")
 
+var _player_list
+func set_players(player_list):
+	_player_list = player_list
+
+func seat_players():
+	print("my id is: " + str(get_tree().get_network_unique_id()))
+	for player_info in _player_list:
+		var player = Hand.instance()
+		player.id = player_info["id"]
+		player.playername = player_info["name"]
+		player.seat = player_info["seat"]
+		players.append(player)
+		add_child(player)
+		player.connect("play_card", self, "on_play_card")
+		if player.id == get_tree().get_network_unique_id():
+			me = player
+	for player in players:
+		if player == me:
+			player.position = $MainPlayerAnchor.position
+			player.show_hand()
+		else:
+			var rotated_slot_num = (player.seat - me.seat) % players.size()
+			player.position = Vector2(0,200).rotated(rotated_slot_num*PI/2) + Vector2(512,300)
+
 func set_table():
-	var player = Hand.instance()
-	add_child(player)
-	players.append(player)
-	player.position = $MainPlayerAnchor.position
-	player.show_hand()
-	player.connect("play_card", self, "on_play_card")
-	for i in range(1,num_players):
-		var otherPlayer = Hand.instance()
-		add_child(otherPlayer)
-		players.append(otherPlayer)
-		otherPlayer.connect("play_card", self, "on_play_card")
-		otherPlayer.position = Vector2(0,200).rotated(i*PI/2) + Vector2(512,300)
+	for player in players:
+		add_child(player)
+		player.connect("play_card", self, "on_play_card")
+		if player == me:
+			player.position = $MainPlayerAnchor.position
+			player.show_hand()
+		else:
+			var rotated_slot_num = (player.seat - me.seat) % players.size()
+			player.position = Vector2(0,200).rotated(rotated_slot_num*PI/2) + Vector2(512,300)
 	
 
 func deal_hand(num_cards):
@@ -43,8 +67,7 @@ func deal_hand(num_cards):
 	for _cardnum in range(num_cards):
 		for player in players:
 			player.receive_card(deck.pop_back())
-	for player in players:
-		player.show_hand()
+	me.show_hand()
 	trumpCard = Card.instance()
 	add_child(trumpCard)
 	trumpCard.set_value(deck.pop_back())

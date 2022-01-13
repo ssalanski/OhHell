@@ -14,8 +14,8 @@ func _ready():
 
 func _on_players_update(players):
 	$GameLobby/PlayerList.clear()
-	for player in players:
-		$GameLobby/PlayerList.add_item("%s:%s"%[str(player),str(players[player])])
+	for player_id in players:
+		$GameLobby/PlayerList.add_item(players[player_id]["name"])
 	$GameLobby/StartGameButton.disabled = players.size() < 2
 
 func _on_host_disconnect():
@@ -55,6 +55,7 @@ func _on_StopHostingButton_pressed():
 
 func _on_StartGameButton_pressed():
 	$GameLobby.hide()
+	# TODO: get order of player list, use as seating/dealer order, add shuffle/reorder buttons
 	GameManager.start_game()
 
 

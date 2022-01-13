@@ -4,7 +4,12 @@ export(PackedScene) var Card
 
 signal play_card(ref)
 
+# player data (TODO: should separate player and hand constructs)
+var id
+var playername
+var seat
 
+# hand data
 var cards = []
 var max_click_idx = -1
 var primed_card = null

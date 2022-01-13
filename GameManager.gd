@@ -7,35 +7,49 @@ const GAME_PORT = 20202
 
 var i_am_host = false
 var players = {}
+var game
 
 # server code
 
 func host_game():
-	players[1] = "me"
+	players[1] = {"name":"me"}
 	var peer = NetworkedMultiplayerENet.new()
 	var e = peer.create_server(GAME_PORT, 4)
 	get_tree().network_peer = peer
 	i_am_host = true
 
-func start_game():
-	pass
+remote func start_game():
+	print("starting game")
+	if i_am_host:
+		for player_id in players:
+			if player_id != 1:
+				print("makign rpc call to player: " + str(player_id))
+				rpc_id(player_id, "start_game")
+	var player_list = []
+	var seat_num = 0
+	for player_id in players:
+		player_list.append({"id":player_id,"name":players[player_id],"seat":seat_num})
+		seat_num = seat_num + 1
+	game = load("res://Game.tscn").instance()
+	game.set_players(player_list)
+	get_node("/root").add_child(game)
 
 func _on_player_connected(id):
 	print("NETWORK EVENT: player connected: " + str(id))
 	# register the host player with the client
 	register_player(id)
 	if i_am_host:
-		for player in players:
-			if player != 1:
-				rpc_id(player, "register_player", id)
+		for player_id in players:
+			if player_id != 1:
+				rpc_id(player_id, "register_player", id)
 
 func _on_player_disconnected(id):
 	print("NETWORK EVENT: player disconnected: " + str(id))
 	unregister_player(id)
 	if i_am_host:
-		for player in players:
-			if player != 1:
-				rpc_id(player, "unregister_player", id)
+		for player_id in players:
+			if player_id != 1:
+				rpc_id(player_id, "unregister_player", id)
 
 # client code
 
@@ -55,13 +69,14 @@ func _on_server_disconnected():
 
 remote func register_player(id):
 	#var id = get_tree().get_rpc_sender_id()
-	players[id] = str(id)
+	players[id] = {"name":str(id)}
 	print("new player: %d" % id)
 	emit_signal("connected_players_update", players)
 
 remote func unregister_player(id):
 	#var id = get_tree().get_rpc_sender_id()
 	players.erase(id)
+	# TODO: re-assign seat numbers?
 	print("lost player: %d" % id)
 	emit_signal("connected_players_update", players)
 	
