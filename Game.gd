@@ -72,13 +72,30 @@ func deal_hand(num_cards):
 			var c = deck.pop_back()
 			player.receive_card(c)
 			if player != me:
-				Lobby.send_card(player.id,c)
+				send_card(player.id,c)
 	me.show_hand()
 	# TODO: showing all hands on host for debug purposes
 	for player in players:
 		player.show_hand()
 	set_trump(deck.pop_back())
-	Lobby.send_trump(trumpCard.value)
+	send_trump(trumpCard.value)
+
+func send_card(id, card):
+	print("sending card %d to %d" % [card,id])
+	rpc_id(id, "receive_card", card)
+
+remote func receive_card(card):
+	print("remote received card: %d" % card)
+	me.receive_card(card)
+	me.show_hand()
+
+remote func receive_trump(card):
+	print("remote received trump: %d" % card)
+	set_trump(card)
+	
+func send_trump(card):
+	for player_id in players:
+		rpc_id(player_id,"receive_trump",card)
 
 func set_trump(trump_card_value):
 	trumpCard = Card.instance()
