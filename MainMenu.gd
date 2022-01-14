@@ -8,8 +8,8 @@ extends Control
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	GameManager.connect("connected_players_update", self, "_on_players_update")
-	GameManager.connect("disconnected_from_host", self, "_on_host_disconnect")
+	Lobby.connect("connected_players_update", self, "_on_players_update")
+	Lobby.connect("disconnected_from_host", self, "_on_host_disconnect")
 
 
 func _on_players_update(players):
@@ -33,14 +33,14 @@ func _on_BackButton_pressed():
 	$MainMenu.show()
 
 func _on_JoinButton_pressed():
-	GameManager.join_server($JoinServerMenu/HBoxContainer/AddressInput.text)
+	Lobby.join_server($JoinServerMenu/HBoxContainer/AddressInput.text)
 	$JoinServerMenu.hide()
 	$GameLobby.show()
 	$GameLobby/StartGameButton.hide()
 	$GameLobby/DisconnectButton.text = "Disconnect"
 
 func _on_HostButton_pressed():
-	GameManager.host_game()
+	Lobby.host_game()
 	$MainMenu.hide()
 	$GameLobby.show()
 	$GameLobby/StartGameButton.disabled = true
@@ -48,7 +48,7 @@ func _on_HostButton_pressed():
 	$GameLobby/DisconnectButton.text = "Stop Hosting"
 
 func _on_StopHostingButton_pressed():
-	GameManager.close_connections()
+	Lobby.close_connections()
 	$GameLobby/PlayerList.clear()
 	$GameLobby.hide()
 	$MainMenu.show()
@@ -56,7 +56,7 @@ func _on_StopHostingButton_pressed():
 func _on_StartGameButton_pressed():
 	$GameLobby.hide()
 	# TODO: get order of player list, use as seating/dealer order, add shuffle/reorder buttons
-	GameManager.start_game()
+	Lobby.start_game()
 
 
 func _on_QuitButton_pressed():

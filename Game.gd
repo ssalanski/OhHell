@@ -72,13 +72,13 @@ func deal_hand(num_cards):
 			var c = deck.pop_back()
 			player.receive_card(c)
 			if player != me:
-				GameManager.send_card(player.id,c)
+				Lobby.send_card(player.id,c)
 	me.show_hand()
 	# TODO: showing all hands on host for debug purposes
 	for player in players:
 		player.show_hand()
 	set_trump(deck.pop_back())
-	GameManager.send_trump(trumpCard.value)
+	Lobby.send_trump(trumpCard.value)
 
 func set_trump(trump_card_value):
 	trumpCard = Card.instance()
