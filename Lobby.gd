@@ -14,7 +14,7 @@ var game
 func host_game():
 	players[1] = {"name":"me"}
 	var peer = NetworkedMultiplayerENet.new()
-	peer.create_server(GAME_PORT, 4)
+	peer.create_server(GAME_PORT, 7)
 	get_tree().network_peer = peer
 	i_am_host = true
 
