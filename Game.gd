@@ -1,7 +1,7 @@
 extends Node2D
 
 export(PackedScene) var Card
-export(PackedScene) var Hand
+export(PackedScene) var Player
 export(PackedScene) var Trick
 
 var players = []
@@ -26,7 +26,7 @@ func set_players(player_list):
 func seat_players():
 	print("my id is: " + str(get_tree().get_network_unique_id()))
 	for player_info in _player_list:
-		var player = Hand.instance()
+		var player = Player.instance()
 		player.id = player_info["id"]
 		player.playername = player_info["name"]
 		player.seat = player_info["seat"]
