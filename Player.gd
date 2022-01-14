@@ -5,7 +5,6 @@ export(PackedScene) var Card
 signal play_card(ref)
 
 # player data (TODO: should separate player and hand constructs)
-var id
 var playername
 var seat
 
@@ -19,17 +18,32 @@ var can_play = false
 func _ready():
 	set_process(false)
 
-func show_hand():
-	for card in cards:
-		card.set_faceup(true)
 
-func receive_card(c):
-	var new_card = Card.instance()
-	cards.append(new_card)
-	add_child(new_card)
-	new_card.set_value(c)
-	arrange_hand()
-	new_card.connect("card_clicked", self, "on_card_clicked")
+# runs everywhere, including caller
+remotesync func receive_card(card):
+	# only accept cards from server
+	if get_tree().get_rpc_sender_id() == 1:
+		# place card instance in hand
+		var cardInstance = Card.instance()
+		cards.append(cardInstance)
+		add_child(cardInstance)
+		arrange_hand()
+		if is_network_master():
+			# if we're the master node, set value and connect signal
+			cardInstance.set_value(card)
+			cardInstance.set_faceup(true)
+			cardInstance.connect("card_clicked", self, "on_card_clicked")
+		else:
+			# TODO: this is for debug purposes
+			cardInstance.set_value(card)
+			cardInstance.set_faceup(true)
+
+# runs everywhere, including caller
+remotesync func play_card(card):
+	# anyone can play a card
+	# signal the game, which player played what card
+	emit_signal("play_card", get_tree().get_rpc_sender_id(), card)
+
 	
 const CARD_GAP = 30
 func arrange_hand():

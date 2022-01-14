@@ -15,44 +15,54 @@ func _init():
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	seat_players()
-	#set_table()
-	play_hand(5)
+	pass
 
-var _player_list
-func set_players(player_list):
-	_player_list = player_list
 
-func seat_players():
+func run_game():
+	# runs only on the master node
+	if get_tree().is_network_server():
+		pass
+	# this function, run only by the master node, will progress the game hand by hand, trick by trick, turn by turn
+	pass
+
+# runs everywhere
+remotesync func set_trump(card):
+	# only the server can set trump
+	if get_tree().get_rpc_sender_id() == 1:
+		trumpCard = Card.instance()
+		add_child(trumpCard)
+		trumpCard.set_value(card)
+		trumpCard.set_faceup(true)
+		trumpCard.position = $TrumpCardAnchor.position
+
+
+func seat_players(_player_list):
 	print("my id is: " + str(get_tree().get_network_unique_id()))
 	for player_info in _player_list:
 		var player = Player.instance()
-		player.id = player_info["id"]
+		player.set_name(str(player_info["id"]))
+		player.set_network_master(player_info["id"])
 		player.playername = player_info["name"]
 		player.seat = player_info["seat"]
 		players.append(player)
 		add_child(player)
+		print("added player: " + player.name)
 		player.connect("play_card", self, "on_play_card")
-		if player.id == get_tree().get_network_unique_id():
+		if player.name == str(get_tree().get_network_unique_id()):
 			me = player
+	# arrange players around table, with network master seated at the front, but maintaining order around the table
 	for player in players:
 		if player == me:
 			player.position = $MainPlayerAnchor.position
-			player.show_hand()
 		else:
-			var rotated_slot_num = (player.seat - me.seat) % players.size()
-			player.position = Vector2(0,200).rotated(rotated_slot_num*PI/2) + Vector2(512,300)
-
-func set_table():
-	for player in players:
-		add_child(player)
-		player.connect("play_card", self, "on_play_card")
-		if player == me:
-			player.position = $MainPlayerAnchor.position
-			player.show_hand()
-		else:
-			var rotated_slot_num = (player.seat - me.seat) % players.size()
-			player.position = Vector2(0,200).rotated(rotated_slot_num*PI/2) + Vector2(512,300)
+			if players.size() == 2:
+				player.position = Vector2(512,100)
+			elif players.size() == 3:
+				player.position= Vector2((((player.seat - me.seat) % 3) - 1.5) * 200 + 512, 250)
+			else:
+				var rotated_slot_num = (player.seat - me.seat) % players.size()
+				var spread = PI/(players.size()-2)
+				player.position = Vector2(0,200).rotated(rotated_slot_num*spread) + Vector2(512,300)
 
 
 func play_hand(num_cards):
@@ -74,11 +84,7 @@ func deal_hand(num_cards):
 			if player != me:
 				send_card(player.id,c)
 	me.show_hand()
-	# TODO: showing all hands on host for debug purposes
-	for player in players:
-		player.show_hand()
-	set_trump(deck.pop_back())
-	send_trump(trumpCard.value)
+	rpc("send_trump", deck.pop_back())
 
 func send_card(id, card):
 	print("sending card %d to %d" % [card,id])
@@ -88,21 +94,6 @@ remote func receive_card(card):
 	print("remote received card: %d" % card)
 	me.receive_card(card)
 	me.show_hand()
-
-remote func receive_trump(card):
-	print("remote received trump: %d" % card)
-	set_trump(card)
-	
-func send_trump(card):
-	for player_id in players:
-		rpc_id(player_id,"receive_trump",card)
-
-func set_trump(trump_card_value):
-	trumpCard = Card.instance()
-	add_child(trumpCard)
-	trumpCard.set_value(trump_card_value)
-	trumpCard.set_faceup(true)
-	trumpCard.position = $TrumpCardAnchor.position
 
 func deal_fake_hands_to_others(num_cards):
 	for _cardnum in range(num_cards):

@@ -18,21 +18,20 @@ func host_game():
 	get_tree().network_peer = peer
 	i_am_host = true
 
-remote func start_game():
-	print("starting game")
-	if i_am_host:
-		for player_id in players:
-			if player_id != 1:
-				print("makign rpc call to player: " + str(player_id))
-				rpc_id(player_id, "start_game")
+func start_game():
+	rpc("begin_game")
+
+remotesync func begin_game():
+	print("beginning game")
 	var player_list = []
 	var seat_num = 0
 	for player_id in players:
 		player_list.append({"id":player_id,"name":players[player_id],"seat":seat_num})
 		seat_num = seat_num + 1
 	game = load("res://Game.tscn").instance()
-	game.set_players(player_list)
 	get_node("/root").add_child(game)
+	game.seat_players(player_list)
+	game.run_game()
 
 func _on_player_connected(id):
 	print("NETWORK EVENT: player connected: " + str(id))
