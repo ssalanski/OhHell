@@ -19,24 +19,21 @@ func _ready():
 	set_process(false)
 
 
-# runs everywhere, including caller
-remotesync func receive_card(card):
-	# only accept cards from server
-	if get_tree().get_rpc_sender_id() == 1:
-		# place card instance in hand
-		var cardInstance = Card.instance()
-		cards.append(cardInstance)
-		add_child(cardInstance)
-		arrange_hand()
-		if is_network_master():
-			# if we're the master node, set value and connect signal
-			cardInstance.set_value(card)
-			cardInstance.set_faceup(true)
-			cardInstance.connect("card_clicked", self, "on_card_clicked")
-		else:
-			# TODO: this is for debug purposes
-			cardInstance.set_value(card)
-			cardInstance.set_faceup(true)
+func receive_card(card):
+	# place card instance in hand
+	var cardInstance = Card.instance()
+	cards.append(cardInstance)
+	add_child(cardInstance)
+	arrange_hand()
+	if is_network_master():
+		# if we're the master node, set value and connect signal
+		cardInstance.set_value(card)
+		cardInstance.set_faceup(true)
+		cardInstance.connect("card_clicked", self, "on_card_clicked")
+	else:
+		# TODO: this is for debug purposes
+		cardInstance.set_value(card)
+		cardInstance.set_faceup(true)
 
 # runs everywhere, including caller
 remotesync func play_card(card):
