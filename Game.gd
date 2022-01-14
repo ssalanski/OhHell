@@ -39,7 +39,8 @@ func deal_cards_and_trump(num_cards):
 	for _cardnum in range(num_cards):
 		for player in players:
 			var c = deck.pop_back()
-			rpc("deal_card",player.name,c)
+			#rpc("deal_card",player.name,c)
+			rpc("deal_card",player.name,player.seat)
 	rpc("deal_trump", deck.pop_back())
 
 # runs everywhere, including caller
@@ -90,11 +91,17 @@ func seat_players(_player_list):
 			if players.size() == 2:
 				player.position = Vector2(512,100)
 			elif players.size() == 3:
-				player.position= Vector2((((player.seat - me.seat) % 3) - 1.5) * 200 + 512, 250)
+				player.position= Vector2((((3 + player.seat - me.seat) % 3) - 1.5) * 500 + 512, 125)
 			else:
-				var rotated_slot_num = (player.seat - me.seat) % players.size()
+				var rotated_slot_num = ((players.size() + player.seat - me.seat) % players.size()) - 1
 				var spread = PI/(players.size()-2)
-				player.position = Vector2(0,200).rotated(rotated_slot_num*spread) + Vector2(512,300)
+				var a = 450.0
+				var b = 250.0
+				var e = sqrt(1-(b/a)*(b/a))
+				var r = b/sqrt(1-(e*cos(rotated_slot_num*spread))*(e*cos(rotated_slot_num*spread)))
+				player.position = Vector2(-r,0).rotated(rotated_slot_num*spread) + Vector2(512,300)
+				player.look_at(Vector2(512,300))
+				player.rotate(PI/2)
 
 
 func on_play_card(ref):
