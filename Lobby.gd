@@ -31,7 +31,6 @@ remotesync func begin_game():
 	game = load("res://Game.tscn").instance()
 	get_node("/root").add_child(game)
 	game.seat_players(player_list)
-	game.run_game()
 
 func _on_player_connected(id):
 	print("NETWORK EVENT: player connected: " + str(id))

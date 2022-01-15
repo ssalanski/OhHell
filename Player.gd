@@ -33,7 +33,7 @@ func receive_card(card):
 	else:
 		# TODO: this is for debug purposes
 		cardInstance.set_value(card)
-		cardInstance.set_faceup(true)
+		#cardInstance.set_faceup(true)
 
 # runs everywhere, including caller
 remotesync func play_card(card):
@@ -90,4 +90,7 @@ func is_legal(card):
 	return true
 
 func take_turn():
-	can_play = true
+	print(name + "'s turn")
+	if is_network_master():
+		print("MY turn!")
+		can_play = true

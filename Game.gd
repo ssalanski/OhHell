@@ -18,14 +18,17 @@ func _ready():
 	pass
 
 
-func run_game():
+remotesync func run_game():
+	print("gametime!")
 	var card_counts = [7,6,5,4,3,2,1,2,3,4,5,6,7]
 	for hand_num in range(13):
 		var card_count = card_counts[hand_num]
 		if get_tree().is_network_server():
+			print("server is dealing %d cards" % card_count)
 			deal_cards_and_trump(card_count)
-			for _card_num in range(card_count):
-				yield(play_round(), "completed")
+		for _card_num in range(card_count):
+			print("everyone is playing round %d" % _card_num)
+			yield(play_round(), "completed")
 
 	# runs only on the master node
 	if get_tree().is_network_server():
@@ -102,7 +105,26 @@ func seat_players(_player_list):
 				player.position = Vector2(-r,0).rotated(rotated_slot_num*spread) + Vector2(512,300)
 				player.look_at(Vector2(512,300))
 				player.rotate(PI/2)
+	# TODO: why cant I rpc call myself, and just have it run locally?
+	if get_tree().get_network_unique_id() == 1:
+		player_seated()
+	else:
+		rpc_id(1, "player_seated")
 
+# make sure all players have initialized their game tree with player nodes
+var players_seated = []
+# TODO: would this be "master"?
+remote func player_seated():
+	var who = get_tree().get_rpc_sender_id()
+	assert(get_tree().is_network_server())
+	#assert(who in players)
+	assert(not who in players_seated)
+	print("%d is ready" % who)
+	players_seated.append(who)
+	if players_seated.size() == players.size():
+		print("everyone's ready!")
+		rpc("run_game")
+		
 
 func on_play_card(ref):
 	var player = ref.get_parent()
