@@ -18,6 +18,7 @@ func _ready():
 	pass
 
 
+# everyone runs this function, but only the server deals the cards each hand
 remotesync func run_game():
 	print("gametime!")
 	var card_counts = [7,6,5,4,3,2,1,2,3,4,5,6,7]
@@ -42,8 +43,8 @@ func deal_cards_and_trump(num_cards):
 	for _cardnum in range(num_cards):
 		for player in players:
 			var c = deck.pop_back()
-			#rpc("deal_card",player.name,c)
-			rpc("deal_card",player.name,player.seat)
+			rpc("deal_card",player.name,c)
+			#rpc("deal_card",player.name,player.seat) # debug trick, set card values as player seat instead, to see who sits where
 	rpc("deal_trump", deck.pop_back())
 
 # runs everywhere, including caller
@@ -68,7 +69,8 @@ func play_round():
 	currentTrick.position = Vector2(512,300)
 	for player in players:
 		player.take_turn()
-		yield(player, "play_card")
+		yield(player, "card_played")
+		print("card was played!")
 	yield(get_tree().create_timer(3), "timeout")
 	currentTrick.queue_free()
 
@@ -83,7 +85,7 @@ func seat_players(_player_list):
 		players.append(player)
 		add_child(player)
 		print("added player: " + player.name)
-		player.connect("play_card", self, "on_play_card")
+		player.connect("card_played", self, "on_play_card")
 		if player.name == str(get_tree().get_network_unique_id()):
 			me = player
 	# arrange players around table, with network master seated at the front, but maintaining order around the table
@@ -126,8 +128,9 @@ remote func player_seated():
 		rpc("run_game")
 		
 
-func on_play_card(ref):
-	var player = ref.get_parent()
-	player.remove_child(ref)
-	currentTrick.add_child(ref)
-	currentTrick.accept_card(player, ref)
+func on_play_card(player_id, card_ref):
+	var player = card_ref.get_parent()
+	assert(player.name == str(player_id))
+	player.remove_child(card_ref)
+	currentTrick.add_child(card_ref)
+	currentTrick.accept_card(player, card_ref)

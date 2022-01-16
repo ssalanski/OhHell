@@ -2,7 +2,7 @@ extends Node2D
 
 export(PackedScene) var Card
 
-signal play_card(ref)
+signal card_played(player_id,ref)
 
 # player data (TODO: should separate player and hand constructs)
 var playername
@@ -36,10 +36,13 @@ func receive_card(card):
 		#cardInstance.set_faceup(true)
 
 # runs everywhere, including caller
-remotesync func play_card(card):
+remotesync func play_card(card_idx):
 	# anyone can play a card
 	# signal the game, which player played what card
-	emit_signal("play_card", get_tree().get_rpc_sender_id(), card)
+	var card_ref = cards[card_idx]
+	cards.remove(card_idx)
+	print("I see that %d played a %d" % [get_tree().get_rpc_sender_id(), card_ref.value])
+	emit_signal("card_played", get_tree().get_rpc_sender_id(), card_ref)
 
 	
 const CARD_GAP = 30
@@ -63,10 +66,11 @@ func _process(_delta):
 	if is_legal(clicked_card):
 		if primed_card == clicked_card:
 			if can_play:
-				cards.remove(max_click_idx)
+				#cards.remove(max_click_idx) FYI: moved to play_card
 				primed_card.disconnect("card_clicked", self, "on_card_clicked")
+				rpc("play_card", max_click_idx)
 				can_play = false
-				emit_signal("play_card", primed_card)
+				#emit_signal("card_played", primed_card)  FYI: moved to play_card
 			else:
 				print("cant play, not your turn")
 		else:
