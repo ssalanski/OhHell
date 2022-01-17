@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://assets/art/table.png" type="Texture" id=1]
 [ext_resource path="res://Player.tscn" type="PackedScene" id=2]
@@ -6,10 +6,16 @@
 [ext_resource path="res://Trick.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Card.tscn" type="PackedScene" id=5]
 
+[sub_resource type="Curve2D" id=1]
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, 50, 300, -433.011, 0, 433.011, 0, 512, 50, 0, 0, 0, 0, 974, 300 )
+}
+
 [node name="GameNode" type="Node2D"]
 script = ExtResource( 3 )
 __meta__ = {
-"_edit_vertical_guides_": [ 512.0 ]
+"_edit_horizontal_guides_": [ 300.0, 50.0, 110.0 ],
+"_edit_vertical_guides_": [ 512.0, 50.0, 974.0, 224.0, 800.0 ]
 }
 Card = ExtResource( 5 )
 Player = ExtResource( 2 )
@@ -25,3 +31,10 @@ position = Vector2( 512, 514 )
 
 [node name="TrumpCardAnchor" type="Position2D" parent="."]
 position = Vector2( 94, 514 )
+
+[node name="SeatingPath" type="Path2D" parent="."]
+curve = SubResource( 1 )
+
+[node name="PathFollow2D" type="PathFollow2D" parent="SeatingPath"]
+position = Vector2( 50, 300 )
+rotation = -0.829327

@@ -93,20 +93,17 @@ func seat_players(_player_list):
 		if player == me:
 			player.position = $MainPlayerAnchor.position
 		else:
+			var pos_clockwise_from_me = ((players.size() + player.seat - me.seat) % players.size()) - 1
 			if players.size() == 2:
-				player.position = Vector2(512,100)
+				$SeatingPath/PathFollow2D.set_unit_offset(0.5)
 			elif players.size() == 3:
-				player.position= Vector2((((3 + player.seat - me.seat) % 3) - 1.5) * 500 + 512, 125)
+				$SeatingPath/PathFollow2D.set_unit_offset(0.333 * (pos_clockwise_from_me+1))
 			else:
-				var rotated_slot_num = ((players.size() + player.seat - me.seat) % players.size()) - 1
-				var spread = PI/(players.size()-2)
-				var a = 450.0
-				var b = 250.0
-				var e = sqrt(1-(b/a)*(b/a))
-				var r = b/sqrt(1-(e*cos(rotated_slot_num*spread))*(e*cos(rotated_slot_num*spread)))
-				player.position = Vector2(-r,0).rotated(rotated_slot_num*spread) + Vector2(512,300)
-				player.look_at(Vector2(512,300))
-				player.rotate(PI/2)
+				var offset_increment = 1.0 / (players.size() - 2)
+				$SeatingPath/PathFollow2D.set_unit_offset(pos_clockwise_from_me*offset_increment)
+			player.position = $SeatingPath/PathFollow2D.position
+			player.look_at(Vector2(512,300))
+			player.rotate(PI/2)
 	# TODO: why cant I rpc call myself, and just have it run locally?
 	if get_tree().get_network_unique_id() == 1:
 		player_seated()
