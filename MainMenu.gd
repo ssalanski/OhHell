@@ -33,7 +33,7 @@ func _on_BackButton_pressed():
 	$MainMenu.show()
 
 func _on_JoinButton_pressed():
-	Lobby.join_server($JoinServerMenu/HBoxContainer/AddressInput.text)
+	Lobby.join_server($JoinServerMenu/ServerAddress/Input.text, $JoinServerMenu/PlayerName/Input.text)
 	$JoinServerMenu.hide()
 	$GameLobby.show()
 	$GameLobby/StartGameButton.hide()

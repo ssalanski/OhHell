@@ -6,6 +6,7 @@ signal disconnected_from_host
 const GAME_PORT = 20202
 
 var i_am_host = false
+var my_name
 var players = {}
 var game
 
@@ -51,7 +52,8 @@ func _on_player_disconnected(id):
 
 # client code
 
-func join_server(host):
+func join_server(host, player_name):
+	my_name = player_name
 	var peer = NetworkedMultiplayerENet.new()
 	peer.create_client(host, GAME_PORT)
 	get_tree().network_peer = peer
