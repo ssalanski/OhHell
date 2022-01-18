@@ -27,9 +27,12 @@ remotesync func run_game():
 		if get_tree().is_network_server():
 			print("server is dealing %d cards" % card_count)
 			deal_cards_and_trump(card_count)
-		for _card_num in range(card_count):
-			print("everyone is playing round %d" % _card_num)
-			yield(play_round(), "completed")
+		var lead_player = players[hand_num%players.size()]
+		for _trick_num in range(card_count):
+			print("everyone is playing round %d" % _trick_num)
+			yield(play_trick(lead_player), "completed")
+			lead_player = currentTrick.get_winner()
+			currentTrick.queue_free()
 
 	# runs only on the master node
 	if get_tree().is_network_server():
@@ -63,16 +66,16 @@ remotesync func deal_trump(card):
 		trumpCard.set_faceup(true)
 		trumpCard.position = $TrumpCardAnchor.position
 
-func play_round():
+func play_trick(lead_player):
 	currentTrick = Trick.instance()
 	add_child(currentTrick)
 	currentTrick.position = Vector2(512,300)
-	for player in players:
+	var player = lead_player
+	while currentTrick.cards.size() < players.size():
 		player.take_turn()
 		yield(player, "card_played")
-		print("card was played!")
+		player = player.next_player
 	yield(get_tree().create_timer(3), "timeout")
-	currentTrick.queue_free()
 
 func seat_players(_player_list):
 	print("my id is: " + str(get_tree().get_network_unique_id()))
@@ -88,7 +91,15 @@ func seat_players(_player_list):
 		player.connect("card_played", self, "on_play_card")
 		if player.name == str(get_tree().get_network_unique_id()):
 			me = player
-	# arrange players around table, with network master seated at the front, but maintaining order around the table
+	# set up link references from each player to the next, in circular seating order, clunky here, convenient later
+	var seatmap = {}
+	for seat in range(players.size()):
+		for player in players:
+			if player.seat == seat:
+				seatmap[seat] = player
+	for seat in range(players.size()):
+		seatmap[seat].next_player = seatmap[(seat+1)%players.size()]
+	# spatially arrange players around table, with network master seated at the front, but maintaining order around the table
 	for player in players:
 		if player == me:
 			player.position = $MainPlayerAnchor.position

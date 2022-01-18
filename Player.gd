@@ -7,6 +7,7 @@ signal card_played(player_id,ref)
 # player data (TODO: should separate player and hand constructs)
 var playername
 var seat
+var next_player
 
 # hand data
 var cards = []
