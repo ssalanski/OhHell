@@ -3,7 +3,7 @@ extends Node2D
 
 var cards = {}
 var trumpSuit = null
-var leadSuit = null
+var leadCard = null
 
 
 # Called when the node enters the scene tree for the first time.
@@ -14,6 +14,13 @@ func accept_card(player, card):
 	card.position = position.direction_to(player.position) * 50
 	card.look_at(player.position)
 	card.rotate(PI/2)
-	cards[player] = card
-	if leadSuit == null:
-		leadSuit = card.get_suit()
+	cards[card] = player
+	if leadCard == null:
+		leadCard = card
+
+func get_winner():
+	var winning_card = leadCard
+	for card in cards.keys():
+		if card.beats(winning_card, leadCard.get_suit(), trumpSuit):
+			winning_card = card
+	return cards[winning_card]

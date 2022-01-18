@@ -81,11 +81,10 @@ func _process(_delta):
 	set_process(false)
 
 func is_legal(card):
-	var leadSuit = get_parent().currentTrick.leadSuit
-	if leadSuit == null:
-		print("mycardsuit:%d leadcardsuit:null"%[card.get_suit()])
-	else:
-		print("mycardsuit:%d leadcardsuit:%d"%[card.get_suit(),leadSuit])
+	var lead = get_parent().currentTrick.leadCard
+	if lead == null:
+		return true
+	var leadSuit = lead.get_suit()
 	if card.get_suit() == leadSuit:
 		return true
 	for c in cards:

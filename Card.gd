@@ -33,6 +33,21 @@ func get_suit():
 func get_denom():
 	return value % 13
 
+func beats(othercard, lead_suit, trump_suit):
+	if get_suit() == trump_suit:
+		if othercard.get_suit() == trump_suit:
+			return get_denom() > othercard.get_denom()
+		else:
+			return true
+	elif get_suit() == lead_suit:
+		if othercard.get_suit() == lead_suit:
+			return get_denom() > othercard.get_denom()
+		else:
+			return true
+	else:
+		return false
+
+
 func _on_CardNode_input_event(_viewport, event, _shape_idx):
 	if event is InputEventMouseButton:
 		if event.pressed:
