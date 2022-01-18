@@ -15,7 +15,7 @@ func _ready():
 func _on_players_update(players):
 	$GameLobby/PlayerList.clear()
 	for player_id in players:
-		$GameLobby/PlayerList.add_item(players[player_id]["name"])
+		$GameLobby/PlayerList.add_item(players[player_id])
 	$GameLobby/StartGameButton.disabled = players.size() < 2
 
 func _on_host_disconnect():
@@ -28,7 +28,12 @@ func _on_JoinMenuButton_pressed():
 	$MainMenu.hide()
 	$JoinServerMenu.show()
 
+func _on_HostMenuButton_pressed():
+	$MainMenu.hide()
+	$HostServerMenu.show()
+
 func _on_BackButton_pressed():
+	$HostServerMenu.hide()
 	$JoinServerMenu.hide()
 	$MainMenu.show()
 
@@ -40,8 +45,8 @@ func _on_JoinButton_pressed():
 	$GameLobby/DisconnectButton.text = "Disconnect"
 
 func _on_HostButton_pressed():
-	Lobby.host_game()
-	$MainMenu.hide()
+	Lobby.host_game($HostServerMenu/PlayerName/Input.text)
+	$HostServerMenu.hide()
 	$GameLobby.show()
 	$GameLobby/StartGameButton.disabled = true
 	$GameLobby/StartGameButton.show()

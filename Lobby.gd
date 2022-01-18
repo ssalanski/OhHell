@@ -12,8 +12,9 @@ var game
 
 # server code
 
-func host_game():
-	players[1] = {"name":"me"}
+func host_game(player_name):
+	my_name = player_name
+	players[1] = my_name
 	var peer = NetworkedMultiplayerENet.new()
 	peer.create_server(GAME_PORT, 7)
 	get_tree().network_peer = peer
@@ -35,12 +36,8 @@ remotesync func begin_game():
 
 func _on_player_connected(id):
 	print("NETWORK EVENT: player connected: " + str(id))
-	# register the host player with the client
-	register_player(id)
-	if i_am_host:
-		for player_id in players:
-			if player_id != 1:
-				rpc_id(player_id, "register_player", id)
+	# send our own info to them to register in their game
+	rpc_id(id, "register_player", my_name)
 
 func _on_player_disconnected(id):
 	print("NETWORK EVENT: player disconnected: " + str(id))
@@ -57,6 +54,7 @@ func join_server(host, player_name):
 	var peer = NetworkedMultiplayerENet.new()
 	peer.create_client(host, GAME_PORT)
 	get_tree().network_peer = peer
+	players[get_tree().get_network_unique_id()] = my_name
 
 func _on_server_connected():
 	print("connected to server")
@@ -67,11 +65,12 @@ func _on_server_disconnected():
 
 # shared code
 
-remote func register_player(id):
-	#var id = get_tree().get_rpc_sender_id()
-	players[id] = {"name":str(id)}
-	print("new player: %d" % id)
+remote func register_player(info):
+	var id = get_tree().get_rpc_sender_id()
+	print("registering player " + str(info) + " sender was " + str(id))
+	players[id] = info
 	emit_signal("connected_players_update", players)
+
 
 remote func unregister_player(id):
 	#var id = get_tree().get_rpc_sender_id()
