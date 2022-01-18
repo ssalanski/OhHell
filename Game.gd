@@ -84,7 +84,7 @@ func seat_players(_player_list):
 		player.seat = player_info["seat"]
 		players.append(player)
 		add_child(player)
-		print("added player: " + player.name)
+		print("added player %s named %s at seat %d" % [player.name,player.playername,player.seat])
 		player.connect("card_played", self, "on_play_card")
 		if player.name == str(get_tree().get_network_unique_id()):
 			me = player

@@ -21,15 +21,15 @@ func host_game(player_name):
 	i_am_host = true
 
 func start_game():
-	rpc("begin_game")
-
-remotesync func begin_game():
-	print("beginning game")
 	var player_list = []
 	var seat_num = 0
 	for player_id in players:
 		player_list.append({"id":player_id,"name":players[player_id],"seat":seat_num})
 		seat_num = seat_num + 1
+	rpc("begin_game", player_list)
+
+remotesync func begin_game(player_list):
+	print("beginning game")
 	game = load("res://Game.tscn").instance()
 	get_node("/root").add_child(game)
 	game.seat_players(player_list)
