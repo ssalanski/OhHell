@@ -66,3 +66,31 @@ func _on_StartGameButton_pressed():
 
 func _on_QuitButton_pressed():
 	get_tree().quit()
+
+
+
+func _on_UpButton_pressed():
+	var idx = $GameLobby/PlayerList.get_selected_items()[0]
+	$GameLobby/PlayerList.move_item(idx,idx-1)
+	_on_PlayerList_item_selected(idx-1)
+
+func _on_DownButton_pressed():
+	var idx = $GameLobby/PlayerList.get_selected_items()[0]
+	$GameLobby/PlayerList.move_item(idx,idx+1)
+	_on_PlayerList_item_selected(idx+1)
+
+func _on_RandomButton_pressed():
+	$GameLobby/PlayerList.unselect_all()
+	for idx in range($GameLobby/PlayerList.get_item_count()):
+		var rand_idx = rand_range(idx,$GameLobby/PlayerList.get_item_count())
+		$GameLobby/PlayerList.move_item(idx, rand_idx)
+
+
+func _on_PlayerList_nothing_selected():
+	$GameLobby/SeatingControls/DownButton.disabled = true
+	$GameLobby/SeatingControls/UpButton.disabled = true
+
+
+func _on_PlayerList_item_selected(index):
+	$GameLobby/SeatingControls/DownButton.disabled = (index == ($GameLobby/PlayerList.get_item_count() - 1))
+	$GameLobby/SeatingControls/UpButton.disabled = (index == 0)
