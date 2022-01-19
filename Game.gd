@@ -140,5 +140,6 @@ func on_play_card(player_id, card_ref):
 	var player = card_ref.get_parent()
 	assert(player.name == str(player_id))
 	player.remove_child(card_ref)
+	player.arrange_hand()
 	currentTrick.add_child(card_ref)
 	currentTrick.accept_card(player, card_ref)
