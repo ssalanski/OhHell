@@ -61,7 +61,10 @@ func _on_StopHostingButton_pressed():
 func _on_StartGameButton_pressed():
 	$GameLobby.hide()
 	# TODO: get order of player list, use as seating/dealer order, add shuffle/reorder buttons
-	Lobby.start_game()
+	var player_order = []
+	for idx in range($GameLobby/PlayerList.get_item_count()):
+		player_order.append($GameLobby/PlayerList.get_item_text(idx))
+	Lobby.start_game(player_order)
 
 
 func _on_QuitButton_pressed():

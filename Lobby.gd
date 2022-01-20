@@ -21,12 +21,11 @@ func host_game(player_name):
 	get_tree().network_peer = peer
 	i_am_host = true
 
-func start_game():
+func start_game(player_order):
 	var player_list = []
-	var seat_num = 0
 	for player_id in players:
+		var seat_num = player_order.find(players[player_id])
 		player_list.append({"id":player_id,"name":players[player_id],"seat":seat_num})
-		seat_num = seat_num + 1
 	rpc("begin_game", player_list)
 
 remotesync func begin_game(player_list):
