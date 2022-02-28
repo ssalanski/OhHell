@@ -5,7 +5,7 @@ export(PackedScene) var Card
 signal card_played(player_id,ref)
 
 # player data (TODO: should separate player and hand constructs)
-var playername
+var playername = "" setget set_player_name
 var seat
 var next_player
 
@@ -14,6 +14,10 @@ var cards = []
 var max_click_idx = -1
 var primed_card = null
 var can_play = false
+
+func set_player_name(pname):
+	playername = pname
+	$NameLabel.text = playername
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
