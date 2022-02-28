@@ -7,6 +7,8 @@ export(PackedScene) var Trick
 var players = []
 var me
 
+var num_cpu_players = 0
+
 var trumpCard
 var currentTrick
 
@@ -91,6 +93,8 @@ func seat_players(_player_list):
 		player.connect("card_played", self, "on_play_card")
 		if player.name == str(get_tree().get_network_unique_id()):
 			me = player
+		elif player.playername.begins_with("CPU"):
+			num_cpu_players = num_cpu_players + 1
 	# set up link references from each player to the next, in circular seating order, clunky here, convenient later
 	var seatmap = {}
 	for seat in range(players.size()):
@@ -131,7 +135,7 @@ remote func player_seated():
 	assert(not who in players_seated)
 	print("%d is ready" % who)
 	players_seated.append(who)
-	if players_seated.size() == players.size():
+	if players_seated.size() == players.size() - num_cpu_players:
 		print("everyone's ready!")
 		rpc("run_game")
 		
