@@ -43,6 +43,8 @@ func _on_JoinButton_pressed():
 	$GameLobby.show()
 	$GameLobby/StartGameButton.hide()
 	$GameLobby/DisconnectButton.text = "Disconnect"
+	$GameLobby/CPUControls.hide()
+	$GameLobby/SeatingControls.hide()
 
 func _on_HostButton_pressed():
 	Lobby.host_game($HostServerMenu/PlayerName/Input.text)
@@ -51,6 +53,8 @@ func _on_HostButton_pressed():
 	$GameLobby/StartGameButton.disabled = true
 	$GameLobby/StartGameButton.show()
 	$GameLobby/DisconnectButton.text = "Stop Hosting"
+	$GameLobby/CPUControls.show()
+	$GameLobby/SeatingControls.show()
 
 func _on_StopHostingButton_pressed():
 	Lobby.close_connections()
@@ -83,7 +87,7 @@ func _on_DownButton_pressed():
 	_on_PlayerList_item_selected(idx+1)
 
 func _on_RandomButton_pressed():
-	$GameLobby/PlayerList.unselect_all()
+	#$GameLobby/PlayerList.unselect_all()
 	for idx in range($GameLobby/PlayerList.get_item_count()):
 		var rand_idx = rand_range(idx,$GameLobby/PlayerList.get_item_count())
 		$GameLobby/PlayerList.move_item(idx, rand_idx)
@@ -97,3 +101,11 @@ func _on_PlayerList_nothing_selected():
 func _on_PlayerList_item_selected(index):
 	$GameLobby/SeatingControls/DownButton.disabled = (index == ($GameLobby/PlayerList.get_item_count() - 1))
 	$GameLobby/SeatingControls/UpButton.disabled = (index == 0)
+
+
+func _on_AddCPUButton_pressed():
+	Lobby.register_cpu()
+
+
+func _on_RemoveCPUButton_pressed():
+	Lobby.unregister_cpu()

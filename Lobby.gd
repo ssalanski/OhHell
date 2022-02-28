@@ -38,13 +38,19 @@ func _on_player_connected(id):
 	print("NETWORK EVENT: player connected: " + str(id))
 	# send our own info to them to register in their game
 	rpc_id(id, "register_player", my_name)
+	if i_am_host:
+		# CPU players wont trigger a _on_player_connected for the client player
+		# so the lobby host should send CPU player info to a newly connected client
+		for player_id in players:
+			if players[player_id].begins_with("CPU"):
+				rpc_id(id, "register_cpu")
 
 func _on_player_disconnected(id):
 	print("NETWORK EVENT: player disconnected: " + str(id))
 	unregister_player(id)
 	if i_am_host:
 		for player_id in players:
-			if player_id != 1:
+			if player_id != 1 && !players[player_id].begins_with("CPU"):
 				rpc_id(player_id, "unregister_player", id)
 
 # client code
@@ -85,6 +91,28 @@ func close_connections():
 	i_am_host = false
 	players = {}
 	emit_signal("disconnected_from_host")
+
+remote func register_cpu():
+	if i_am_host:
+		rpc("register_cpu")
+	var cpu_count = 0
+	for player_id in players:
+		if players[player_id].begins_with("CPU"):
+			cpu_count = cpu_count + 1
+	var cpuid = 10000 + cpu_count + 1
+	players[cpuid] = str("CPU:"+str(cpuid-10000))
+	emit_signal("connected_players_update", players)
+ 
+remote func unregister_cpu():
+	if i_am_host:
+		rpc("unregister_cpu")
+	var cpu_count = 0
+	for player_id in players:
+		if players[player_id].begins_with("CPU"):
+			cpu_count = cpu_count + 1
+	var cpuid = 10000 + cpu_count
+	players.erase(cpuid)
+	emit_signal("connected_players_update", players)
 
 
 func _ready():
