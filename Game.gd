@@ -4,6 +4,8 @@ export(PackedScene) var Card
 export(PackedScene) var Player
 export(PackedScene) var Trick
 
+signal deal_complete
+
 var players = []
 var me
 
@@ -31,6 +33,10 @@ remotesync func run_game():
 		if get_tree().is_network_server():
 			print("server is dealing %d cards" % card_count)
 			deal_cards_and_trump(card_count)
+		else:
+			# have clients wait for the complete signal
+			yield(self, "deal_complete")
+		print("deal_complete signal received, continuing run_game method")
 		var lead_player = players[hand_num%players.size()]
 		for _trick_num in range(card_count):
 			print("everyone is playing round %d" % _trick_num)
@@ -63,6 +69,7 @@ remotesync func deal_card(id, card):
 
 # runs everywhere, including caller
 remotesync func deal_trump(card):
+	print("trump is being set!")
 	# only the server can set trump
 	if get_tree().get_rpc_sender_id() == 1:
 		trumpCard = Card.instance()
@@ -70,9 +77,12 @@ remotesync func deal_trump(card):
 		trumpCard.set_value(card)
 		trumpCard.set_faceup(true)
 		trumpCard.position = $TrumpCardAnchor.position
+	print("trump has been set, emitting signal now")
+	emit_signal("deal_complete")
 
 func play_trick(lead_player):
 	currentTrick = Trick.instance()
+	currentTrick.trumpSuit = trumpCard.get_suit()
 	add_child(currentTrick)
 	currentTrick.position = Vector2(512,300)
 	var player = lead_player
