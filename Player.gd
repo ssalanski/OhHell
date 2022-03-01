@@ -46,7 +46,7 @@ remotesync func play_card(card_idx):
 	# signal the game, which player played what card
 	var card_ref = cards[card_idx]
 	cards.remove(card_idx)
-	print("I see that %d played a %d" % [get_tree().get_rpc_sender_id(), card_ref.value])
+	print("signal from %d that a %s was played (by them, or CPU)" % [get_tree().get_rpc_sender_id(), str(card_ref)])
 	emit_signal("card_played", get_tree().get_rpc_sender_id(), card_ref)
 
 	

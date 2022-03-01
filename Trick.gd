@@ -23,5 +23,7 @@ func get_winner():
 	var winning_card = leadCard
 	for card in cards.keys():
 		if card.beats(winning_card, leadCard.get_suit(), trumpSuit):
+			print("the " + str(card) + " beats " + str(winning_card))
 			winning_card = card
+	print("so " + str(winning_card) + " is the winning card")
 	return cards[winning_card]

@@ -33,6 +33,19 @@ func get_suit():
 func get_denom():
 	return value % 13
 
+func _to_string():
+	var d = get_denom()
+	if d < 9:
+		d = str(d+2)
+	else:
+		match d:
+			9: d = "jack"
+			10: d = "queen"
+			11: d = "king"
+			12: d = "ace"
+	var s = ["clubs","diamonds","hearts","spades"][get_suit()]
+	return "%s of %s" % [d,s]
+
 func beats(othercard, lead_suit, trump_suit):
 	if get_suit() == trump_suit:
 		if othercard.get_suit() == trump_suit:
