@@ -19,6 +19,8 @@ func _init():
 func _ready():
 	pass
 
+func tprint(msg):
+	print( ("[%f] " + msg) % (OS.get_ticks_msec()/1000.0) )
 
 # everyone runs this function, but only the server deals the cards each hand
 remotesync func run_game():
@@ -34,6 +36,7 @@ remotesync func run_game():
 			print("everyone is playing round %d" % _trick_num)
 			yield(play_trick(lead_player), "completed")
 			lead_player = currentTrick.get_winner()
+			print("trick won by " + lead_player.playername)
 			currentTrick.queue_free()
 
 	# runs only on the master node
@@ -73,9 +76,14 @@ func play_trick(lead_player):
 	add_child(currentTrick)
 	currentTrick.position = Vector2(512,300)
 	var player = lead_player
+	tprint("a trick begins")
+	print("==============")
 	while currentTrick.cards.size() < players.size():
+		tprint("game wants " + player.playername + " to take their turn")
 		player.take_turn()
+		tprint("   > the take_turn method returned for " + player.playername)
 		yield(player, "card_played")
+		tprint("the card_played signal was emitted by " + player.playername)
 		player = player.next_player
 	yield(get_tree().create_timer(3), "timeout")
 
