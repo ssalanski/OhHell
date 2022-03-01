@@ -11,6 +11,7 @@ func _ready():
 	pass # Replace with function body.
 
 func accept_card(player, card):
+	assert(!cards.values().has(player))
 	card.set_faceup(true)
 	card.position = position.direction_to(player.position) * 50
 	card.look_at(player.position)
