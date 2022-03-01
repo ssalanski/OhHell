@@ -9,6 +9,8 @@ var playername = "" setget set_player_name
 var seat
 var next_player
 
+var is_a_real_boy = true
+
 # hand data
 var cards = []
 var max_click_idx = -1
@@ -100,5 +102,20 @@ func is_legal(card):
 func take_turn():
 	print(name + "'s turn")
 	if is_network_master():
-		print("MY turn!")
-		can_play = true
+		if is_a_real_boy:
+			print("MY turn!")
+			can_play = true
+		else:
+			print("local CPU's turn: " + playername)
+			ai_take_turn()
+
+func ai_take_turn():
+	print(playername + " taking its turn")
+	for c in cards:
+		print(playername + " considering playing " + str(c))
+		if is_legal(c):
+			print(str(c) + " is legal!")
+			# simulate thinking time
+			yield(get_tree().create_timer(3), "timeout")
+			rpc("play_card", cards.find(c))
+			return

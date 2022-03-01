@@ -82,11 +82,17 @@ func play_trick(lead_player):
 func seat_players(_player_list):
 	print("my id is: " + str(get_tree().get_network_unique_id()))
 	for player_info in _player_list:
+		print("seating a player like: " + str(player_info))
 		var player = Player.instance()
 		player.set_name(str(player_info["id"]))
-		player.set_network_master(player_info["id"])
+		player.is_a_real_boy = !player_info["name"].begins_with("CPU")
 		player.playername = player_info["name"]
 		player.seat = player_info["seat"]
+		if player.is_a_real_boy:
+			print(player.playername + " is a real boy, network master: " + str(player_info["id"]))
+			player.set_network_master(player_info["id"])
+		else:
+			print(player.playername + " is CPU, network master: " + str(player.get_network_master()))
 		players.append(player)
 		add_child(player)
 		print("added player %s named %s at seat %d" % [player.name,player.playername,player.seat])
@@ -142,7 +148,8 @@ remote func player_seated():
 
 func on_play_card(player_id, card_ref):
 	var player = card_ref.get_parent()
-	assert(player.name == str(player_id))
+	if player.is_a_real_boy:
+		assert(player.name == str(player_id))
 	player.remove_child(card_ref)
 	player.arrange_hand()
 	currentTrick.add_child(card_ref)
