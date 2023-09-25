@@ -1,8 +1,8 @@
 extends Node2D
 
-export(PackedScene) var Card
-export(PackedScene) var Player
-export(PackedScene) var Trick
+@export var CardScene : PackedScene
+@export var PlayerScene : PackedScene
+@export var TrickScene : PackedScene
 
 signal deal_complete
 
@@ -22,31 +22,32 @@ func _ready():
 	pass
 
 func tprint(msg):
-	print( ("[%f] " + msg) % (OS.get_ticks_msec()/1000.0) )
+	print( ("[%f] " + msg) % (Time.get_ticks_msec()/1000.0) )
 
 # everyone runs this function, but only the server deals the cards each hand
-remotesync func run_game():
+@rpc("any_peer", "call_local", "reliable")
+func run_game():
 	print("gametime!")
 	var card_counts = [7,6,5,4,3,2,1,2,3,4,5,6,7]
 	for hand_num in range(13):
 		var card_count = card_counts[hand_num]
-		if get_tree().is_network_server():
+		if is_multiplayer_authority():
 			print("server is dealing %d cards" % card_count)
 			deal_cards_and_trump(card_count)
 		else:
 			# have clients wait for the complete signal
-			yield(self, "deal_complete")
+			await deal_complete
 		print("deal_complete signal received, continuing run_game method")
 		var lead_player = players[hand_num%players.size()]
 		for _trick_num in range(card_count):
 			print("everyone is playing round %d" % _trick_num)
-			yield(play_trick(lead_player), "completed")
+			await play_trick(lead_player)
 			lead_player = currentTrick.get_winner()
 			print("trick won by " + lead_player.playername)
 			currentTrick.queue_free()
 
 	# runs only on the master node
-	if get_tree().is_network_server():
+	if multiplayer.is_server():
 		pass
 	# this function, run only by the master node, will progress the game hand by hand, trick by trick, turn by turn
 	pass
@@ -54,34 +55,34 @@ remotesync func run_game():
 func deal_cards_and_trump(num_cards):
 	var deck = range(0,52)
 	deck.shuffle()
-	for _cardnum in range(num_cards):
+	for _card_num in range(num_cards):
 		for player in players:
 			var c = deck.pop_back()
-			rpc("deal_card",player.name,c)
-			#rpc("deal_card",player.name,player.seat) # debug trick, set card values as player seat instead, to see who sits where
-	rpc("deal_trump", deck.pop_back())
+			deal_card.rpc(player.seat, c)
+	deal_trump.rpc(deck.pop_back())
 
 # runs everywhere, including caller
-remotesync func deal_card(id, card):
-	# only accept calls from server
-	if get_tree().get_rpc_sender_id() == 1:
-		get_node(id).receive_card(card)
+@rpc("any_peer","call_local", "reliable")
+func deal_card(seat, card):
+	# only the server deals cards
+	if multiplayer.get_remote_sender_id() == 1:
+		players[seat].receive_card(card)
 
 # runs everywhere, including caller
-remotesync func deal_trump(card):
-	print("trump is being set!")
+@rpc("any_peer","call_local", "reliable")
+func deal_trump(card):
 	# only the server can set trump
-	if get_tree().get_rpc_sender_id() == 1:
-		trumpCard = Card.instance()
+	if multiplayer.get_remote_sender_id() == 1:
+		trumpCard = CardScene.instantiate()
 		add_child(trumpCard)
 		trumpCard.set_value(card)
 		trumpCard.set_faceup(true)
 		trumpCard.position = $TrumpCardAnchor.position
 	print("trump has been set, emitting signal now")
-	emit_signal("deal_complete")
+	deal_complete.emit()
 
 func play_trick(lead_player):
-	currentTrick = Trick.instance()
+	currentTrick = TrickScene.instantiate()
 	currentTrick.trumpSuit = trumpCard.get_suit()
 	add_child(currentTrick)
 	currentTrick.position = Vector2(512,300)
@@ -92,30 +93,30 @@ func play_trick(lead_player):
 		tprint("game wants " + player.playername + " to take their turn")
 		player.take_turn()
 		tprint("   > the take_turn method returned for " + player.playername)
-		yield(player, "card_played")
+		await player.card_played
 		tprint("the card_played signal was emitted by " + player.playername)
 		player = player.next_player
-	yield(get_tree().create_timer(3), "timeout")
+	await get_tree().create_timer(3).timeout
 
-func seat_players(_player_list):
-	print("my id is: " + str(get_tree().get_network_unique_id()))
-	for player_info in _player_list:
+func seat_players(player_list):
+	print("my id is " + str(multiplayer.get_unique_id()))
+	for player_info in player_list:
 		print("seating a player like: " + str(player_info))
-		var player = Player.instance()
+		var player = PlayerScene.instantiate()
 		player.set_name(str(player_info["id"]))
 		player.is_a_real_boy = !player_info["name"].begins_with("CPU")
 		player.playername = player_info["name"]
 		player.seat = player_info["seat"]
 		if player.is_a_real_boy:
 			print(player.playername + " is a real boy, network master: " + str(player_info["id"]))
-			player.set_network_master(player_info["id"])
+			player.set_multiplayer_authority(player_info["id"])
 		else:
-			print(player.playername + " is CPU, network master: " + str(player.get_network_master()))
+			print(player.playername + " is CPU, network master: " + str(player.get_multiplayer_authority()))
 		players.append(player)
 		add_child(player)
 		print("added player %s named %s at seat %d" % [player.name,player.playername,player.seat])
-		player.connect("card_played", self, "on_play_card")
-		if player.name == str(get_tree().get_network_unique_id()):
+		player.card_played.connect(on_play_card)
+		if player.name == str(multiplayer.get_unique_id()):
 			me = player
 		elif player.playername.begins_with("CPU"):
 			num_cpu_players = num_cpu_players + 1
@@ -134,35 +135,33 @@ func seat_players(_player_list):
 		else:
 			var pos_clockwise_from_me = ((players.size() + player.seat - me.seat) % players.size()) - 1
 			if players.size() == 2:
-				$SeatingPath/PathFollow2D.set_unit_offset(0.5)
+				$SeatingPath/PathFollow2D.progress_ratio = 0.5
 			elif players.size() == 3:
-				$SeatingPath/PathFollow2D.set_unit_offset(0.333 * (pos_clockwise_from_me+1))
+				$SeatingPath/PathFollow2D.progress_ratio = 0.333 * (pos_clockwise_from_me+1)
 			else:
 				var offset_increment = 1.0 / (players.size() - 2)
-				$SeatingPath/PathFollow2D.set_unit_offset(pos_clockwise_from_me*offset_increment)
+				$SeatingPath/PathFollow2D.progress_ratio = pos_clockwise_from_me * offset_increment
 			player.position = $SeatingPath/PathFollow2D.position
 			player.look_at(Vector2(512,300))
 			player.rotate(PI/2)
 	# TODO: why cant I rpc call myself, and just have it run locally?
-	if get_tree().get_network_unique_id() == 1:
+	if multiplayer.get_unique_id() == 1:
 		player_seated()
 	else:
-		rpc_id(1, "player_seated")
+		player_seated.rpc_id(1)
 
 # make sure all players have initialized their game tree with player nodes
 var players_seated = []
-# TODO: would this be "master"?
-remote func player_seated():
-	var who = get_tree().get_rpc_sender_id()
-	assert(get_tree().is_network_server())
-	#assert(who in players)
+@rpc("any_peer","call_remote")
+func player_seated():
+	var who = multiplayer.get_remote_sender_id()
+	assert(multiplayer.is_server())
 	assert(not who in players_seated)
 	print("%d is ready" % who)
 	players_seated.append(who)
 	if players_seated.size() == players.size() - num_cpu_players:
 		print("everyone's ready!")
-		rpc("run_game")
-		
+		run_game.rpc()
 
 func on_play_card(player_id, card_ref):
 	var player = card_ref.get_parent()

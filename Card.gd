@@ -1,4 +1,4 @@
-extends Node2D
+extends Area2D
 
 signal card_clicked(ref)
 
@@ -66,4 +66,4 @@ func beats(othercard, lead_suit, trump_suit):
 func _on_CardNode_input_event(_viewport, event, _shape_idx):
 	if event is InputEventMouseButton:
 		if event.pressed:
-			emit_signal("card_clicked", self)
+			card_clicked.emit(self)

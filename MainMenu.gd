@@ -1,16 +1,8 @@
 extends Control
 
-
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-
-
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	Lobby.connect("connected_players_update", self, "_on_players_update")
-	Lobby.connect("disconnected_from_host", self, "_on_host_disconnect")
-
+	Lobby.connected_players_update.connect(_on_players_update)
+	Lobby.disconnected_from_host.connect(_on_host_disconnect)
 
 func _on_players_update(players):
 	$GameLobby/PlayerList.clear()
@@ -22,7 +14,6 @@ func _on_host_disconnect():
 	$GameLobby/PlayerList.clear()
 	$GameLobby.hide()
 	$MainMenu.show()
-	
 
 func _on_JoinMenuButton_pressed():
 	$MainMenu.hide()
@@ -89,11 +80,11 @@ func _on_DownButton_pressed():
 func _on_RandomButton_pressed():
 	#$GameLobby/PlayerList.unselect_all()
 	for idx in range($GameLobby/PlayerList.get_item_count()):
-		var rand_idx = rand_range(idx,$GameLobby/PlayerList.get_item_count())
+		var rand_idx = randi_range(idx,$GameLobby/PlayerList.get_item_count())
 		$GameLobby/PlayerList.move_item(idx, rand_idx)
 
 
-func _on_PlayerList_nothing_selected():
+func _on_PlayerList_nothing_selected(_at_position, _mouse_button_index):
 	$GameLobby/SeatingControls/DownButton.disabled = true
 	$GameLobby/SeatingControls/UpButton.disabled = true
 

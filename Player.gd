@@ -1,11 +1,11 @@
 extends Node2D
 
-export(PackedScene) var Card
+@export var CardScene : PackedScene
 
-signal card_played(player_id,ref)
+signal card_played(player_id, ref)
 
 # player data (TODO: should separate player and hand constructs)
-var playername = "" setget set_player_name
+var playername = "": set = set_player_name
 var seat
 var next_player
 
@@ -28,30 +28,30 @@ func _ready():
 
 func receive_card(card):
 	# place card instance in hand
-	var cardInstance = Card.instance()
+	var cardInstance = CardScene.instantiate()
 	cards.append(cardInstance)
 	add_child(cardInstance)
 	arrange_hand()
-	if is_network_master():
+	if is_multiplayer_authority():
 		# if we're the master node, set value and connect signal
 		cardInstance.set_value(card)
 		cardInstance.set_faceup(true)
-		cardInstance.connect("card_clicked", self, "on_card_clicked")
+		cardInstance.card_clicked.connect(on_card_clicked)
 	else:
 		# TODO: this is for debug purposes
 		cardInstance.set_value(card)
 		#cardInstance.set_faceup(true)
 
-# runs everywhere, including caller
-remotesync func play_card(card_idx):
+@rpc("any_peer","call_local", "reliable")
+func play_card(card_idx):
 	# anyone can play a card
 	# signal the game, which player played what card
 	var card_ref = cards[card_idx]
-	cards.remove(card_idx)
-	print("signal from %d that a %s was played (by them, or CPU)" % [get_tree().get_rpc_sender_id(), str(card_ref)])
-	emit_signal("card_played", get_tree().get_rpc_sender_id(), card_ref)
+	cards.remove_at(card_idx)
+	print("signal from %d that a %s was played (by them, or CPU)" % [multiplayer.get_remote_sender_id(), str(card_ref)])
+	card_played.emit(multiplayer.get_remote_sender_id(), card_ref)
 
-	
+
 const CARD_GAP = 30
 func arrange_hand():
 	var h = -CARD_GAP/2 * (cards.size() - 1)
@@ -65,7 +65,6 @@ func arrange_hand():
 
 func on_card_clicked(ref):
 	max_click_idx = max(cards.find(ref), max_click_idx)
-	print(max_click_idx)
 	set_process(true)
 
 func _process(_delta):
@@ -73,11 +72,9 @@ func _process(_delta):
 	if is_legal(clicked_card):
 		if primed_card == clicked_card:
 			if can_play:
-				#cards.remove(max_click_idx) FYI: moved to play_card
-				primed_card.disconnect("card_clicked", self, "on_card_clicked")
-				rpc("play_card", max_click_idx)
+				primed_card.card_clicked.disconnect(on_card_clicked)
+				play_card.rpc(max_click_idx)
 				can_play = false
-				#emit_signal("card_played", primed_card)  FYI: moved to play_card
 			else:
 				print("cant play, not your turn")
 		else:
@@ -101,7 +98,7 @@ func is_legal(card):
 
 func take_turn():
 	print(name + "'s turn")
-	if is_network_master():
+	if is_multiplayer_authority():
 		if is_a_real_boy:
 			print("MY turn!")
 			can_play = true
@@ -116,6 +113,6 @@ func ai_take_turn():
 		if is_legal(c):
 			print(str(c) + " is legal!")
 			# simulate thinking time
-			yield(get_tree().create_timer(3), "timeout")
+			await get_tree().create_timer(3).timeout
 			rpc("play_card", cards.find(c))
 			return

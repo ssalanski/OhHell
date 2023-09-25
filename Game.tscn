@@ -1,40 +1,37 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=7 format=3 uid="uid://dtc2llfikxgst"]
 
-[ext_resource path="res://assets/art/table.png" type="Texture" id=1]
-[ext_resource path="res://Player.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Game.gd" type="Script" id=3]
-[ext_resource path="res://Trick.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Card.tscn" type="PackedScene" id=5]
+[ext_resource type="Script" path="res://Game.gd" id="1_8gcrn"]
+[ext_resource type="PackedScene" uid="uid://b6gohqpsv28gf" path="res://Card.tscn" id="2_jidq3"]
+[ext_resource type="PackedScene" uid="uid://23jnmnxa813x" path="res://Player.tscn" id="3_20kcp"]
+[ext_resource type="PackedScene" uid="uid://2b42i6xhyirl" path="res://Trick.tscn" id="4_lp82t"]
+[ext_resource type="Texture2D" uid="uid://cvb82psp82wav" path="res://assets/art/table.png" id="5_utes3"]
 
-[sub_resource type="Curve2D" id=1]
+[sub_resource type="Curve2D" id="Curve2D_5yf44"]
 _data = {
-"points": PoolVector2Array( 0, 0, 0, 0, 50, 300, -433.011, 0, 433.011, 0, 512, 50, 0, 0, 0, 0, 974, 300 )
+"points": PackedVector2Array(-25.2043, 61.4289, 0, 0, 50, 300, -100, 64, 100, -64, 212, 128, -90, 0, 90, 0, 512, 50, -100, -64, 100, 64, 812, 128, 0, 0, 0, 0, 974, 300)
 }
+point_count = 5
 
 [node name="GameNode" type="Node2D"]
-script = ExtResource( 3 )
-__meta__ = {
-"_edit_horizontal_guides_": [ 300.0, 50.0, 110.0 ],
-"_edit_vertical_guides_": [ 512.0, 50.0, 974.0, 224.0, 800.0 ]
-}
-Card = ExtResource( 5 )
-Player = ExtResource( 2 )
-Trick = ExtResource( 4 )
+script = ExtResource("1_8gcrn")
+CardScene = ExtResource("2_jidq3")
+PlayerScene = ExtResource("3_20kcp")
+TrickScene = ExtResource("4_lp82t")
 
-[node name="Table" type="Sprite" parent="."]
-scale = Vector2( 0.706207, 0.666667 )
-texture = ExtResource( 1 )
+[node name="Table" type="Sprite2D" parent="."]
+scale = Vector2(0.706207, 0.666667)
+texture = ExtResource("5_utes3")
 centered = false
 
-[node name="MainPlayerAnchor" type="Position2D" parent="."]
-position = Vector2( 512, 514 )
+[node name="MainPlayerAnchor" type="Marker2D" parent="."]
+position = Vector2(512, 512)
 
-[node name="TrumpCardAnchor" type="Position2D" parent="."]
-position = Vector2( 94, 514 )
+[node name="TrumpCardAnchor" type="Marker2D" parent="."]
+position = Vector2(94, 512)
 
 [node name="SeatingPath" type="Path2D" parent="."]
-curve = SubResource( 1 )
+curve = SubResource("Curve2D_5yf44")
 
 [node name="PathFollow2D" type="PathFollow2D" parent="SeatingPath"]
-position = Vector2( 50, 300 )
-rotation = -0.829327
+position = Vector2(50, 300)
+rotation = -0.815329

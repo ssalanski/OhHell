@@ -1,267 +1,190 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=2 format=3 uid="uid://d13xqr2b6akxg"]
 
-[ext_resource path="res://MainMenu.gd" type="Script" id=1]
+[ext_resource type="Script" path="res://MainMenu.gd" id="1_12stc"]
 
 [node name="MainMenu" type="Control"]
+custom_minimum_size = Vector2(1024, 600)
+layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-mouse_filter = 2
-script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_12stc")
 
 [node name="MainMenu" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -42.0
-margin_top = -22.0
-margin_right = 42.0
-margin_bottom = 22.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
 
 [node name="HostMenuButton" type="Button" parent="MainMenu"]
-margin_right = 84.0
-margin_bottom = 20.0
+layout_mode = 2
 text = "Host Game"
 
 [node name="JoinMenuButton" type="Button" parent="MainMenu"]
-margin_top = 24.0
-margin_right = 84.0
-margin_bottom = 44.0
+layout_mode = 2
 text = "Join Game"
 
 [node name="QuitButton" type="Button" parent="MainMenu"]
-margin_top = 48.0
-margin_right = 84.0
-margin_bottom = 68.0
+layout_mode = 2
 text = "Quit"
 
 [node name="JoinServerMenu" type="VBoxContainer" parent="."]
 visible = false
+layout_mode = 1
+anchors_preset = -1
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -145.5
-margin_top = -40.0
-margin_right = 145.5
-margin_bottom = 40.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
 
 [node name="ServerAddress" type="HBoxContainer" parent="JoinServerMenu"]
-margin_right = 291.0
-margin_bottom = 24.0
+layout_mode = 2
+size_flags_horizontal = 8
 
 [node name="Label" type="Label" parent="JoinServerMenu/ServerAddress"]
-margin_top = 5.0
-margin_right = 98.0
-margin_bottom = 19.0
-text = "Server address:"
+layout_mode = 2
+text = "Server Address:"
 
 [node name="Input" type="LineEdit" parent="JoinServerMenu/ServerAddress"]
-margin_left = 102.0
-margin_right = 174.0
-margin_bottom = 24.0
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
 text = "localhost"
-expand_to_text_length = true
+placeholder_text = "host address"
 
 [node name="PlayerName" type="HBoxContainer" parent="JoinServerMenu"]
-margin_top = 28.0
-margin_right = 291.0
-margin_bottom = 52.0
+layout_mode = 2
+size_flags_horizontal = 8
 
 [node name="Label" type="Label" parent="JoinServerMenu/PlayerName"]
-margin_top = 5.0
-margin_right = 85.0
-margin_bottom = 19.0
+layout_mode = 2
 text = "Player Name:"
 
 [node name="Input" type="LineEdit" parent="JoinServerMenu/PlayerName"]
-margin_left = 89.0
-margin_right = 147.0
-margin_bottom = 24.0
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
 text = "Bob"
-expand_to_text_length = true
+placeholder_text = "Player Name"
 
 [node name="JoinButton" type="Button" parent="JoinServerMenu"]
-margin_top = 56.0
-margin_right = 291.0
-margin_bottom = 76.0
-size_flags_horizontal = 5
+layout_mode = 2
 text = "Connect"
 
 [node name="HSeparator" type="HSeparator" parent="JoinServerMenu"]
-margin_top = 80.0
-margin_right = 291.0
-margin_bottom = 84.0
-__meta__ = {
-"_editor_description_": ""
-}
+layout_mode = 2
 
 [node name="BackButton" type="Button" parent="JoinServerMenu"]
-margin_left = 124.0
-margin_top = 88.0
-margin_right = 166.0
-margin_bottom = 108.0
-size_flags_horizontal = 4
+layout_mode = 2
 text = "Back"
 
 [node name="HostServerMenu" type="VBoxContainer" parent="."]
 visible = false
+layout_mode = 1
+anchors_preset = -1
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -145.5
-margin_top = -40.0
-margin_right = 145.5
-margin_bottom = 40.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
 
 [node name="PlayerName" type="HBoxContainer" parent="HostServerMenu"]
-margin_right = 291.0
-margin_bottom = 24.0
+layout_mode = 2
+size_flags_horizontal = 8
 
 [node name="Label" type="Label" parent="HostServerMenu/PlayerName"]
-margin_top = 5.0
-margin_right = 85.0
-margin_bottom = 19.0
+layout_mode = 2
 text = "Player Name:"
 
 [node name="Input" type="LineEdit" parent="HostServerMenu/PlayerName"]
-margin_left = 89.0
-margin_right = 147.0
-margin_bottom = 24.0
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
 text = "Bob"
-expand_to_text_length = true
+placeholder_text = "Player Name"
 
 [node name="HostButton" type="Button" parent="HostServerMenu"]
-margin_top = 28.0
-margin_right = 291.0
-margin_bottom = 48.0
-size_flags_horizontal = 5
+layout_mode = 2
 text = "Host"
 
 [node name="HSeparator" type="HSeparator" parent="HostServerMenu"]
-margin_top = 52.0
-margin_right = 291.0
-margin_bottom = 56.0
-__meta__ = {
-"_editor_description_": ""
-}
+layout_mode = 2
 
 [node name="BackButton" type="Button" parent="HostServerMenu"]
-margin_left = 124.0
-margin_top = 60.0
-margin_right = 166.0
-margin_bottom = 80.0
-size_flags_horizontal = 4
+layout_mode = 2
 text = "Back"
 
 [node name="GameLobby" type="VBoxContainer" parent="."]
 visible = false
+layout_mode = 1
+anchors_preset = -1
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -59.0
-margin_top = -37.5
-margin_right = 59.0
-margin_bottom = 37.5
-grow_vertical = 0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
 
 [node name="Label" type="Label" parent="GameLobby"]
-margin_right = 118.0
-margin_bottom = 14.0
+layout_mode = 2
 text = "Connected Players"
 
 [node name="PlayerList" type="ItemList" parent="GameLobby"]
-margin_top = 18.0
-margin_right = 118.0
-margin_bottom = 99.0
-size_flags_vertical = 3
-items = [ "Item 0", null, false, "Item 1", null, false, "Item 2", null, false, "Item 3", null, false ]
+layout_mode = 2
+allow_search = false
 auto_height = true
 
 [node name="CPUControls" type="HBoxContainer" parent="GameLobby"]
-margin_top = 103.0
-margin_right = 118.0
-margin_bottom = 123.0
+layout_mode = 2
 
 [node name="AddCPUButton" type="Button" parent="GameLobby/CPUControls"]
-margin_right = 57.0
-margin_bottom = 20.0
+layout_mode = 2
 size_flags_horizontal = 3
-text = "+ CPU"
+text = "+CPU"
 
 [node name="RemoveCPUButton" type="Button" parent="GameLobby/CPUControls"]
-margin_left = 61.0
-margin_right = 118.0
-margin_bottom = 20.0
+layout_mode = 2
 size_flags_horizontal = 3
-text = "- CPU"
+text = "-CPU"
 
 [node name="SeatingControls" type="HBoxContainer" parent="GameLobby"]
-margin_top = 127.0
-margin_right = 118.0
-margin_bottom = 147.0
-size_flags_horizontal = 3
+layout_mode = 2
 
 [node name="Label" type="Label" parent="GameLobby/SeatingControls"]
-margin_top = 3.0
-margin_right = 38.0
-margin_bottom = 17.0
+layout_mode = 2
 text = "order:"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="UpButton" type="Button" parent="GameLobby/SeatingControls"]
-margin_left = 42.0
-margin_right = 64.0
-margin_bottom = 20.0
+layout_mode = 2
 size_flags_horizontal = 3
-disabled = true
 text = "U"
 
 [node name="DownButton" type="Button" parent="GameLobby/SeatingControls"]
-margin_left = 68.0
-margin_right = 91.0
-margin_bottom = 20.0
+layout_mode = 2
 size_flags_horizontal = 3
-disabled = true
 text = "D"
 
 [node name="RandomButton" type="Button" parent="GameLobby/SeatingControls"]
-margin_left = 95.0
-margin_right = 118.0
-margin_bottom = 20.0
+layout_mode = 2
 size_flags_horizontal = 3
 text = "R"
 
 [node name="StartGameButton" type="Button" parent="GameLobby"]
-margin_top = 151.0
-margin_right = 118.0
-margin_bottom = 171.0
-disabled = true
+layout_mode = 2
 text = "Start Game"
 
 [node name="DisconnectButton" type="Button" parent="GameLobby"]
-margin_top = 175.0
-margin_right = 118.0
-margin_bottom = 195.0
+layout_mode = 2
 text = "Disconnect"
 
 [connection signal="pressed" from="MainMenu/HostMenuButton" to="." method="_on_HostMenuButton_pressed"]
@@ -271,8 +194,8 @@ text = "Disconnect"
 [connection signal="pressed" from="JoinServerMenu/BackButton" to="." method="_on_BackButton_pressed"]
 [connection signal="pressed" from="HostServerMenu/HostButton" to="." method="_on_HostButton_pressed"]
 [connection signal="pressed" from="HostServerMenu/BackButton" to="." method="_on_BackButton_pressed"]
+[connection signal="empty_clicked" from="GameLobby/PlayerList" to="." method="_on_PlayerList_nothing_selected"]
 [connection signal="item_selected" from="GameLobby/PlayerList" to="." method="_on_PlayerList_item_selected"]
-[connection signal="nothing_selected" from="GameLobby/PlayerList" to="." method="_on_PlayerList_nothing_selected"]
 [connection signal="pressed" from="GameLobby/CPUControls/AddCPUButton" to="." method="_on_AddCPUButton_pressed"]
 [connection signal="pressed" from="GameLobby/CPUControls/RemoveCPUButton" to="." method="_on_RemoveCPUButton_pressed"]
 [connection signal="pressed" from="GameLobby/SeatingControls/UpButton" to="." method="_on_UpButton_pressed"]

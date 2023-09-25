@@ -6,25 +6,25 @@
 ;   [section] ; section goes between []
 ;   param=value ; assign values to parameters
 
-config_version=4
+config_version=5
 
 [application]
 
 config/name="Oh Hell"
 run/main_scene="res://MainMenu.tscn"
-config/icon="res://icon.png"
+config/features=PackedStringArray("4.1", "GL Compatibility")
+config/icon="res://icon.svg"
 
 [autoload]
 
 Lobby="*res://Lobby.gd"
 
-[physics]
+[display]
 
-common/enable_pause_aware_picking=true
+window/size/viewport_width=1024
+window/size/viewport_height=600
 
 [rendering]
 
-quality/driver/driver_name="GLES2"
-vram_compression/import_etc=true
-vram_compression/import_etc2=false
-environment/default_environment="res://default_env.tres"
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
