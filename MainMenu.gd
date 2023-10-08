@@ -3,12 +3,24 @@ extends Control
 func _ready():
 	Lobby.connected_players_update.connect(_on_players_update)
 	Lobby.disconnected_from_host.connect(_on_host_disconnect)
+	print(OS.get_cmdline_args())
+	if "--client" in OS.get_cmdline_args():
+		print("lets be a client")
+		$MainMenu.show()
+		$JoinServerMenu.hide()
+		$HostServerMenu.hide()
+		$GameLobby.hide()
+	else:# OS.has_feature("server"):
+		print("lets be a server")
+		hide()
+		Lobby.host_server()
 
 func _on_players_update(players):
 	$GameLobby/PlayerList.clear()
 	for player_id in players:
-		$GameLobby/PlayerList.add_item(players[player_id])
-	$GameLobby/StartGameButton.disabled = players.size() < 2
+		$GameLobby/PlayerList.add_item(players[player_id]["name"])
+		$GameLobby/PlayerList.add_item(str(players[player_id]["ready"]))
+	$GameLobby/ReadyButton.disabled = players.size() < 2
 
 func _on_host_disconnect():
 	$GameLobby/PlayerList.clear()
@@ -32,17 +44,16 @@ func _on_JoinButton_pressed():
 	Lobby.join_server($JoinServerMenu/ServerAddress/Input.text, $JoinServerMenu/PlayerName/Input.text)
 	$JoinServerMenu.hide()
 	$GameLobby.show()
-	$GameLobby/StartGameButton.hide()
+	$GameLobby/ReadyButton.text = "Ready"
 	$GameLobby/DisconnectButton.text = "Disconnect"
-	$GameLobby/CPUControls.hide()
-	$GameLobby/SeatingControls.hide()
 
 func _on_HostButton_pressed():
 	Lobby.host_game($HostServerMenu/PlayerName/Input.text)
 	$HostServerMenu.hide()
 	$GameLobby.show()
-	$GameLobby/StartGameButton.disabled = true
-	$GameLobby/StartGameButton.show()
+	$GameLobby/ReadyButton.disabled = true
+	$GameLobby/ReadyButton.text = "Start Game"
+	$GameLobby/ReadyButton.show()
 	$GameLobby/DisconnectButton.text = "Stop Hosting"
 	$GameLobby/CPUControls.show()
 	$GameLobby/SeatingControls.show()
@@ -53,13 +64,16 @@ func _on_StopHostingButton_pressed():
 	$GameLobby.hide()
 	$MainMenu.show()
 
-func _on_StartGameButton_pressed():
+func _on_ReadyButton_pressed():
 	$GameLobby.hide()
 	# TODO: get order of player list, use as seating/dealer order, add shuffle/reorder buttons
 	var player_order = []
-	for idx in range($GameLobby/PlayerList.get_item_count()):
-		player_order.append($GameLobby/PlayerList.get_item_text(idx))
+	for idx in range($GameLobby/PlayerList.get_item_count()/2):
+		player_order.append($GameLobby/PlayerList.get_item_text(idx*2))
 	Lobby.start_game(player_order)
+
+func _on_game_start():
+	pass
 
 
 func _on_QuitButton_pressed():
