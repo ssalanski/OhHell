@@ -65,6 +65,7 @@ func _on_StopHostingButton_pressed():
 	$MainMenu.show()
 
 func _on_ReadyButton_pressed():
+	
 	$GameLobby.hide()
 	# TODO: get order of player list, use as seating/dealer order, add shuffle/reorder buttons
 	var player_order = []
@@ -109,8 +110,8 @@ func _on_PlayerList_item_selected(index):
 
 
 func _on_AddCPUButton_pressed():
-	Lobby.register_cpu()
+	Lobby.new_cpu()
 
 
 func _on_RemoveCPUButton_pressed():
-	Lobby.unregister_cpu()
+	Lobby.rem_cpu()

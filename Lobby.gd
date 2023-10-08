@@ -55,12 +55,11 @@ func _on_player_connected(id):
 	if i_am_host:
 		# CPU players wont trigger a _on_player_connected for the client player
 		# so the server should send CPU player info to a newly connected client
+		var cpu_idx = 0
 		for player_id in players:
 			if players[player_id]["name"].begins_with("CPU"):
-				register_cpu.rpc_id(id, players[player_id]["name"])
-		print("players: ")
-		for player_id in players:
-			print("  > " + str(player_id) + " = " + players[player_id]["name"])
+				cpu_idx = cpu_idx + 1
+				register_cpu.rpc_id(id, cpu_idx)
 	else:
 		# send our own info to them to register in their game
 		register_player.rpc_id(id, my_name)
@@ -121,27 +120,33 @@ func close_connections():
 	players = {}
 	disconnected_from_host.emit()
 
-@rpc("any_peer", "call_remote", "reliable")
-func register_cpu():
-	if i_am_host:
-		register_cpu.rpc()
+func new_cpu():
 	var cpu_count = 0
 	for player_id in players:
-		if players[player_id].begins_with("CPU"):
+		if players[player_id]["name"].begins_with("CPU"):
 			cpu_count = cpu_count + 1
-	var cpuid = 10000 + cpu_count + 1
-	players[cpuid] = str("CPU:"+str(cpuid-10000))
+	register_cpu(cpu_count+1)
+	register_cpu.rpc(cpu_count+1)
+
+func rem_cpu():
+	var cpu_count = 0
+	for player_id in players:
+		if players[player_id]["name"].begins_with("CPU"):
+			cpu_count = cpu_count + 1
+	unregister_cpu(cpu_count)
+	unregister_cpu.rpc(cpu_count)
+
+@rpc("any_peer", "call_remote", "reliable")
+func register_cpu(cpu_idx):
+	print("registering cpu idx " + str(cpu_idx))
+	var cpuid = 10000 + cpu_idx
+	players[cpuid] = {"name":str("CPU:"+str(cpuid-10000)),"ready":true}
 	connected_players_update.emit(players)
  
 @rpc("any_peer", "call_remote", "reliable")
-func unregister_cpu():
-	if i_am_host:
-		unregister_cpu.rpc()
-	var cpu_count = 0
-	for player_id in players:
-		if players[player_id].begins_with("CPU"):
-			cpu_count = cpu_count + 1
-	var cpuid = 10000 + cpu_count
+func unregister_cpu(cpu_idx):
+	print("unregistering cpu idx " + str(cpu_idx))
+	var cpuid = 10000 + cpu_idx
 	players.erase(cpuid)
 	connected_players_update.emit(players)
 
