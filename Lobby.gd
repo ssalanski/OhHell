@@ -66,7 +66,10 @@ func _on_player_connected(id):
 
 func _on_player_disconnected(id):
 	print("NETWORK EVENT: player disconnected: " + str(id))
-	unregister_player(id)
+	if id == 1:
+		print("..... actuall that was the server")
+	else:
+		unregister_player(id)
 	#if i_am_host:
 	#	for player_id in players:
 	#		if player_id != 1 && !players[player_id]["name"].begins_with("CPU"):
