@@ -4,16 +4,18 @@ func _ready():
 	Lobby.connected_players_update.connect(_on_players_update)
 	Lobby.disconnected_from_host.connect(_on_host_disconnect)
 	print(OS.get_cmdline_args())
-	if "--client" in OS.get_cmdline_args():
+	var run_as_server = OS.has_feature("server") or "--server" in OS.get_cmdline_args()
+	# run_as_server = true # uncomment to force server mode, for testing through the godot UI
+	if run_as_server:
+		print("lets be a server")
+		hide()
+		Lobby.host_server()
+	else:
 		print("lets be a client")
 		$MainMenu.show()
 		$JoinServerMenu.hide()
 		$HostServerMenu.hide()
 		$GameLobby.hide()
-	else:# OS.has_feature("server"):
-		print("lets be a server")
-		hide()
-		Lobby.host_server()
 
 func _on_players_update(players):
 	$GameLobby/PlayerList.clear()
