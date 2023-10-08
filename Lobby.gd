@@ -19,7 +19,14 @@ func host_server():
 	peer.create_server(GAME_PORT, 7)
 	multiplayer.multiplayer_peer = peer
 	i_am_host = true
-	
+
+func start_game(player_order):
+	var player_list = []
+	for player_id in players:
+		var seat_num = player_order.find(player_id)
+		player_list.append({"id":player_id,"name":players[player_id]["name"],"seat":seat_num})
+	begin_game.rpc(player_list)
+
 # player host code
 
 #func host_game(player_name):
@@ -31,12 +38,25 @@ func host_server():
 #	multiplayer.multiplayer_peer = peer
 #	i_am_host = true
 
-func start_game(player_order):
-	var player_list = []
-	for player_id in players:
-		var seat_num = player_order.find(players[player_id]["name"])
-		player_list.append({"id":player_id,"name":players[player_id]["name"],"seat":seat_num})
-	begin_game.rpc(player_list)
+@rpc("any_peer","call_local","reliable")
+func toggle_ready():
+	var id = multiplayer.get_remote_sender_id()
+	print("%d called asdf" % id)
+	if id == 0:
+		id = multiplayer.get_unique_id()
+		#toggle_ready.rpc()
+	print("toggling ready for %d from %d to %d" % [id,int(players[id]["ready"]),int(not players[id]["ready"])])
+	players[id]["ready"] = not players[id]["ready"]
+	if i_am_host:
+		if players.values().all(func(p): return p["ready"]):
+			print("everyone's ready, lets go")
+			start_game(players.keys()) # TODO: restore capability to change seating order
+			#var player_order = []
+			#for idx in range($GameLobby/PlayerList.get_item_count()/2):
+			#	player_order.append($GameLobby/PlayerList.get_item_text(idx*2))
+			#Lobby.start_game(player_order)
+	else:
+		connected_players_update.emit(players)
 
 @rpc("any_peer","call_local","reliable")
 func begin_game(player_list):

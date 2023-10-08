@@ -23,10 +23,6 @@ grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_use_anchors_ = true
 
-[node name="HostMenuButton" type="Button" parent="MainMenu"]
-layout_mode = 2
-text = "Host Game"
-
 [node name="JoinMenuButton" type="Button" parent="MainMenu"]
 layout_mode = 2
 text = "Join Game"
@@ -86,44 +82,8 @@ layout_mode = 2
 layout_mode = 2
 text = "Back"
 
-[node name="HostServerMenu" type="VBoxContainer" parent="."]
-visible = false
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-grow_horizontal = 2
-grow_vertical = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="PlayerName" type="HBoxContainer" parent="HostServerMenu"]
-layout_mode = 2
-size_flags_horizontal = 8
-
-[node name="Label" type="Label" parent="HostServerMenu/PlayerName"]
-layout_mode = 2
-text = "Player Name:"
-
-[node name="Input" type="LineEdit" parent="HostServerMenu/PlayerName"]
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 2
-text = "Bob"
-placeholder_text = "Player Name"
-
-[node name="HostButton" type="Button" parent="HostServerMenu"]
-layout_mode = 2
-text = "Host"
-
-[node name="HSeparator" type="HSeparator" parent="HostServerMenu"]
-layout_mode = 2
-
-[node name="BackButton" type="Button" parent="HostServerMenu"]
-layout_mode = 2
-text = "Back"
-
 [node name="GameLobby" type="VBoxContainer" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -190,13 +150,10 @@ text = "Start Game"
 layout_mode = 2
 text = "Disconnect"
 
-[connection signal="pressed" from="MainMenu/HostMenuButton" to="." method="_on_HostMenuButton_pressed"]
 [connection signal="pressed" from="MainMenu/JoinMenuButton" to="." method="_on_JoinMenuButton_pressed"]
 [connection signal="pressed" from="MainMenu/QuitButton" to="." method="_on_QuitButton_pressed"]
 [connection signal="pressed" from="JoinServerMenu/JoinButton" to="." method="_on_JoinButton_pressed"]
 [connection signal="pressed" from="JoinServerMenu/BackButton" to="." method="_on_BackButton_pressed"]
-[connection signal="pressed" from="HostServerMenu/HostButton" to="." method="_on_HostButton_pressed"]
-[connection signal="pressed" from="HostServerMenu/BackButton" to="." method="_on_BackButton_pressed"]
 [connection signal="empty_clicked" from="GameLobby/PlayerList" to="." method="_on_PlayerList_nothing_selected"]
 [connection signal="item_selected" from="GameLobby/PlayerList" to="." method="_on_PlayerList_item_selected"]
 [connection signal="pressed" from="GameLobby/CPUControls/AddCPUButton" to="." method="_on_AddCPUButton_pressed"]

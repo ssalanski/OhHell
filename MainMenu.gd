@@ -14,7 +14,6 @@ func _ready():
 		print("lets be a client")
 		$MainMenu.show()
 		$JoinServerMenu.hide()
-		$HostServerMenu.hide()
 		$GameLobby.hide()
 
 func _on_players_update(players):
@@ -33,12 +32,7 @@ func _on_JoinMenuButton_pressed():
 	$MainMenu.hide()
 	$JoinServerMenu.show()
 
-func _on_HostMenuButton_pressed():
-	$MainMenu.hide()
-	$HostServerMenu.show()
-
 func _on_BackButton_pressed():
-	$HostServerMenu.hide()
 	$JoinServerMenu.hide()
 	$MainMenu.show()
 
@@ -49,17 +43,6 @@ func _on_JoinButton_pressed():
 	$GameLobby/ReadyButton.text = "Ready"
 	$GameLobby/DisconnectButton.text = "Disconnect"
 
-func _on_HostButton_pressed():
-	Lobby.host_game($HostServerMenu/PlayerName/Input.text)
-	$HostServerMenu.hide()
-	$GameLobby.show()
-	$GameLobby/ReadyButton.disabled = true
-	$GameLobby/ReadyButton.text = "Start Game"
-	$GameLobby/ReadyButton.show()
-	$GameLobby/DisconnectButton.text = "Stop Hosting"
-	$GameLobby/CPUControls.show()
-	$GameLobby/SeatingControls.show()
-
 func _on_StopHostingButton_pressed():
 	Lobby.close_connections()
 	$GameLobby/PlayerList.clear()
@@ -67,13 +50,7 @@ func _on_StopHostingButton_pressed():
 	$MainMenu.show()
 
 func _on_ReadyButton_pressed():
-	
-	$GameLobby.hide()
-	# TODO: get order of player list, use as seating/dealer order, add shuffle/reorder buttons
-	var player_order = []
-	for idx in range($GameLobby/PlayerList.get_item_count()/2):
-		player_order.append($GameLobby/PlayerList.get_item_text(idx*2))
-	Lobby.start_game(player_order)
+	Lobby.toggle_ready.rpc()
 
 func _on_game_start():
 	pass
