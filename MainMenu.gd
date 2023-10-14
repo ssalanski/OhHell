@@ -1,5 +1,8 @@
 extends Control
 
+var ready_check = load("res://assets/art/check-mark.svg")
+var not_ready = load("res://assets/art/purple-square.svg")
+
 func _ready():
 	Lobby.connected_players_update.connect(_on_players_update)
 	Lobby.disconnected_from_host.connect(_on_host_disconnect)
@@ -19,8 +22,8 @@ func _ready():
 func _on_players_update(players):
 	$GameLobby/PlayerList.clear()
 	for player_id in players:
-		$GameLobby/PlayerList.add_item(players[player_id]["name"])
-		$GameLobby/PlayerList.add_item(str(players[player_id]["ready"]))
+		var status_icon = (ready_check if players[player_id]["ready"] else not_ready)
+		$GameLobby/PlayerList.add_item(players[player_id]["name"], status_icon)
 	$GameLobby/ReadyButton.disabled = players.size() < 2
 
 func _on_host_disconnect():
@@ -74,7 +77,7 @@ func _on_DownButton_pressed():
 func _on_RandomButton_pressed():
 	#$GameLobby/PlayerList.unselect_all()
 	for idx in range($GameLobby/PlayerList.get_item_count()):
-		var rand_idx = randi_range(idx,$GameLobby/PlayerList.get_item_count())
+		var rand_idx = randi_range(idx,$GameLobby/PlayerList.get_item_count()-1)
 		$GameLobby/PlayerList.move_item(idx, rand_idx)
 
 

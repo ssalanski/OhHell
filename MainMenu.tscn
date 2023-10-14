@@ -105,7 +105,6 @@ text = "Connected Players"
 layout_mode = 2
 allow_search = false
 auto_height = true
-max_columns = 2
 
 [node name="CPUControls" type="HBoxContainer" parent="GameLobby"]
 layout_mode = 2
